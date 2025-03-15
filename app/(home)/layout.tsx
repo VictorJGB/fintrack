@@ -1,0 +1,26 @@
+
+// components
+import Header from "@/components/header";
+import Sidebar from "@/components/sidebar";
+
+type Props = {
+  children: React.ReactNode;
+}
+
+export default function HomeLayout({
+  children,
+}: Readonly<Props>) {
+  return (
+    <div className="flex flex-col h-screen w-full">
+      {/* header */}
+      <Header />
+      <div className="w-full h-full flex">
+        <Sidebar />
+        {/* main content */}
+        <main className="size-full">
+          {children}
+        </main>
+      </div>
+    </div>
+  )
+}
