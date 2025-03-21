@@ -3,6 +3,7 @@ import { Coins } from 'lucide-react'
 
 // components
 import UserCombobox from './user-combobox'
+import { ModeToggle } from '../mode-toggle'
 
 export default function Header() {
   return (
@@ -14,7 +15,10 @@ export default function Header() {
       </div>
 
       {/* profile */}
-      <UserCombobox />
+      <div>
+        <UserCombobox />
+        <ModeToggle />
+      </div>
     </header>
   )
 }
