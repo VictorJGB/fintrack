@@ -1,23 +1,27 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { v4 } from 'uuid'
 
-import { cn } from "@/lib/utils"
+// types
+import type User from "@/types/user"
+
+// icons
+import { LogOut, MoreVerticalIcon } from "lucide-react"
+
+// components
 import { Button } from "@/components/ui/button"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import UserInfoDialog from "./user-info-dialog"
+
 
 const frameworks = [
   {
@@ -44,49 +48,51 @@ const frameworks = [
 
 export default function UserCombobox() {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+
+  const user: User = {
+    id: v4(), //aaaa-aaaa-aaaa-aaaa
+    name: "Victor Jerrysson",
+    email: "victorgb.dev@gmail.com",
+    avatar: "https://github.com/shadcn.png"
+  }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="py-5 bg-muted/50 rounded hover:bg-muted cursor-pointer"
         >
-          Usuário
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <Avatar className="h-8 w-8 rounded-lg">
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+          </Avatar>
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-medium">{user.name}</span>
+            <span className="truncate text-xs text-muted-foreground">
+              {user.email}
+            </span>
+          </div>
+          <MoreVerticalIcon className="ml-auto size-4" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" side="bottom">
-        <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
-            <CommandGroup>
-              {frameworks.map((framework) => (
-                <CommandItem
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {framework.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[230px] p-2" side="bottom">
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <UserInfoDialog
+              data={user}
+              triggerClassname="w-full"
+            />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="cursor-pointer">
+            Logout
+            <LogOut className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

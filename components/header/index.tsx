@@ -2,12 +2,12 @@
 import { Coins } from 'lucide-react'
 
 // components
+import ModeToggle from '../mode-toggle'
 import UserCombobox from './user-combobox'
-import { ModeToggle } from '../mode-toggle'
 
 export default function Header() {
   return (
-    <header className="w-full h-[80px] border flex py-2 px-6 items-center justify-between">
+    <header className="w-full h-[80px] border-b flex py-2 px-10 items-center justify-between">
       {/* Logo */}
       <div className='flex items-center justify-center gap-2'>
         <Coins className='w-5 h-5' />
@@ -15,7 +15,7 @@ export default function Header() {
       </div>
 
       {/* profile */}
-      <div>
+      <div className="flex items-center justify-center gap-2">
         <UserCombobox />
         <ModeToggle />
       </div>

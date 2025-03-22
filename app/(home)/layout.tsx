@@ -14,13 +14,10 @@ export default function HomeLayout({
     <div className="flex flex-col h-screen w-full">
       {/* header */}
       <Header />
-      <div className="w-full h-full flex">
-        <Sidebar />
-        {/* main content */}
-        <main className="size-full">
-          {children}
-        </main>
-      </div>
+      {/* main content */}
+      <main className="size-full">
+        {children}
+      </main>
     </div>
   )
 }
