@@ -1,3 +1,5 @@
+import Image from 'next/image'
+import type { Dispatch, SetStateAction } from 'react'
 
 // types
 import User from '@/types/user'
@@ -6,6 +8,7 @@ import User from '@/types/user'
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -16,16 +19,16 @@ import { Label } from "@/components/ui/label"
 
 import { Info, Pencil } from 'lucide-react'
 
-import Image from 'next/image'
 import { Separator } from '../ui/separator'
 
 
 type Props = {
   data: User
   triggerClassname: string | undefined
+  setIsParentOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function UserInfoDialog({ data, triggerClassname }: Props) {
+export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen }: Props) {
 
   return (
     <Dialog>
@@ -71,7 +74,12 @@ export default function UserInfoDialog({ data, triggerClassname }: Props) {
           </div>
         </div>
         <DialogFooter>
-          <Button variant={'secondary'}>Fechar</Button>
+          <DialogClose
+            asChild
+            onClick={() => setIsParentOpen(false)}
+          >
+            <Button variant={'secondary'}>Fechar</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog >

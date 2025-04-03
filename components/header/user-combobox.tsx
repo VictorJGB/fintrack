@@ -50,7 +50,7 @@ export default function UserCombobox() {
   const [open, setOpen] = React.useState(false)
 
   const user: User = {
-    id: v4(), //aaaa-aaaa-aaaa-aaaa
+    id: v4(), //UUID
     name: "Victor Jerrysson",
     email: "victorgb.dev@gmail.com",
     avatar: "https://github.com/shadcn.png"
@@ -84,6 +84,7 @@ export default function UserCombobox() {
             <UserInfoDialog
               data={user}
               triggerClassname="w-full"
+              setIsParentOpen={setOpen}
             />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
