@@ -1,9 +1,10 @@
 type User = {
   _id: string
   name: string
+  avatar: string
   email: string
   role: string
-  salary: string
+  salary: number
 }
 
 export default User

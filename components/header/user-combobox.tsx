@@ -1,7 +1,9 @@
 "use client"
 
-import * as React from "react"
 import { v4 } from 'uuid'
+
+// navigation
+import { useRouter } from "next/navigation"
 
 // types
 import type User from "@/types/user"
@@ -19,42 +21,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import UserInfoDialog from "./user-info-dialog"
 
+interface Props {
+  userID: string
+}
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
+export default function UserCombobox({ userID }: Props) {
+  const [open, setOpen] = useState(false)
+  const { replace } = useRouter()
 
-export default function UserCombobox() {
-  const [open, setOpen] = React.useState(false)
+  console.log(userID)
 
   const user: User = {
-    id: v4(), //UUID
+    _id: v4(), //UUID
     name: "Victor Jerrysson",
     email: "victorgb.dev@gmail.com",
-    avatar: "https://github.com/shadcn.png"
+    avatar: "https://github.com/shadcn.png",
+    role: 'admin',
+    salary: 1518
   }
+
+  const logout = () => replace('/login')
 
   return (
     <DropdownMenu>
@@ -83,12 +73,16 @@ export default function UserCombobox() {
           <DropdownMenuItem asChild>
             <UserInfoDialog
               data={user}
+              userID={userID}
               triggerClassname="w-full"
               setIsParentOpen={setOpen}
             />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={logout}
+          >
             Logout
             <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>

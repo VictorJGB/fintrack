@@ -2,10 +2,15 @@
 import { Coins } from 'lucide-react'
 
 // components
+import getCookie from '@/actions/get-cookie'
 import ModeToggle from '../mode-toggle'
 import UserCombobox from './user-combobox'
 
-export default function Header() {
+export default async function Header() {
+  const userID = await getCookie('token')
+
+  console.log({ userID })
+
   return (
     <header className="w-full h-[80px] border-b flex py-2 px-10 items-center justify-between">
       {/* Logo */}
@@ -16,7 +21,7 @@ export default function Header() {
 
       {/* profile */}
       <div className="flex items-center justify-center gap-2">
-        <UserCombobox />
+        <UserCombobox userID={userID?.value ?? ''} />
         <ModeToggle />
       </div>
     </header>

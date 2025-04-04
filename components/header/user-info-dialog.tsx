@@ -1,8 +1,7 @@
 import Image from 'next/image'
-import type { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
-// types
-import User from '@/types/user'
+// libs
 
 // components
 import { Button } from "@/components/ui/button"
@@ -16,19 +15,25 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-
-import { Info, Pencil } from 'lucide-react'
-
 import { Separator } from '../ui/separator'
 
+// actions
+import type User from '@/types/user'
+import { Info, Pencil } from 'lucide-react'
 
 type Props = {
+  userID?: string
   data: User
   triggerClassname: string | undefined
   setIsParentOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen }: Props) {
+export default function UserInfoDialog({ userID, data, triggerClassname, setIsParentOpen }: Props) {
+  // const { data: user, error, isLoading } = useQuery({
+  //   queryKey: ['user'],
+  //   queryFn: () => getUser(userID)
+  // })
+
 
   return (
     <Dialog>
@@ -74,6 +79,12 @@ export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen
           </div>
         </div>
         <DialogFooter>
+          <Button
+            variant={'outline'}
+            onClick={() => console.log({ userID })}
+          >
+            User ID
+          </Button>
           <DialogClose
             asChild
             onClick={() => setIsParentOpen(false)}

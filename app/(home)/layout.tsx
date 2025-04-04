@@ -1,7 +1,6 @@
 
 // components
 import Header from "@/components/header";
-import Sidebar from "@/components/sidebar";
 
 type Props = {
   children: React.ReactNode;

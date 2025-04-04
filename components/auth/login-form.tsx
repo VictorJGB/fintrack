@@ -62,7 +62,6 @@ export default function LoginForm({
     startTransition(async () => {
       try {
         const data = await Login(values)
-        console.log(data)
         toast.success('Usuario autenticado com sucesso!')
         replace('/')
       } catch (e) {
@@ -74,8 +73,6 @@ export default function LoginForm({
           })
       }
     })
-
-    console.log(values)
   }
 
   return (
