@@ -1,10 +1,13 @@
 'use client'
 
-import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useState, useTransition } from "react"
+
 
 // libs
 import { cn } from "@/lib/utils"
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from "react-hook-form"
 import { z } from 'zod'
 
 // components
@@ -17,12 +20,14 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { toast } from 'sonner'
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form"
 
-// icons
+// actions
 import Login from "@/actions/user/login"
-import { Eye, EyeOff } from "lucide-react"
-import { useForm } from "react-hook-form"
+
+// icons
+import { Eye, EyeOff, Loader2 } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -38,6 +43,8 @@ export default function LoginForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isPending, startTransition] = useTransition()
+  const { replace } = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,12 +59,22 @@ export default function LoginForm({
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const data = await Login(values)
-      console.log(data)
-    } catch (e) {
-      console.error(e)
-    }
+    startTransition(async () => {
+      try {
+        const data = await Login(values)
+        console.log(data)
+        toast.success('Usuario autenticado com sucesso!')
+        replace('/')
+      } catch (e) {
+        console.error(e)
+
+        if (e instanceof Error)
+          toast.error('Erro', {
+            description: e.message
+          })
+      }
+    })
+
     console.log(values)
   }
 
@@ -114,7 +131,12 @@ export default function LoginForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isPending}
+                >
+                  {isPending && <Loader2 className="size-4 mr-3 animate-spin" />}
                   Login
                 </Button>
               </div>
