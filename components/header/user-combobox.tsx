@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation"
 import type User from "@/types/user"
 
 // icons
-import { LogOut, MoreVerticalIcon } from "lucide-react"
+import { Loader2, LogOut, MoreVerticalIcon } from "lucide-react"
 
 // components
+import Logout from '@/actions/user/logout'
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -21,19 +22,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import UserInfoDialog from "./user-info-dialog"
 
-interface Props {
-  userID: string
-}
-
-export default function UserCombobox({ userID }: Props) {
+export default function UserCombobox() {
   const [open, setOpen] = useState(false)
   const { replace } = useRouter()
-
-  console.log(userID)
+  const [isPending, startTransition] = useTransition()
 
   const user: User = {
     _id: v4(), //UUID
@@ -44,7 +41,19 @@ export default function UserCombobox({ userID }: Props) {
     salary: 1518
   }
 
-  const logout = () => replace('/login')
+  async function logout() {
+    startTransition(async () => {
+      try {
+        await Logout()
+        replace('/login')
+      } catch (e) {
+        if (e instanceof Error) {
+          toast.error(e.message)
+        }
+        console.log(e)
+      }
+    })
+  }
 
   return (
     <DropdownMenu>
@@ -73,7 +82,6 @@ export default function UserCombobox({ userID }: Props) {
           <DropdownMenuItem asChild>
             <UserInfoDialog
               data={user}
-              userID={userID}
               triggerClassname="w-full"
               setIsParentOpen={setOpen}
             />
@@ -81,10 +89,18 @@ export default function UserCombobox({ userID }: Props) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={logout}
+            asChild
           >
-            Logout
-            <LogOut className="h-4 w-4 ml-auto" />
+            <Button
+              className='size-full'
+              variant='destructive'
+              disabled={isPending}
+              onClick={() => logout()}
+            >
+              Logout
+              {!isPending && <LogOut className="h-4 w-4 text-inherit ml-auto" />}
+              {isPending && <Loader2 className='size-4 text-inherit ml-auto' />}
+            </Button>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

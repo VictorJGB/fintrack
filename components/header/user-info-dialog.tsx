@@ -22,13 +22,12 @@ import type User from '@/types/user'
 import { Info, Pencil } from 'lucide-react'
 
 type Props = {
-  userID?: string
   data: User
   triggerClassname: string | undefined
   setIsParentOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function UserInfoDialog({ userID, data, triggerClassname, setIsParentOpen }: Props) {
+export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen }: Props) {
   // const { data: user, error, isLoading } = useQuery({
   //   queryKey: ['user'],
   //   queryFn: () => getUser(userID)
