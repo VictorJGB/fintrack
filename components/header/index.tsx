@@ -2,10 +2,13 @@
 import { Coins } from 'lucide-react'
 
 // components
+import verifyUser from '@/actions/user/verify-user'
 import ModeToggle from '../mode-toggle'
 import UserCombobox from './user-combobox'
 
 export default async function Header() {
+  const { userID } = await verifyUser()
+
   return (
     <header className="w-full h-[80px] border-b flex py-2 px-10 items-center justify-between">
       {/* Logo */}
@@ -16,7 +19,7 @@ export default async function Header() {
 
       {/* profile */}
       <div className="flex items-center justify-center gap-2">
-        <UserCombobox />
+        <UserCombobox userID={userID || ''} />
         <ModeToggle />
       </div>
     </header>

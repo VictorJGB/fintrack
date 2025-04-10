@@ -27,7 +27,11 @@ import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import UserInfoDialog from "./user-info-dialog"
 
-export default function UserCombobox() {
+interface Props {
+  userID: string
+}
+
+export default function UserCombobox({ userID }: Props) {
   const [open, setOpen] = useState(false)
   const { replace } = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -81,6 +85,7 @@ export default function UserCombobox() {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <UserInfoDialog
+              userID={userID}
               data={user}
               triggerClassname="w-full"
               setIsParentOpen={setOpen}

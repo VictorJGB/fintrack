@@ -1,7 +1,11 @@
 import Image from 'next/image'
-import { type Dispatch, type SetStateAction } from 'react'
+import { useEffect, type Dispatch, type SetStateAction } from 'react'
+
+// icons
+import { Info, Loader2, Pencil } from 'lucide-react'
 
 // libs
+import { useQuery } from '@tanstack/react-query'
 
 // components
 import { Button } from "@/components/ui/button"
@@ -18,21 +22,31 @@ import { Label } from "@/components/ui/label"
 import { Separator } from '../ui/separator'
 
 // actions
+import getUser from '@/actions/user/get-user'
 import type User from '@/types/user'
-import { Info, Pencil } from 'lucide-react'
+import { toast } from 'sonner'
 
 type Props = {
+  userID: string
   data: User
   triggerClassname: string | undefined
   setIsParentOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen }: Props) {
-  // const { data: user, error, isLoading } = useQuery({
-  //   queryKey: ['user'],
-  //   queryFn: () => getUser(userID)
-  // })
+export default function UserInfoDialog({ userID, data, triggerClassname, setIsParentOpen }: Props) {
+  const { data: user, error, isLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(userID),
+  })
 
+  useEffect(() => {
+    if (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
+    }
+    console.log(user)
+  }, [user, error])
 
   return (
     <Dialog>
@@ -47,7 +61,10 @@ export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen
         <DialogHeader>
           <DialogTitle>Minhas informações</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        {/* Loading data */}
+        {isLoading && <Loader2 className='size-10 mx-auto animate-spin' />}
+
+        {user && <div className="grid gap-5 py-4">
           {/* image */}
           <div className='mx-auto size-40 relative'>
             <Image
@@ -67,23 +84,17 @@ export default function UserInfoDialog({ data, triggerClassname, setIsParentOpen
               <Label className="text-right text-primary font-bold">
                 Nome
               </Label>
-              <span className='col-span-3'>{data.name}</span>
+              <span className='col-span-3'>{user.name}</span>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">
+              <Label className="text-right text-primary font-bold">
                 Email
               </Label>
-              <span>{data.email}</span>
+              <span>{user.email}</span>
             </div>
           </div>
-        </div>
+        </div>}
         <DialogFooter>
-          <Button
-            variant={'outline'}
-            onClick={() => console.log({ userID })}
-          >
-            User ID
-          </Button>
           <DialogClose
             asChild
             onClick={() => setIsParentOpen(false)}
