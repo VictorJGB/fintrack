@@ -41,12 +41,10 @@ export default function UserInfoDialog({ userID, data, triggerClassname, setIsPa
 
   useEffect(() => {
     if (error) {
-      if (error instanceof Error) {
-        toast.error(error.message)
-      }
+      toast.error(error.message)
     }
-    console.log(user)
-  }, [user, error])
+
+  }, [error])
 
   return (
     <Dialog>

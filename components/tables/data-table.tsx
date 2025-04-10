@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { PlusCircle } from "lucide-react"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 
@@ -51,7 +52,8 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
-      sorting
+      sorting,
+      columnFilters
     }
   })
 
@@ -60,13 +62,17 @@ export function DataTable<TData, TValue>({
       {/* filter */}
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filtrar empresa..."
+          value={(table.getColumn("company")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("company")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
+        <Button className="ml-auto">
+          Adicionar
+          <PlusCircle className="size-4 ml-2" />
+        </Button>
       </div>
 
       <div className="rounded-md border">
