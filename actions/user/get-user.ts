@@ -4,7 +4,7 @@
 import { apiFetcher } from "@/utils/api";
 
 // types
-import type User from "@/types/user";
+import type User from "@/interfaces/user";
 
 export default async function getUser(id: string): Promise<User> {
   const response = await apiFetcher(`users/${id}`, {

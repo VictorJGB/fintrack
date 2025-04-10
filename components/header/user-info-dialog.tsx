@@ -23,7 +23,7 @@ import { Separator } from '../ui/separator'
 
 // actions
 import getUser from '@/actions/user/get-user'
-import type User from '@/types/user'
+import type User from '@/interfaces/user'
 import { toast } from 'sonner'
 
 type Props = {

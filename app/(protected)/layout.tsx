@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode;
 }
 
-export default function HomeLayout({
+export default function ProtectedLayout({
   children,
 }: Readonly<Props>) {
   return (

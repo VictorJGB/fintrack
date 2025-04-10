@@ -1,4 +1,4 @@
-type Expense = {
+export default interface Expense {
   _id: string
   company: string //empres
   description: string //descriçao
@@ -8,5 +8,3 @@ type Expense = {
   amount_per_installments: number //valor por prestacao
   total_amount: number //valor total
 }
-
-export default Expense

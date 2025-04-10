@@ -6,7 +6,7 @@ import { v4 } from 'uuid'
 import { useRouter } from "next/navigation"
 
 // types
-import type User from "@/types/user"
+import type User from "@/interfaces/user"
 
 // icons
 import { Loader2, LogOut, MoreVerticalIcon } from "lucide-react"
@@ -85,6 +85,7 @@ export default function UserCombobox({ userID }: Props) {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <UserInfoDialog
+
               userID={userID}
               data={user}
               triggerClassname="w-full"
@@ -94,18 +95,14 @@ export default function UserCombobox({ userID }: Props) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer"
-            asChild
+            variant='destructive'
+            onClick={() => logout()}
+            disabled={isPending}
           >
-            <Button
-              className='size-full'
-              variant='destructive'
-              disabled={isPending}
-              onClick={() => logout()}
-            >
-              Logout
-              {!isPending && <LogOut className="h-4 w-4 text-inherit ml-auto" />}
-              {isPending && <Loader2 className='size-4 text-inherit ml-auto' />}
-            </Button>
+            Logout
+            {!isPending && <LogOut className="h-4 w-4 text-inherit ml-auto" />}
+            {isPending && <Loader2 className='size-4 text-inherit ml-auto' />}
+
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
