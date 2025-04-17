@@ -13,12 +13,13 @@ export async function apiFetcher(input: string | URL | globalThis.Request, init?
 
   const optionsHeaders: HeadersInit = {
     ...init?.headers,
-    'Cookie': token || ''
+    'Cookie': token || '',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': '*'
   }
 
   const response = await fetch(url, {
     ...init,
-    mode: "no-cors",
     credentials: 'include',
     headers: optionsHeaders
   })

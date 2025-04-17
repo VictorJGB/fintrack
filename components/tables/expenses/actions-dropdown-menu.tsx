@@ -1,5 +1,6 @@
 
 // components
+import EditExpenseDialog from "@/components/dialogs/expenses/edit-expense"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,7 +15,7 @@ import {
 import type Expense from "@/interfaces/expense"
 
 // icons
-import { Info, MoreHorizontal, Pencil, Trash } from "lucide-react"
+import { Info, MoreHorizontal, Trash } from "lucide-react"
 
 type Props = {
   data: Expense
@@ -37,9 +38,8 @@ export default function ActionsDropdownMenu({ data }: Props) {
           <Info className="size-4 ml-4" />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="w-full">
-          Editar despesa
-          <Pencil className="size-4 ml-auto" />
+        <DropdownMenuItem className="w-full" asChild>
+          <EditExpenseDialog data={data} />
         </DropdownMenuItem>
         <DropdownMenuItem
           variant="destructive"

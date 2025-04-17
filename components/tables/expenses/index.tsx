@@ -22,7 +22,6 @@ export default function ExpensesTable() {
   })
 
   useEffect(() => {
-    console.log('table data', data)
     if (error) {
       toast.error(error.message);
       console.log(error)

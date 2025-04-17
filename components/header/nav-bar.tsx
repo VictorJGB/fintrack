@@ -13,6 +13,8 @@ const HEADER_LINKS = [
 export default function NavBar() {
   const path = usePathname()
 
+  console.log('pathname', path)
+
   return (
     <nav className='hidden h-full md:flex items-center justify-center gap-2'>
       {HEADER_LINKS.map(({ label, href }, index) => (

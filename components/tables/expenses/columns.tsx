@@ -31,20 +31,6 @@ export const columns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: "recipient",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Destinatario
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    }
-  },
-  {
     accessorKey: "installments",
     header: ({ column }) => {
       return (
@@ -73,7 +59,7 @@ export const columns: ColumnDef<Expense>[] = [
     }
   },
   {
-    accessorKey: "amount_per_installments",
+    accessorKey: "amount_per_installment",
     header: ({ column }) => {
       return (
         <Button
@@ -86,7 +72,7 @@ export const columns: ColumnDef<Expense>[] = [
       )
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount_per_installments"))
+      const amount = parseFloat(row.getValue("amount_per_installment"))
       const formatted = new Intl.NumberFormat("pt-BR", {
         style: 'currency',
         currency: 'BRL',
