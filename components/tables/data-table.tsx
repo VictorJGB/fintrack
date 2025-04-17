@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type ElementType } from "react"
 
 // react table
 import {
@@ -24,18 +24,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { PlusCircle } from "lucide-react"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  AddDialogComponent: ElementType
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  AddDialogComponent
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -69,10 +70,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <Button className="ml-auto">
-          Adicionar
-          <PlusCircle className="size-4 ml-2" />
-        </Button>
+        <AddDialogComponent />
       </div>
 
       <div className="rounded-md border">

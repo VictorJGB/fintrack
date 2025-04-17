@@ -1,4 +1,5 @@
 'use client'
+import { useEffect } from 'react'
 
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
@@ -9,11 +10,13 @@ import { useQuery } from '@tanstack/react-query'
 // icons
 import { Loader2 } from 'lucide-react'
 
-// components
-import { useEffect } from 'react'
-import { toast } from 'sonner'
+// data table
 import { DataTable } from '../data-table'
 import { columns } from './columns'
+
+// components
+import AddExpenseDialog from '@/components/dialogs/expenses/add-expense'
+import { toast } from 'sonner'
 
 export default function ExpensesTable() {
   const { data, isLoading, error } = useQuery({
@@ -33,7 +36,7 @@ export default function ExpensesTable() {
 
       {isLoading && <Loader2 className='size-10 animate-spin' />}
 
-      {data && <DataTable columns={columns} data={data} />}
+      {data && <DataTable columns={columns} data={data} AddDialogComponent={AddExpenseDialog} />}
     </div>
   )
 }

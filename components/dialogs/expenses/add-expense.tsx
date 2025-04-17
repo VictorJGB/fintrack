@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 // libs
 import { queryClient } from '@/lib/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,35 +24,26 @@ import { Separator } from "@/components/ui/separator"
 import { toast } from 'sonner'
 
 // actions
-import updateExpense from '@/actions/expenses/update-expense'
-
-// types
-import type Expense from '@/interfaces/expense'
+import createExpense from '@/actions/expenses/create-expense'
 
 // icons
-import { Loader2, Pencil } from "lucide-react"
-import { useState } from 'react'
+import { Loader2, PlusCircle } from "lucide-react"
 
 const formSchema = z.object({
   company: z.string().min(2, { message: 'Minimo 2 caracteres' }),
   description: z.string(),
   recipient: z.string().optional(),
-  installments: z.number().int().min(1, { message: 'No minimo 1 parcela' }).max(12, { message: 'No maximo 12 parcelas' }),
-  installments_paid: z.number().int().max(12, { message: 'No maximo 12 parcelas' }),
+  installments: z.number().int().min(1, { message: 'No minimo 1 parcela' }).max(12, { 'message': 'Maximo 12 parcelas' }),
+  installments_paid: z.number().int().max(12, { 'message': 'Maximo 12 parcelas' }),
   amount_per_installment: z.number().min(1, { message: 'No minimo 1 real por parcela' }),
   total_amount: z.number()
 })
 
-
-interface Props {
-  data: Expense
-}
-
-export default function EditExpenseDialog({ data }: Props) {
+export default function AddExpenseDialog() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { mutate, isPending } = useMutation({
-    mutationFn: updateExpense,
+    mutationFn: createExpense,
     mutationKey: ['update-expense'],
     onSuccess: ({ message }) => {
       toast.success(message)
@@ -66,30 +59,32 @@ export default function EditExpenseDialog({ data }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      company: data.company,
-      description: data.description,
-      recipient: data.recipient,
-      installments: data.installments,
-      installments_paid: data.installments_paid,
-      amount_per_installment: data.amount_per_installment,
-      total_amount: data.total_amount
+      company: '',
+      description: '',
+      recipient: '',
+      installments: 1,
+      installments_paid: 0,
+      amount_per_installment: 1,
+      total_amount: 1
     }
   })
 
   // observers for input change
   const $installments = form.watch('installments')
-  const $amount_per_installment = form.watch('amount_per_installment')
-  const $total_amount = $installments * $amount_per_installment
+  const $amount_per_installments = form.watch('amount_per_installment')
+  const $total_amount = $installments * $amount_per_installments
 
   function toggleModalOpen() {
     setIsOpen(!isOpen)
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    mutate({ id: data._id, formData: values })
+    const resBody = {
+      ...values,
+      date: Date.now()
+    }
+    mutate(resBody)
   }
-
 
   return (
     <Dialog
@@ -97,14 +92,14 @@ export default function EditExpenseDialog({ data }: Props) {
       onOpenChange={setIsOpen}
     >
       <DialogTrigger asChild>
-        <Button variant="ghost" className='w-full'>
-          Editar despesa
-          <Pencil className="size-4 ml-auto" />
+        <Button className='ml-auto'>
+          Adicionar
+          <PlusCircle className="size-4 ml-auto" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Editar despesa</DialogTitle>
+          <DialogTitle>Adicionar despesa</DialogTitle>
           <Separator />
         </DialogHeader>
         <Form {...form}>
@@ -126,7 +121,6 @@ export default function EditExpenseDialog({ data }: Props) {
                       />
                     </FormControl>
                     <FormMessage />
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -140,7 +134,7 @@ export default function EditExpenseDialog({ data }: Props) {
                     <FormControl>
                       <Input
                         type='text'
-                        placeholder={data.description || 'Digita sua descrição aqui...'}
+                        placeholder={'Ex: Aluguel, Conta de água...'}
                         required
                         {...field}
                       />
@@ -155,7 +149,7 @@ export default function EditExpenseDialog({ data }: Props) {
                 name='recipient'
                 render={({ field }) => (
                   <FormItem className='grid gap-2'>
-                    <FormLabel>Destinatário</FormLabel>
+                    <FormLabel>Destinatário (Opcional)</FormLabel>
                     <FormControl>
                       <Input
                         type='text'
@@ -184,7 +178,6 @@ export default function EditExpenseDialog({ data }: Props) {
                         onChange={(event) => {
                           const value = event.target.value
                           field.onChange(Number(value))
-                          form.setValue('total_amount', Number(value) * $amount_per_installment)
                         }}
                       />
                     </FormControl>
@@ -224,7 +217,6 @@ export default function EditExpenseDialog({ data }: Props) {
                         value={field.value}
                         onChangeValue={(_, value) => {
                           field.onChange(value)
-                          form.setValue('total_amount', Number(value) * $installments)
                         }}
                         InputElement={<Input type='text' min={1} required />}
                       />
@@ -243,6 +235,7 @@ export default function EditExpenseDialog({ data }: Props) {
                     <FormControl>
                       <CurrencyInput
                         {...field}
+                        value={$total_amount}
                         onChangeValue={(_, value) => {
                           field.onChange(value)
                         }}
