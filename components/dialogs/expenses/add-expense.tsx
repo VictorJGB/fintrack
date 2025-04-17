@@ -71,8 +71,7 @@ export default function AddExpenseDialog() {
 
   // observers for input change
   const $installments = form.watch('installments')
-  const $amount_per_installments = form.watch('amount_per_installment')
-  const $total_amount = $installments * $amount_per_installments
+  const $amount_per_installment = form.watch('amount_per_installment')
 
   function toggleModalOpen() {
     setIsOpen(!isOpen)
@@ -178,6 +177,7 @@ export default function AddExpenseDialog() {
                         onChange={(event) => {
                           const value = event.target.value
                           field.onChange(Number(value))
+                          form.setValue('total_amount', Number(value) * $amount_per_installment)
                         }}
                       />
                     </FormControl>
@@ -217,6 +217,7 @@ export default function AddExpenseDialog() {
                         value={field.value}
                         onChangeValue={(_, value) => {
                           field.onChange(value)
+                          form.setValue('total_amount', Number(value) * $installments)
                         }}
                         InputElement={<Input type='text' min={1} required />}
                       />
@@ -235,7 +236,6 @@ export default function AddExpenseDialog() {
                     <FormControl>
                       <CurrencyInput
                         {...field}
-                        value={$total_amount}
                         onChangeValue={(_, value) => {
                           field.onChange(value)
                         }}
