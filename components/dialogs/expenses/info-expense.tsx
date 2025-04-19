@@ -21,8 +21,8 @@ export default function InfoExpenseDialog({ data }: Props) {
 
   const infos = [
     { label: 'Empresa', value: data.company },
-    { label: 'Descrição', value: data.description ?? 'Sem descrição' },
-    { label: 'Destinatário', value: data.recipient ?? 'Sem destinatário' },
+    { label: 'Descrição', value: data.description || 'Sem descrição' },
+    { label: 'Destinatário', value: data.recipient || 'Sem destinatário' },
     { label: 'Parcela(s)', value: `${data.installments}x de ${formatToBRL(data.amount_per_installment)}` },
     { label: 'Parcela(s) paga(s)', value: `${data.installments_paid} de ${data.installments} parcela(s)` },
     { label: 'Valor total', value: `${formatToBRL(data.total_amount)}` },
@@ -31,7 +31,7 @@ export default function InfoExpenseDialog({ data }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'ghost'}>
+        <Button variant={'ghost'} className="w-full">
           Mais informações
           <Info className="size-4 ml-auto" />
         </Button>

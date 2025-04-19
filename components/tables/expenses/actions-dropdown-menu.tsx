@@ -1,5 +1,6 @@
 
 // components
+import DeleteExpenseDialog from "@/components/dialogs/expenses/delete-expense"
 import EditExpenseDialog from "@/components/dialogs/expenses/edit-expense"
 import InfoExpenseDialog from "@/components/dialogs/expenses/info-expense"
 import { Button } from "@/components/ui/button"
@@ -16,7 +17,7 @@ import {
 import type Expense from "@/interfaces/expense"
 
 // icons
-import { MoreHorizontal, Trash } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 
 type Props = {
   data: Expense
@@ -41,12 +42,9 @@ export default function ActionsDropdownMenu({ data }: Props) {
         <DropdownMenuItem className="w-full" asChild>
           <EditExpenseDialog data={data} />
         </DropdownMenuItem>
-        <DropdownMenuItem
-          variant="destructive"
-          className="w-full"
-        >
-          Deletar despesa
-          <Trash className="size-4 ml-auto text-inherit" />
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="w-full" asChild>
+          <DeleteExpenseDialog expenseID={data._id} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
