@@ -1,6 +1,8 @@
 
 // components
-import Header from "@/components/header";
+import { AppSidebar } from "@/components/app-sidebar";
+import MainSidebarHeader from "@/components/header/sidebar/main-sidebar-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 type Props = {
   children: React.ReactNode;
@@ -10,13 +12,12 @@ export default function ProtectedLayout({
   children,
 }: Readonly<Props>) {
   return (
-    <div className="flex flex-col h-screen w-full">
-      {/* header */}
-      <Header />
-      {/* main content */}
-      <main className="size-full">
-        {children}
-      </main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <MainSidebarHeader />
+        <main className="flex flex-1 flex-col gap-4 p-4">{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

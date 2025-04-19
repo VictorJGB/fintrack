@@ -13,6 +13,7 @@ import { Loader2, LogOut, MoreVerticalIcon } from "lucide-react"
 
 // components
 import Logout from '@/actions/user/logout'
+import verifyUser from '@/actions/user/verify-user'
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -22,17 +23,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useQuery } from '@tanstack/react-query'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import UserInfoDialog from "./user-info-dialog"
 
-interface Props {
-  userID: string
-}
-
-export default function UserCombobox({ userID }: Props) {
+export default function UserCombobox() {
   const [open, setOpen] = useState(false)
+  const { data } = useQuery({
+    queryFn: verifyUser,
+    queryKey: ['verify-user'],
+  })
   const { replace } = useRouter()
   const [isPending, startTransition] = useTransition()
 
@@ -86,7 +88,7 @@ export default function UserCombobox({ userID }: Props) {
           <DropdownMenuItem asChild>
             <UserInfoDialog
 
-              userID={userID}
+              userID={data?.userID ?? ''}
               data={user}
               triggerClassname="w-full"
               setIsParentOpen={setOpen}
