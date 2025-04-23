@@ -1,6 +1,7 @@
 export default interface Expense {
   _id: string
-  company: string //empres
+  date: Date
+  company: string //empresa
   description: string //descriçao
   recipient?: string //destinatario
   installments: number //prestacoes
