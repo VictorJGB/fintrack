@@ -1,8 +1,9 @@
 'use client'
+
 import { useEffect } from 'react'
 
 // actions
-import getExpenses from '@/actions/expenses/get-expenses'
+import getIncomes from '@/actions/incomes/get-incomes'
 
 // libs
 import { useQuery } from '@tanstack/react-query'
@@ -15,13 +16,12 @@ import { DataTable } from '../data-table'
 import { columns } from './columns'
 
 // components
-import AddExpenseDialog from '@/components/dialogs/expenses/add-expense'
 import { toast } from 'sonner'
 
-export default function ExpensesTable() {
+export default function IncomesTable() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['get-expenses'],
-    queryFn: getExpenses,
+    queryKey: ['get-incomes'],
+    queryFn: getIncomes,
   })
 
   useEffect(() => {
@@ -29,6 +29,8 @@ export default function ExpensesTable() {
       toast.error(error.message);
       console.log(error)
     }
+
+    console.log({ data })
   }, [data, error])
 
   return (
@@ -36,7 +38,7 @@ export default function ExpensesTable() {
 
       {isLoading && <Loader2 className='size-10 animate-spin' />}
 
-      {data && <DataTable columns={columns} data={data} columnFilter='company' AddDialogComponent={AddExpenseDialog} />}
+      {data && <DataTable columns={columns} data={data} columnFilter='source' filterPlaceholder='Filtrar por fonte...' />}
     </div>
   )
 }

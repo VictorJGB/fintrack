@@ -21,7 +21,8 @@ import {
 import UserCombobox from "./header/user-combobox"
 
 // icons
-import { Banknote, Coins } from "lucide-react"
+import { Coins } from "lucide-react"
+import LucideIconStore from "./lucide-icon-store"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -40,7 +41,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <Separator />
       <SidebarContent className="px-4 py-6">
-        {appLinks.map(({ label, href }, index) => (
+        {appLinks.map(({ label, href, icon }, index) => (
           <Button
             asChild
             data-active={path === href}
@@ -49,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             variant={'ghost'}
           >
             <Link href={href}>
-              <Banknote className="mr-1 size-4 " />
+              <LucideIconStore name={icon} />
               {label}
             </Link>
           </Button>

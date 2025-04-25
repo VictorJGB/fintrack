@@ -30,13 +30,17 @@ import { Input } from "../ui/input"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  AddDialogComponent: ElementType
+  AddDialogComponent?: ElementType
+  columnFilter?: keyof TData
+  filterPlaceholder?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  AddDialogComponent
+  AddDialogComponent,
+  columnFilter,
+  filterPlaceholder
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -62,15 +66,16 @@ export function DataTable<TData, TValue>({
     <div>
       {/* filter */}
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Filtrar empresa..."
-          value={(table.getColumn("company")?.getFilterValue() as string) ?? ""}
+        {columnFilter && <Input
+          placeholder={filterPlaceholder ?? `Filtrar por ${columnFilter}`}
+          value={(table.getColumn(columnFilter)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("company")?.setFilterValue(event.target.value)
+            table.getColumn(columnFilter)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <AddDialogComponent />
+        }
+        {AddDialogComponent && <AddDialogComponent />}
       </div>
 
       <div className="rounded-md border">
