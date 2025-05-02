@@ -1,3 +1,4 @@
+import DeleteIncomeDialog from "@/components/dialogs/incomes/delete-income"
 import EditIncomeDialog from "@/components/dialogs/incomes/edit-income"
 import { Button } from "@/components/ui/button"
 import {
@@ -36,8 +37,7 @@ export default function IncomesActionsDropdownMenu({ data }: Props) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="w-full" asChild>
-          {/* <DeleteExpenseDialog expenseID={data._id} /> */}
-          <span>Deletar recebimento</span>
+          <DeleteIncomeDialog incomeID={data._id} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
