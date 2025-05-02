@@ -2,8 +2,10 @@
 
 import { headers } from 'next/headers';
 
-// export const API_BASE_URL = process.env.API_URL || ''
-const API_BASE_URL = process.env.API_DEV_URL || ''
+const ENVIRONMENT = process.env.ENVIRONMENT
+const API_DEV_URL = "http://localhost:8080/api"
+
+const API_BASE_URL = ENVIRONMENT ? process.env.API_DEV_URL : API_DEV_URL
 
 export async function apiFetcher(input: string | URL | globalThis.Request, init?: RequestInit): Promise<Response> {
   const url = `${API_BASE_URL}/${input}`
