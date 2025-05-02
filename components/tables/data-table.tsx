@@ -39,13 +39,10 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   AddDialogComponent,
-  columnFilter,
-  filterPlaceholder
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [globalFilter, setGlobalFilter] = useState<any>([]);
 
   const table = useReactTable({
     data,
@@ -58,7 +55,8 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters
+      columnFilters,
+      globalFilter
     }
   })
 
@@ -66,15 +64,16 @@ export function DataTable<TData, TValue>({
     <div>
       {/* filter */}
       <div className="flex items-center py-4">
-        {columnFilter && <Input
-          placeholder={filterPlaceholder ?? `Filtrar por ${columnFilter}`}
-          value={(table.getColumn(columnFilter)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(columnFilter)?.setFilterValue(event.target.value)
+        <Input
+          placeholder="Digite o seu filtro..."
+          value={globalFilter ?? ""}
+          onChange={(e) => {
+            setGlobalFilter(e.target.value)
+            table.setGlobalFilter(String(e.target.value))
+          }
           }
           className="max-w-sm"
         />
-        }
         {AddDialogComponent && <AddDialogComponent />}
       </div>
 
