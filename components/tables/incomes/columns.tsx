@@ -13,6 +13,7 @@ import { ArrowUpDown } from 'lucide-react'
 
 // components
 import IncomesActionsDropdownMenu from '@/components/tables/incomes/actions-dropdown-menu'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
 export const columns: ColumnDef<Income>[] = [
@@ -70,7 +71,7 @@ export const columns: ColumnDef<Income>[] = [
         currency: 'BRL',
       }).format(amount)
 
-      return formatted
+      return <Badge>{formatted}</Badge>
     },
   },
   {
