@@ -16,6 +16,7 @@ import { DataTable } from '../data-table'
 import { columns } from './columns'
 
 // components
+import AddIncomeDialog from '@/components/dialogs/incomes/add-income'
 import { toast } from 'sonner'
 
 export default function IncomesTable() {
@@ -29,8 +30,6 @@ export default function IncomesTable() {
       toast.error(error.message);
       console.log(error)
     }
-
-    console.log({ data })
   }, [data, error])
 
   return (
@@ -38,7 +37,7 @@ export default function IncomesTable() {
 
       {isLoading && <Loader2 className='size-10 animate-spin' />}
 
-      {data && <DataTable columns={columns} data={data} columnFilter='source' filterPlaceholder='Filtrar por fonte...' />}
+      {data && <DataTable columns={columns} data={data} AddDialogComponent={AddIncomeDialog} />}
     </div>
   )
 }

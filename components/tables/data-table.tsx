@@ -31,8 +31,6 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   AddDialogComponent?: ElementType
-  columnFilter?: keyof TData
-  filterPlaceholder?: string
 }
 
 export function DataTable<TData, TValue>({

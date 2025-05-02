@@ -12,6 +12,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 
 // components
+import IncomesActionsDropdownMenu from '@/components/tables/incomes/actions-dropdown-menu'
 import { Button } from '@/components/ui/button'
 
 export const columns: ColumnDef<Income>[] = [
@@ -75,11 +76,10 @@ export const columns: ColumnDef<Income>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const expense = row.original
+      const income = row.original
 
       return (
-        // <ActionsDropdownMenu data={expense} />
-        <span>Ações</span>
+        <IncomesActionsDropdownMenu data={income} />
       )
     },
   }
