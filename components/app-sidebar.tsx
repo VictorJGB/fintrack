@@ -21,8 +21,12 @@ import {
 import UserCombobox from "./header/user-combobox"
 
 // icons
-import { Coins } from "lucide-react"
+import Image from "next/image"
 import LucideIconStore from "./lucide-icon-store"
+
+// assets
+import logo from '@/public/images/fintrack_logo_02_no_bg.png'
+import ModeToggle from "./mode-toggle"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -30,14 +34,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="p-4">
+      <SidebarHeader className="p-4 flex-row">
         <Link
           className='flex items-center gap-2 cursor-pointer'
           href={'/'}
         >
-          <Coins className='w-5 h-5' />
+          <div className="size-5">
+            <Image
+              className="w-full object-cover"
+              height={200}
+              width={200}
+              src={logo}
+              alt=""
+            />
+          </div>
           <h1 className="font-bold text-xl text-primary">Fintrack</h1>
         </Link>
+        <ModeToggle btnClassName="ml-auto" />
       </SidebarHeader>
       <Separator />
       <SidebarContent className="px-4 py-6">
