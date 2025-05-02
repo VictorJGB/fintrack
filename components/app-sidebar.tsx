@@ -36,7 +36,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarHeader className="p-4 flex-row">
         <Link
-          className='flex items-center gap-2 cursor-pointer'
+          className='flex gap-2 cursor-pointer'
           href={'/'}
         >
           <div className="size-5">

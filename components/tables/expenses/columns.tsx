@@ -12,6 +12,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 
 // components
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import ActionsDropdownMenu from './actions-dropdown-menu'
 
@@ -98,7 +99,7 @@ export const columns: ColumnDef<Expense>[] = [
         currency: 'BRL',
       }).format(amount)
 
-      return formatted
+      return <Badge variant={'outline'} className='rounded-2xl bg-destructive/10  text-destructive border-destructive text-sm'>{formatted}</Badge>
     },
   },
   {
@@ -121,7 +122,7 @@ export const columns: ColumnDef<Expense>[] = [
         currency: 'BRL',
       }).format(amount)
 
-      return formatted
+      return <Badge variant={'outline'} className='rounded-2xl bg-destructive/10  text-destructive border-destructive text-sm'>{formatted}</Badge>
     },
   },
   {

@@ -71,7 +71,7 @@ export const columns: ColumnDef<Income>[] = [
         currency: 'BRL',
       }).format(amount)
 
-      return <Badge>{formatted}</Badge>
+      return <Badge variant={'outline'} className='rounded-2xl bg-primary/10 text-primary border-primary text-sm'>{formatted}</Badge>
     },
   },
   {
