@@ -11,6 +11,8 @@ const mockTotalIncome = { subtitle: 'Total de ganhos', title: 1827.32, descripti
 
 const mockBalance = { subtitle: 'Saldo total', title: mockTotalIncome.title - mockTotalExpense.title, description: 'Verifique quanto ainda pode gastar esse mês' }
 
+const mockPlanning = { subtitle: 'Total de planejamentos', title: 650, description: 'Verificar meus planejamentos' }
+
 const formatedExpenseValue = new Intl.NumberFormat("pt-BR", {
   style: 'currency',
   currency: 'BRL',
@@ -25,6 +27,11 @@ const formatedBalance = Intl.NumberFormat("pt-BR", {
   style: 'currency',
   currency: 'BRL',
 }).format(mockBalance.title)
+
+const formatedPlanning = Intl.NumberFormat("pt-BR", {
+  style: 'currency',
+  currency: 'BRL',
+}).format(mockPlanning.title)
 
 export default function SectionCards({ }: Props) {
 
@@ -53,6 +60,12 @@ export default function SectionCards({ }: Props) {
         title={formatedBalance}
         description={mockBalance.description}
         subtitle={mockBalance.subtitle}
+      />
+
+      <SectionCard
+        title={formatedPlanning}
+        description={mockPlanning.description}
+        subtitle={mockPlanning.subtitle}
       />
 
     </div>

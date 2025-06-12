@@ -58,7 +58,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <Button
             asChild
             data-active={path === href}
-            className="rounded flex items-center justify-start data-[active=true]:text-foreground text-muted-foreground"
+            className="rounded flex items-center justify-start data-[active=true]:text-foreground text-muted-foreground px-4 py-2"
             key={index}
             variant={'ghost'}
           >

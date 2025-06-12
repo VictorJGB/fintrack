@@ -7,6 +7,11 @@ interface Links {
 
 export const appLinks: Links[] = [
   {
+    label: 'Dashboard',
+    href: '/',
+    icon: 'ChartNoAxesCombined'
+  },
+  {
     label: 'Despesas',
     href: '/expenses',
     icon: "BankNoteArrowDown"
