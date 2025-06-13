@@ -32,7 +32,7 @@ const formatedPlanning = Intl.NumberFormat("pt-BR", {
 export default function SectionCards({ }: Props) {
 
   return (
-    <div className="@xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 w-full">
+    <div className="@xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 w-full">
       {/* expense card */}
       <ExpensesCard />
 
