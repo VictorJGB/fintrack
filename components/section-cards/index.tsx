@@ -1,4 +1,9 @@
-import SectionCard from "./card"
+
+// components
+import BalanceCard from "./balance-card"
+import { SectionCard } from "./card"
+import ExpensesCard from "./expenses-card"
+import IncomesCard from "./incomes.card"
 
 type Props = {}
 
@@ -13,15 +18,6 @@ const mockBalance = { subtitle: 'Saldo total', title: mockTotalIncome.title - mo
 
 const mockPlanning = { subtitle: 'Total de planejamentos', title: 650, description: 'Verificar meus planejamentos' }
 
-const formatedExpenseValue = new Intl.NumberFormat("pt-BR", {
-  style: 'currency',
-  currency: 'BRL',
-}).format(mockTotalExpense.title)
-
-const formatedIncomeValue = new Intl.NumberFormat("pt-BR", {
-  style: 'currency',
-  currency: 'BRL',
-}).format(mockTotalIncome.title)
 
 const formatedBalance = Intl.NumberFormat("pt-BR", {
   style: 'currency',
@@ -38,29 +34,13 @@ export default function SectionCards({ }: Props) {
   return (
     <div className="@xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 w-full">
       {/* expense card */}
-      <SectionCard
-        title={formatedExpenseValue}
-        description={mockTotalExpense.description}
-        subtitle={mockTotalExpense.subtitle}
-        path="/expenses"
-        variant={'destructive'}
-      />
+      <ExpensesCard />
 
       {/* income card */}
-      <SectionCard
-        title={formatedIncomeValue}
-        description={mockTotalIncome.description}
-        subtitle={mockTotalIncome.subtitle}
-        path="/incomes"
-        variant="success"
-      />
+      <IncomesCard />
 
       {/* balance card*/}
-      <SectionCard
-        title={formatedBalance}
-        description={mockBalance.description}
-        subtitle={mockBalance.subtitle}
-      />
+      <BalanceCard />
 
       <SectionCard
         title={formatedPlanning}
