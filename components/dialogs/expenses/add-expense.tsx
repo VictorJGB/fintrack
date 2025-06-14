@@ -49,6 +49,7 @@ export default function AddExpenseDialog() {
       toast.success(message)
       toggleModalOpen()
       queryClient.invalidateQueries({ queryKey: ['get-expenses'] })
+      resetForm()
     },
     onError: (err) => {
       console.error(err)
@@ -77,7 +78,11 @@ export default function AddExpenseDialog() {
     setIsOpen(!isOpen)
   }
 
+  const resetForm = () => form.reset()
+
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
+
     const resBody = {
       ...values,
       date: Date.now()
@@ -96,7 +101,7 @@ export default function AddExpenseDialog() {
           <PlusCircle className="size-4 ml-auto" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => resetForm()}>
         <DialogHeader>
           <DialogTitle>Adicionar despesa</DialogTitle>
           <Separator />

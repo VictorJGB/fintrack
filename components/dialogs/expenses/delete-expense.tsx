@@ -18,9 +18,10 @@ import { Loader2, Trash } from "lucide-react"
 
 interface Props {
   expenseID: string
+  handleModalClose?: () => void
 }
 
-export default function DeleteExpenseDialog({ expenseID }: Props) {
+export default function DeleteExpenseDialog({ expenseID, handleModalClose }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { mutate, isPending } = useMutation({
@@ -48,7 +49,7 @@ export default function DeleteExpenseDialog({ expenseID }: Props) {
           <Trash className="size-4 ml-auto" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]" onInteractOutside={handleModalClose}>
         <DialogHeader>
           <DialogTitle>Deletar despesa</DialogTitle>
           <Separator />
