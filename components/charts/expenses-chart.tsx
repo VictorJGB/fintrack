@@ -1,64 +1,69 @@
-"use client"
-// libs
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-// actions
-import getExpenses from "@/actions/expenses/get-expenses"
-import { useQuery } from "@tanstack/react-query"
-// components
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { Skeleton } from "../ui/skeleton"
+"use client";
 
+import * as React from "react";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
+// actions
+import { useQuery } from "@tanstack/react-query";
+import getExpenses from "@/actions/expenses/get-expenses";
+import { Skeleton } from "../ui/skeleton";
+import { formatToBRL } from "@/utils/formatters";
 
 const chartConfig = {
   expenses: {
-    label: "Valor",
+    label: "Despesa",
     color: "var(--destructive)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export default function ExpensesChart() {
   const { data, isLoading, error } = useQuery({
+    queryFn: getExpenses,
     queryKey: ["expenses"],
-    queryFn: getExpenses
-  })
+  });
 
-  if (isLoading) return <Skeleton className="rounded-2xl w-full h-[300px]" />
+  return (
+    <Card className="w-full rounded-2xl">
+      <CardHeader>
+        <CardTitle>Total de despesas</CardTitle>
+        <CardDescription>Despesas dos últimos 3 meses</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {isLoading && <Skeleton className="h-[250px] w-full rounded-2xl" />}
 
-  if (error) {
-    return (
-      <Card>
-        <CardContent>
-          <p className="text-destructive font-semibold">{JSON.stringify(error, null, 2)}</p>
-        </CardContent>
-      </Card>
-    )
-  }
+        {error && (
+          <p className="text-destructive font-semibold">
+            {JSON.stringify(error, null, 2)}
+          </p>
+        )}
 
-  if (data) {
-    return (
-      <Card className="rounded-2xl w-full">
-        <CardHeader>
-          <CardTitle>Total de despesas</CardTitle>
-          <CardDescription>Despesas do mês</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="aspect-auto h-[300px] w-full">
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="fillExpenses" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--color-expenses)"
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--color-expenses)"
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              </defs>
+        {data && (
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[250px] w-full"
+          >
+            <BarChart
+              accessibilityLayer
+              data={data}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
@@ -67,38 +72,47 @@ export default function ExpensesChart() {
                 tickMargin={8}
                 minTickGap={32}
                 tickFormatter={(value) => {
-                  const date = new Date(value)
+                  const date = new Date(value);
                   return date.toLocaleDateString("pt-BR", {
                     month: "short",
                     day: "numeric",
-                  })
+                  });
                 }}
               />
               <ChartTooltip
-                cursor={false}
                 content={
                   <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="description"
+                    formatter={(value) => {
+                      return (
+                        <div className="flex items-center justify-center gap-2">
+                          <strong className="text-destructive">
+                            Despesa:{" "}
+                          </strong>
+                          <span>{formatToBRL(+value)}</span>
+                        </div>
+                      );
+                    }}
                     labelFormatter={(value) => {
                       return new Date(value).toLocaleDateString("pt-BR", {
                         month: "short",
                         day: "numeric",
-                      })
+                        year: "numeric",
+                      });
                     }}
-                    indicator="dot"
                   />
                 }
               />
-              <Area
+              <Bar
                 dataKey="amount_per_installment"
-                type="natural"
-                fill="url(#fillExpenses)"
-                stroke="var(--color-expenses)"
-                stackId="a"
+                fill="var(--color-expenses)"
+                radius={8}
               />
-            </AreaChart>
+            </BarChart>
           </ChartContainer>
-        </CardContent>
-      </Card >
-    )
-  }
+        )}
+      </CardContent>
+    </Card>
+  );
 }
