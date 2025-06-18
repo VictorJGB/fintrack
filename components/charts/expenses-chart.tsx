@@ -1,6 +1,6 @@
 "use client"
 // libs
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 // actions
 import getExpenses from "@/actions/expenses/get-expenses"
 import { useQuery } from "@tanstack/react-query"
@@ -11,8 +11,11 @@ import { Skeleton } from "../ui/skeleton"
 
 
 const chartConfig = {
+  amount: {
+    label: "Despesa"
+  },
   expenses: {
-    label: "Valor",
+    label: "Despesas",
     color: "var(--destructive)",
   },
 } satisfies ChartConfig
@@ -22,6 +25,7 @@ export default function ExpensesChart() {
     queryKey: ["expenses"],
     queryFn: getExpenses
   })
+
 
   if (isLoading) return <Skeleton className="rounded-2xl w-full h-[300px]" />
 
@@ -44,28 +48,13 @@ export default function ExpensesChart() {
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig} className="aspect-auto h-[300px] w-full">
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="fillExpenses" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--color-expenses)"
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--color-expenses)"
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              </defs>
+            <BarChart accessibilityLayer data={data}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
-                minTickGap={32}
+                tickMargin={10}
                 tickFormatter={(value) => {
                   const date = new Date(value)
                   return date.toLocaleDateString("pt-BR", {
@@ -74,28 +63,21 @@ export default function ExpensesChart() {
                   })
                 }}
               />
-              <ChartTooltip
-                cursor={false}
-                content={
-                  <ChartTooltipContent
-                    labelFormatter={(value) => {
-                      return new Date(value).toLocaleDateString("pt-BR", {
-                        month: "short",
-                        day: "numeric",
-                      })
-                    }}
-                    indicator="dot"
-                  />
-                }
-              />
-              <Area
-                dataKey="amount_per_installment"
-                type="natural"
-                fill="url(#fillExpenses)"
-                stroke="var(--color-expenses)"
-                stackId="a"
-              />
-            </AreaChart>
+              <ChartTooltip content={
+                <ChartTooltipContent
+                  className="w-[150px]"
+                  nameKey="amount"
+                  labelFormatter={(value) => {
+                    return new Date(value).toLocaleDateString("pt-BR", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  }}
+                />
+              } />
+              <Bar dataKey="expenses" fill="var(--color-expenses" radius={8} />
+            </BarChart>
           </ChartContainer>
         </CardContent>
       </Card >

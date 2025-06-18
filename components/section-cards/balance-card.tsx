@@ -24,12 +24,10 @@ export default function BalanceCard() {
   if (expenses && incomes) {
     const totalExpenses = expenses.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0)
     const totalIncomes = incomes.reduce((acc, income) => { return acc + income.amount }, 0)
-    const balance = (totalIncomes + 1518 ) - totalExpenses
+    const balance = (totalIncomes + 1518) - totalExpenses
     const formatedBalance = formatToBRL(balance)
 
     const isBalanceNegative = balance < 0 ? true : false
-
-    console.log(isBalanceNegative)
 
     return (
       <SectionCard
