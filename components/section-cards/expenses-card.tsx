@@ -17,7 +17,7 @@ export default function ExpensesCard() {
   if (isLoading) return <SectionCardSkeleton />
 
   if (data) {
-    const total = formatToBRL(data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0))
+    const total = formatToBRL(data.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0))
 
     return (
       <SectionCard

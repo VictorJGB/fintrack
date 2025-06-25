@@ -8,15 +8,13 @@ import getIncomes from '@/actions/incomes/get-incomes'
 // libs
 import { useQuery } from '@tanstack/react-query'
 
-// icons
-import { Loader2 } from 'lucide-react'
-
 // data table
+import AddIncomeDialog from '@/components/dialogs/incomes/add-income'
 import { DataTable } from '../data-table'
+import TableSkeleton from '../table-skeleton'
 import { columns } from './columns'
 
 // components
-import AddIncomeDialog from '@/components/dialogs/incomes/add-income'
 import { toast } from 'sonner'
 
 export default function IncomesTable() {
@@ -35,9 +33,9 @@ export default function IncomesTable() {
   return (
     <div className="container mx-auto py-10">
 
-      {isLoading && <Loader2 className='size-10 animate-spin' />}
+      {isLoading && <TableSkeleton rowsNumber={6} />}
 
-      {data && <DataTable columns={columns} data={data} AddDialogComponent={AddIncomeDialog} />}
+      {data && <DataTable columns={columns} data={data.data} AddDialogComponent={AddIncomeDialog} />}
     </div>
   )
 }

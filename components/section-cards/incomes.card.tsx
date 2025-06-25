@@ -17,7 +17,7 @@ export default function IncomesCard() {
   if (isLoading) return <SectionCardSkeleton />
 
   if (data) {
-    const total = formatToBRL(data.reduce((acc, income) => { return acc + income.amount }, 0))
+    const total = formatToBRL(data.data.reduce((acc, income) => { return acc + income.amount }, 0))
 
     return (
       <SectionCard

@@ -60,7 +60,7 @@ export default function ExpensesChart() {
           >
             <BarChart
               accessibilityLayer
-              data={data}
+              data={data.data}
               margin={{
                 left: 12,
                 right: 12,

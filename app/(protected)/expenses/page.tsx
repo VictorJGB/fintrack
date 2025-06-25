@@ -1,4 +1,5 @@
 // components
+
 import ExpensesTable from "@/components/tables/expenses";
 
 export default function ExpensesPage() {

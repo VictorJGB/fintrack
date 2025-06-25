@@ -7,15 +7,13 @@ import getExpenses from '@/actions/expenses/get-expenses'
 // libs
 import { useQuery } from '@tanstack/react-query'
 
-// icons
-import { Loader2 } from 'lucide-react'
-
 // data table
+import AddExpenseDialog from '@/components/dialogs/expenses/add-expense'
 import { DataTable } from '../data-table'
+import TableSkeleton from '../table-skeleton'
 import { columns } from './columns'
 
 // components
-import AddExpenseDialog from '@/components/dialogs/expenses/add-expense'
 import { toast } from 'sonner'
 
 export default function ExpensesTable() {
@@ -34,9 +32,16 @@ export default function ExpensesTable() {
   return (
     <div className="container mx-auto py-10">
 
-      {isLoading && <Loader2 className='size-10 animate-spin' />}
+      {isLoading && <TableSkeleton rowsNumber={6} />}
 
-      {data && <DataTable columns={columns} data={data} columnFilter='company' AddDialogComponent={AddExpenseDialog} />}
+      {data && (
+        <DataTable
+          columns={columns}
+          data={data.data}
+          AddDialogComponent={AddExpenseDialog}
+          page={data.page}
+          pageCount={data.pageCount}
+        />)}
     </div>
   )
 }
