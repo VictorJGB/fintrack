@@ -1,34 +1,40 @@
-'use client'
+"use client";
 
 // actions
-import getIncomes from "@/actions/incomes/get-incomes"
-import { useQuery } from "@tanstack/react-query"
+import getIncomes from "@/actions/incomes/get-incomes";
+import { useQuery } from "@tanstack/react-query";
 // components
-import { SectionCard, SectionCardSkeleton } from "./card"
+import { SectionCard, SectionCardSkeleton } from "./card";
 // utils
-import { formatToBRL } from "@/utils/formatters"
+import { formatToBRL } from "@/utils/formatters";
 
 export default function IncomesCard() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["incomes"],
-    queryFn: getIncomes
-  })
+    queryFn: getIncomes,
+  });
 
-  if (isLoading) return <SectionCardSkeleton />
+  if (isLoading) return <SectionCardSkeleton />;
 
   if (data) {
-    const total = formatToBRL(data.data.reduce((acc, income) => { return acc + income.amount }, 0))
+    const total = formatToBRL(
+      data.data.reduce((acc, income) => {
+        return acc + income.amount;
+      }, 0)
+    );
+    const path = "/incomes?page=1&items_per_page=1";
 
     return (
       <SectionCard
         title={total}
         subtitle="Total de recebimentos"
         description="Verificar meus recebimentos"
-        path="/incomes"
-        variant={'success'}
+        path={path}
+        variant={"success"}
       />
-    )
+    );
   }
 
-  if (error) return <p className="text-destructive">{JSON.stringify(error, null, 2)}</p>
+  if (error)
+    return <p className="text-destructive">{JSON.stringify(error, null, 2)}</p>;
 }

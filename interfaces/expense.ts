@@ -13,6 +13,8 @@ export default interface Expense {
 export interface APIResponse {
     page: number
     pageCount: number
+    firstPage: number
+    lastPage: number
     itemsPerPage: number
     data: Expense[] 
 }

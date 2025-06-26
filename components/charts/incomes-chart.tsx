@@ -31,9 +31,12 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function IncomesChart() {
+  const page = "1";
+  const itemsPerPage = "100";
+
   const { data, isLoading, error } = useQuery({
-    queryFn: getIncomes,
-    queryKey: ["incomes"],
+    queryFn: () => getIncomes(page, itemsPerPage),
+    queryKey: ["chart-incomes"],
   });
 
   return (
@@ -103,11 +106,7 @@ export default function IncomesChart() {
                   />
                 }
               />
-              <Bar
-                dataKey="amount"
-                fill="var(--color-incomes)"
-                radius={8}
-              />
+              <Bar dataKey="amount" fill="var(--color-incomes)" radius={8} />
             </BarChart>
           </ChartContainer>
         )}

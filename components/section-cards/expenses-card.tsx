@@ -18,13 +18,14 @@ export default function ExpensesCard() {
 
   if (data) {
     const total = formatToBRL(data.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0))
+    const path = '/expenses?page=1&items_per_page=1'
 
     return (
       <SectionCard
         title={total}
         subtitle="Total de despesas"
         description="Verificar minhas despesas"
-        path="/expenses"
+        path={path}
         variant={'destructive'}
       />
     )

@@ -24,7 +24,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   amount: {
-    label: "Despesa"
+    label: "Despesa",
   },
   expenses: {
     label: "Despesa",
@@ -33,9 +33,12 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function ExpensesChart() {
+  const page = "1";
+  const itemsPerPage = "100";
+
   const { data, isLoading, error } = useQuery({
-    queryFn: getExpenses,
-    queryKey: ["expenses"],
+    queryFn: () => getExpenses(page, itemsPerPage),
+    queryKey: ["chart-expenses"],
   });
 
   return (

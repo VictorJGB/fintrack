@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
@@ -17,9 +18,13 @@ import { columns } from './columns'
 import { toast } from 'sonner'
 
 export default function ExpensesTable() {
+  const searchParams = useSearchParams()
+  const page = searchParams.get('page') ?? '1'
+  const itemsPerPage = searchParams.get('items_per_page') ?? '10'
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['get-expenses'],
-    queryFn: getExpenses,
+    queryKey: ['get-expenses', page],
+    queryFn: () => getExpenses(page, itemsPerPage),
   })
 
   useEffect(() => {
@@ -41,6 +46,9 @@ export default function ExpensesTable() {
           AddDialogComponent={AddExpenseDialog}
           page={data.page}
           pageCount={data.pageCount}
+          firstPage={data.firstPage}
+          lastPage={data.lastPage}
+
         />)}
     </div>
   )

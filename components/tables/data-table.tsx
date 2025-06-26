@@ -31,17 +31,20 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   AddDialogComponent?: ElementType
-  pageCount?: number
-  page?: number
-  onNextPage?: number
+  pageCount: number
+  page: number
+  firstPage: number
+  lastPage: number
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   AddDialogComponent,
-  pageCount = 1,
-  page = 1
+  pageCount,
+  page,
+  firstPage,
+  lastPage,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -62,14 +65,6 @@ export function DataTable<TData, TValue>({
       globalFilter
     }
   })
-
-  function canGetPreviousPage() {
-    return (page - 1) <= 0 ? false : true
-  }
-
-  function canGetNextPage() {
-    return (page + 1) >= pageCount ? false : true
-  }
 
   return (
     <div>
@@ -135,12 +130,10 @@ export function DataTable<TData, TValue>({
 
       {/* pagination */}
       <TablePagination
-        firstPage={1}
-        lastPage={1}
-        nextPage={1}
-        page={1}
-        pageCount={1}
-        prevPage={1}
+        firstPage={firstPage}
+        lastPage={lastPage}
+        page={page}
+        pageCount={pageCount}
       />
     </div>
   )
