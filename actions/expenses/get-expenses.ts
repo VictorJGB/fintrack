@@ -4,16 +4,9 @@
 import { apiFetcher } from "@/utils/api";
 
 // types
-import type Expense from "@/interfaces/expense";
+import type { APIResponse } from "@/interfaces/expense";
 
-interface Response {
-  page: number
-  pageCount: number
-  itemsPerPage: number
-  data: Expense[]
-}
-
-export default async function getExpenses(): Promise<Response> {
+export default async function getExpenses(): Promise<APIResponse> {
   const response = await apiFetcher('expenses', {
     method: 'GET',
   })

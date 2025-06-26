@@ -9,3 +9,10 @@ export default interface Expense {
   amount_per_installment: number; //valor por prestacao
   total_amount: number; //valor total
 }
+
+export interface APIResponse {
+    page: number
+    pageCount: number
+    itemsPerPage: number
+    data: Expense[] 
+}

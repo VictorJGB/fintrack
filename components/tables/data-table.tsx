@@ -24,8 +24,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from "../ui/button"
 import { Input } from "../ui/input"
+import TablePagination from "./table-pagination"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -134,24 +134,14 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* pagination */}
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Anterior
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Proximo
-        </Button>
-      </div>
+      <TablePagination
+        firstPage={1}
+        lastPage={1}
+        nextPage={1}
+        page={1}
+        pageCount={1}
+        prevPage={1}
+      />
     </div>
   )
 }

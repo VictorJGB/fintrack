@@ -5,3 +5,10 @@ export default interface Income {
   amount: number
   createdAt?: Date
 }
+
+export interface APIResponse {
+    page: number
+    pageCount: number
+    itemsPerPage: number
+    data: Income[] 
+}

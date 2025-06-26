@@ -4,16 +4,9 @@
 import { apiFetcher } from "@/utils/api";
 
 // types
-import type Income from "@/interfaces/income";
+import type { APIResponse } from "@/interfaces/income";
 
-interface Response {
-  page: number
-  pageCount: number
-  itemsPerPage: number
-  data: Income[]
-}
-
-export default async function getIncomes(): Promise<Response> {
+export default async function getIncomes(): Promise<APIResponse> {
   const response = await apiFetcher('incomes', {
     method: 'GET',
   })
