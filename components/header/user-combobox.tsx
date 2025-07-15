@@ -45,6 +45,8 @@ export default function UserCombobox() {
     salary: 1518
   }
 
+  console.log({ user: data })
+
   async function logout() {
     startTransition(async () => {
       try {
@@ -83,7 +85,6 @@ export default function UserCombobox() {
             <UserInfoDialog
 
               userID={data?.userID ?? ''}
-              data={user}
               triggerClassname="w-full"
               setIsParentOpen={setOpen}
             />

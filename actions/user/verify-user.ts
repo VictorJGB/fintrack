@@ -9,10 +9,6 @@ interface UserResponse {
 export default async function verifyUser(): Promise<UserResponse> {
   const response = await apiFetcher('users/auth/verify-user', {
     method: 'GET',
-    cache: "force-cache",
-    next: {
-      tags: ['logout']
-    }
   })
 
   const data = await response.json()
