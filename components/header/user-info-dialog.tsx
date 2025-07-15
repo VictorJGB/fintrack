@@ -1,8 +1,7 @@
-import Image from 'next/image'
-import { useEffect, type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 
 // icons
-import { Info, Loader2, Pencil } from 'lucide-react'
+import { CheckCircle2, Info, Loader2, Pencil } from 'lucide-react'
 
 // libs
 import { useQuery } from '@tanstack/react-query'
@@ -18,13 +17,17 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
+import { toast } from 'sonner'
 import { Separator } from '../ui/separator'
 
 // actions
 import getUser from '@/actions/user/get-user'
+// inter
+import { Label } from '@/components/ui/label'
 import type User from '@/interfaces/user'
-import { toast } from 'sonner'
+import { formatToBRL } from '@/utils/formatters'
+import { Input } from '../ui/input'
+// utils
 
 type Props = {
   userID: string
@@ -34,6 +37,8 @@ type Props = {
 }
 
 export default function UserInfoDialog({ userID, data, triggerClassname, setIsParentOpen }: Props) {
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+
   const { data: user, error, isLoading } = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(userID),
@@ -62,36 +67,49 @@ export default function UserInfoDialog({ userID, data, triggerClassname, setIsPa
         {/* Loading data */}
         {isLoading && <Loader2 className='size-10 mx-auto animate-spin' />}
 
-        {user && <div className="grid gap-5 py-4">
-          {/* image */}
-          <div className='mx-auto size-40 relative'>
-            <Image
-              alt=''
-              src={data.avatar}
-              className='max-w-full max-h-full object-cover rounded-full'
-              fill
-            />
-            <Button className='absolute bottom-0 right-[10%] rounded-full' size={'icon'}>
-              <Pencil className='h-4 w-4' />
-            </Button>
-          </div>
-
-          {/* form */}
-          <div className='grid w-full gap-4'>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right text-primary font-bold">
-                Nome
-              </Label>
-              <span className='col-span-3'>{user.name}</span>
+        {user &&
+          <div className="grid gap-5 py-4">
+            {/* form */}
+            <div className='grid w-full gap-4'>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right text-primary font-bold">
+                  Nome
+                </Label>
+                <Input
+                  disabled={!isEditing}
+                  className='col-span-3'
+                  placeholder={user.name}
+                  value={user.name}
+                  onChange={() => { }}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right text-primary font-bold">
+                  Email
+                </Label>
+                <Input
+                  disabled={!isEditing}
+                  className='col-span-3'
+                  placeholder={user.email}
+                  value={user.email}
+                  onChange={() => { }}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right text-primary font-bold">
+                  Salário
+                </Label>
+                <Input
+                  disabled={!isEditing}
+                  className='col-span-3'
+                  placeholder={formatToBRL(user.salary)}
+                  value={formatToBRL(user.salary)}
+                  onChange={() => { }}
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right text-primary font-bold">
-                Email
-              </Label>
-              <span>{user.email}</span>
-            </div>
           </div>
-        </div>}
+        }
         <DialogFooter>
           <DialogClose
             asChild
@@ -99,6 +117,14 @@ export default function UserInfoDialog({ userID, data, triggerClassname, setIsPa
           >
             <Button variant={'secondary'}>Fechar</Button>
           </DialogClose>
+          {!isEditing && <Button onClick={() => setIsEditing(true)}>
+            Editar
+            <Pencil className='h-4 w-4 ml-2' />
+          </Button>}
+          {isEditing && <Button onClick={() => setIsEditing(false)}>
+            Salvar
+            <CheckCircle2 className='h-4 w-4 ml-2' />
+          </Button>}
         </DialogFooter>
       </DialogContent>
     </Dialog >

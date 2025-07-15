@@ -26,7 +26,6 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import UserInfoDialog from "./user-info-dialog"
 
 export default function UserCombobox() {
@@ -42,7 +41,6 @@ export default function UserCombobox() {
     _id: v4(), //UUID
     name: "Victor Jerrysson",
     email: "victorgb.dev@gmail.com",
-    avatar: "https://github.com/shadcn.png",
     role: 'admin',
     salary: 1518
   }
@@ -70,10 +68,6 @@ export default function UserCombobox() {
           aria-expanded={open}
           className="py-5 bg-muted/50 rounded hover:bg-muted cursor-pointer"
         >
-          <Avatar className="h-8 w-8 rounded-lg">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-          </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-medium">{user.name}</span>
             <span className="truncate text-xs text-muted-foreground">

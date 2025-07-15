@@ -29,7 +29,7 @@ import logo from "@/public/images/fintrack_logo_02_no_bg.png";
 import ModeToggle from "./mode-toggle";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const path = usePathname();
+  const pathname = usePathname();
 
   return (
     <Sidebar {...props}>
@@ -58,7 +58,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           return (
             <Button
               asChild
-              data-active={path === href}
+              data-active={pathname === href}
               className="rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
               key={index}
               variant={"ghost"}
