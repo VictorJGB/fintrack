@@ -1,17 +1,13 @@
 "use client"
-
-import { v4 } from 'uuid'
-
+import { useState, useTransition } from 'react'
+// libs
+import { useQuery } from '@tanstack/react-query'
 // navigation
 import { useRouter } from "next/navigation"
-
-// types
-import type User from "@/interfaces/user"
-
 // icons
 import { Loader2, LogOut, MoreVerticalIcon } from "lucide-react"
-
 // components
+import getUser from '@/actions/user/get-user'
 import Logout from '@/actions/user/logout'
 import verifyUser from '@/actions/user/verify-user'
 import { Button } from "@/components/ui/button"
@@ -23,29 +19,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useQuery } from '@tanstack/react-query'
-import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
-import UserInfoDialog from "./user-info-dialog"
+import UserInfoDialog from "../user-info-dialog"
+
 
 export default function UserCombobox() {
   const [open, setOpen] = useState(false)
-  const { data } = useQuery({
-    queryFn: verifyUser,
+
+  // User Authentication
+  const { data: authData, isLoading: IsAuthenticating, error: authError } = useQuery({
     queryKey: ['verify-user'],
+    queryFn: verifyUser
   })
+
+  // Retrieving user data
+  const { data: user, error, isLoading } = useQuery({
+    queryKey: ['user', authData?.userID],
+    queryFn: () => getUser(authData?.userID || ''),
+    enabled: !!authData?.userID
+  })
+
   const { replace } = useRouter()
   const [isPending, startTransition] = useTransition()
-
-  const user: User = {
-    _id: v4(), //UUID
-    name: "Victor Jerrysson",
-    email: "victorgb.dev@gmail.com",
-    role: 'admin',
-    salary: 1518
-  }
-
-  console.log({ user: data })
 
   async function logout() {
     startTransition(async () => {
@@ -61,7 +56,11 @@ export default function UserCombobox() {
     })
   }
 
-  return (
+  if (isLoading || IsAuthenticating) return <p className='text-muted w-full px-2 text-center'>Carregando...</p>
+
+  if (error || authError) return <p className='text-destructive font-semibold w-full text-center px-2'>Erro ao buscar usuário</p>
+
+  if (user) return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
@@ -83,8 +82,7 @@ export default function UserCombobox() {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <UserInfoDialog
-
-              userID={data?.userID ?? ''}
+              user={user}
               triggerClassname="w-full"
               setIsParentOpen={setOpen}
             />
