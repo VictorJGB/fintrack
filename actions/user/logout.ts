@@ -1,3 +1,5 @@
+'use server'
+
 import { apiFetcher } from "@/utils/api";
 
 export default async function Logout() {

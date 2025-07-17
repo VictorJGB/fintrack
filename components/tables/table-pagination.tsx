@@ -1,9 +1,8 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "../ui/button";
-import Link from "next/link";
 
 interface Props {
   firstPage: number;
@@ -20,6 +19,7 @@ export default function TablePagination({
 }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { push } = useRouter();
   const canGoNextPage = page + 1 <= pageCount;
   const canGoPrevPage = page - 1 >= firstPage;
 
@@ -64,14 +64,24 @@ export default function TablePagination({
 
   return (
     <div className="flex items-center justify-between space-x-2 py-4">
-      <Button variant="outline" size="sm" disabled={!canGoPrevPage} asChild>
-        <Link href={getPrevPageLink()}>Anterior</Link>
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={!canGoPrevPage}
+        onClick={() => push(getPrevPageLink())}
+      >
+        Anterior
       </Button>
       <span>
         página {page} de {pageCount}
       </span>
-      <Button variant="outline" size="sm" disabled={!canGoNextPage} asChild>
-        <Link href={getNextPageLink()}>Proximo</Link>
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={!canGoNextPage}
+        onClick={() => push(getNextPageLink())}
+      >
+        Próximo
       </Button>
     </div>
   );
