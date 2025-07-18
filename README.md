@@ -28,7 +28,14 @@
 
 ## About The Project <code>UNFINISHED</code>
 
-project description
+An financial manager for expenses, incomes, plannings and many more
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### TO-DO
+
+[] Add the import from csv function
+[] Add pay expense function from the expenses table
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -1,6 +1,6 @@
 'use client'
-import { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
@@ -15,6 +15,7 @@ import TableSkeleton from '../table-skeleton'
 import { columns } from './columns'
 
 // components
+import ImportExpenseDialog from '@/components/dialogs/expenses/import-expense'
 import { toast } from 'sonner'
 
 export default function ExpensesTable() {
@@ -44,6 +45,7 @@ export default function ExpensesTable() {
           columns={columns}
           data={data.data}
           AddDialogComponent={AddExpenseDialog}
+          ImportDialogComponent={ImportExpenseDialog}
           page={data.page}
           pageCount={data.pageCount}
           firstPage={data.firstPage}

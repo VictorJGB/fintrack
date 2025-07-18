@@ -30,7 +30,8 @@ import TablePagination from "./table-pagination"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  AddDialogComponent?: ElementType
+  AddDialogComponent?: ElementType,
+  ImportDialogComponent?: ElementType,
   pageCount: number
   page: number
   firstPage: number
@@ -41,6 +42,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   AddDialogComponent,
+  ImportDialogComponent,
   pageCount,
   page,
   firstPage,
@@ -80,7 +82,10 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        {AddDialogComponent && <AddDialogComponent />}
+        <div className="ml-auto flex items-center space-x-2">
+          {ImportDialogComponent && <ImportDialogComponent />}
+          {AddDialogComponent && <AddDialogComponent />}
+        </div>
       </div>
 
       <div className="rounded-md border">
