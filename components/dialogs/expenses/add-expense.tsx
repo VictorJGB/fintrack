@@ -96,7 +96,7 @@ export default function AddExpenseDialog() {
       onOpenChange={setIsOpen}
     >
       <DialogTrigger asChild>
-        <Button className='ml-auto'>
+        <Button>
           Adicionar
           <PlusCircle className="size-4 ml-auto" />
         </Button>

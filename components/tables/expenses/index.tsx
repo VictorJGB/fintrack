@@ -15,7 +15,7 @@ import TableSkeleton from '../table-skeleton'
 import { columns } from './columns'
 
 // components
-import ImportExpenseDialog from '@/components/dialogs/expenses/import-expense'
+import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
 import { toast } from 'sonner'
 
 export default function ExpensesTable() {
@@ -38,20 +38,27 @@ export default function ExpensesTable() {
   return (
     <div className="container mx-auto py-10">
 
-      {isLoading && <TableSkeleton rowsNumber={6} />}
+      {isLoading && <TableSkeleton rowsNumber={10} />}
 
       {data && (
         <DataTable
           columns={columns}
           data={data.data}
           AddDialogComponent={AddExpenseDialog}
-          ImportDialogComponent={ImportExpenseDialog}
+          ImportDialogComponent={ImportExpensesDialog}
           page={data.page}
           pageCount={data.pageCount}
           firstPage={data.firstPage}
           lastPage={data.lastPage}
 
         />)}
+
+      {!data && !isLoading && (
+        <div className='size-full flex flex-col items-center justify-center gap-4'>
+          <p className='text-muted-foreground font-semibold'>Nenhuma despesa encontrada!</p>
+          <AddExpenseDialog />
+        </div>
+      )}
     </div>
   )
 }

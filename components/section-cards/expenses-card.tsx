@@ -10,8 +10,8 @@ import { formatToBRL } from "@/utils/formatters"
 
 export default function ExpensesCard() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["expenses"],
-    queryFn: getExpenses
+    queryKey: ["card-expenses"],
+    queryFn: () => getExpenses()
   })
 
   if (isLoading) return <SectionCardSkeleton />

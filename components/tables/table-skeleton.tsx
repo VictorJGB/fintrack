@@ -8,10 +8,13 @@ export default function TableSkeleton({ rowsNumber }: Props) {
   return (
     <div className="w-full flex flex-col items-center justify-center gap-4">
       {/* filter skeleton */}
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full flex items-center juestify-center">
         <Skeleton className="w-80 h-8" />
 
-        <Skeleton className="w-28 h-8" />
+        <div className="flex items-center gap-2 ml-auto">
+          <Skeleton className="w-28 h-8" />
+          <Skeleton className="w-28 h-8" />
+        </div>
       </div>
 
       {/* table skeleton */}

@@ -10,9 +10,10 @@ export default async function getExpenses(
   page?: string,
   itemsPerPage?: string
 ): Promise<APIResponse> {
+
   const params = new URLSearchParams({
     page: page ?? "1",
-    items_per_page: itemsPerPage ?? "10",
+    items_per_page: itemsPerPage ?? "",
   }).toString();
 
   const response = await apiFetcher(`expenses?${params}`, {

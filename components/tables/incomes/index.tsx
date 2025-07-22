@@ -16,6 +16,7 @@ import TableSkeleton from "../table-skeleton";
 import { columns } from "./columns";
 
 // components
+import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import { toast } from "sonner";
 
 export default function IncomesTable() {
@@ -37,18 +38,26 @@ export default function IncomesTable() {
 
   return (
     <div className="container mx-auto py-10">
-      {isLoading && <TableSkeleton rowsNumber={6} />}
+      {isLoading && <TableSkeleton rowsNumber={10} />}
 
       {data && (
         <DataTable
           columns={columns}
           data={data.data}
           AddDialogComponent={AddIncomeDialog}
+          ImportDialogComponent={ImportIncomesDialog}
           firstPage={data.firstPage}
           lastPage={data.lastPage}
           page={data.page}
           pageCount={data.pageCount}
         />
+      )}
+
+      {!data && !isLoading && (
+        <div className='size-full flex flex-col items-center justify-center gap-4'>
+          <p className='text-muted-foreground font-semibold'>Nenhum recebimento encontrado!</p>
+          <AddIncomeDialog />
+        </div>
       )}
     </div>
   );

@@ -20,6 +20,7 @@ import {
 import getExpenses from "@/actions/expenses/get-expenses";
 import { formatToBRL } from "@/utils/formatters";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
@@ -33,13 +34,23 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function ExpensesChart() {
-  const page = "1";
-  const itemsPerPage = "100";
+  const page = "1";;
 
   const { data, isLoading, error } = useQuery({
-    queryFn: () => getExpenses(page, itemsPerPage),
+    queryFn: () => getExpenses(page),
     queryKey: ["chart-expenses"],
   });
+
+  useEffect(() => {
+    if (data) {
+      console.log("Dados de despesas recebidos:", data.data.map((expense) => expense.amount_per_installment));
+      const total = data.data.reduce((acc, expense) => {
+        return acc + expense.amount_per_installment;
+      }, 0);
+
+      console.log(`Total de despesas: ${formatToBRL(total)}`);
+    }
+  })
 
   return (
     <Card className="w-full rounded-2xl">
