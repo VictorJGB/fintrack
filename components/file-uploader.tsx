@@ -16,18 +16,15 @@ import * as React from "react";
 import { toast } from "sonner";
 
 interface Props {
-  formValue?: File[];
-  onFormValueChange?: (files: File[]) => void;
+  formValue: File[];
+  onFormValueChange: (files: File[]) => void;
   maxFiles: number
+  maxSize?: number; // in bytes, default is 2MB
   disabled?: boolean;
 }
 
-export default function FileUploader({ formValue, onFormValueChange, maxFiles, disabled }: Props) {
+export default function FileUploader({ formValue, onFormValueChange, maxFiles, disabled, maxSize }: Props) {
   const [files, setFiles] = React.useState<File[]>([]);
-
-  const isMaxFilesReached = React.useMemo(() => {
-    return files.length >= maxFiles;
-  }, [files]);
 
   const onFileValidate = React.useCallback(
     (file: File): string | null => {
@@ -41,7 +38,7 @@ export default function FileUploader({ formValue, onFormValueChange, maxFiles, d
       }
 
       // Validate file size (max 2MB)
-      const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+      const MAX_SIZE = maxSize ?? 2 * 1024 * 1024; // 2MB
       if (file.size > MAX_SIZE) {
         return `Arquivo ser menor que ${MAX_SIZE / (1024 * 1024)}MB`;
       }
@@ -59,8 +56,8 @@ export default function FileUploader({ formValue, onFormValueChange, maxFiles, d
 
   return (
     <FileUpload
-      value={formValue ?? files}
-      onValueChange={onFormValueChange ?? setFiles}
+      value={formValue}
+      onValueChange={onFormValueChange}
       onFileValidate={onFileValidate}
       onFileReject={onFileReject}
       disabled={disabled}
@@ -85,19 +82,7 @@ export default function FileUploader({ formValue, onFormValueChange, maxFiles, d
         </FileUploadTrigger>
       </FileUploadDropzone>
       <FileUploadList>
-        {formValue && formValue.map((file, index) => (
-          <FileUploadItem key={`${file.name}-${index}`} value={file}>
-            <FileUploadItemPreview />
-            <FileUploadItemMetadata />
-            <FileUploadItemDelete asChild>
-              <Button variant="ghost" size="icon" className="size-7">
-                <X />
-              </Button>
-            </FileUploadItemDelete>
-          </FileUploadItem>
-        ))}
-
-        {!formValue && files.map((file, index) => (
+        {formValue.map((file, index) => (
           <FileUploadItem key={`${file.name}-${index}`} value={file}>
             <FileUploadItemPreview />
             <FileUploadItemMetadata />

@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { toast } from 'sonner'
 // icons
 import { FileUp } from "lucide-react"
 // forms
@@ -21,6 +22,9 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+const MAX_FILES = 1
+const MAX_SIZE = 2 * 1024 * 1024 // 2MB
 
 const formSchema = z.object({
   files: z.array(z.instanceof(File))
@@ -32,10 +36,10 @@ const formSchema = z.object({
     }),
 })
 
+
 interface FormValues extends z.infer<typeof formSchema> { }
 
 export default function ImportExpenseDialog() {
-  const MAX_FILES = 1
 
 
   // form
@@ -48,11 +52,13 @@ export default function ImportExpenseDialog() {
 
   const isFilesUploaded = useMemo(() => {
     console.log(form.getValues("files"))
-    return form.watch("files")?.length > 0
-  }, [])
+    return form.watch("files")?.length >= MAX_FILES
+  }, [form.watch("files")])
 
   function onSubmit(data: FormValues) {
-    console.log("Form submitted with data:", data);
+    toast("Arquivo importado com sucesso!", {
+      description: `Arquivo "${data.files[0].name}" foi importado com sucesso.`,
+    })
   }
 
   return (
@@ -72,7 +78,7 @@ export default function ImportExpenseDialog() {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
             <FormField
               control={form.control}
               name="files"
@@ -83,6 +89,7 @@ export default function ImportExpenseDialog() {
                       formValue={field.value}
                       onFormValueChange={field.onChange}
                       maxFiles={MAX_FILES}
+                      maxSize={MAX_SIZE}
                       disabled={isFilesUploaded}
                     />
                   </FormControl>
