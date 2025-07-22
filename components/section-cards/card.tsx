@@ -1,6 +1,11 @@
-import { cn } from "@/lib/utils"
-import { ExternalLink } from "lucide-react"
 import Link from "next/link"
+
+// utils
+import { cn } from "@/lib/utils"
+// icons
+import { ExternalLink } from "lucide-react"
+// components
+import type { ElementType } from "react"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Skeleton } from "../ui/skeleton"
 
@@ -11,6 +16,7 @@ interface Props {
   description: string
   path?: string
   variant?: 'default' | 'success' | 'destructive'
+  iconButton?: ElementType
 }
 
 const variantClassname = {
@@ -34,11 +40,14 @@ const variantClassname = {
   },
 }
 
-export function SectionCard({ title, subtitle, description, path, variant = 'default' }: Props) {
+export function SectionCard({ title, subtitle, description, path, variant = 'default', iconButton: IconButton }: Props) {
   return (
     <Card className={cn("@container/card rounded-2xl bg-background", variantClassname[variant].card)}>
       <CardHeader className="relative">
-        <CardDescription className={variantClassname[variant].subtitle}>{subtitle}</CardDescription>
+        <div className="flex items-center justify-between w-full">
+          <CardDescription className={variantClassname[variant].subtitle}>{subtitle}</CardDescription>
+          {IconButton && <IconButton />}
+        </div>
         <CardTitle className={cn("@[250px]/card:text-3xl text-2xl font-semibold tabular-nums", variantClassname[variant].title)}>
           {title}
         </CardTitle>

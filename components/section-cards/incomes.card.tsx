@@ -10,8 +10,8 @@ import { formatToBRL } from "@/utils/formatters";
 
 export default function IncomesCard() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["incomes"],
-    queryFn: getIncomes,
+    queryKey: ["card-incomes"],
+    queryFn: () => getIncomes(),
   });
 
   if (isLoading) return <SectionCardSkeleton />;
@@ -22,7 +22,7 @@ export default function IncomesCard() {
         return acc + income.amount;
       }, 0)
     );
-    const path = "/incomes?page=1&items_per_page=1";
+    const path = "/incomes?page=1&items_per_page=10";
 
     return (
       <SectionCard
