@@ -16,7 +16,7 @@ export default function ProtectedLayout({
       <AppSidebar />
       <SidebarInset>
         <MainSidebarHeader />
-        <main className="flex size-full flex-col px-6 py-4">{children}</main>
+        <main className="flex size-full flex-col px-2 sm:px-6 py-4">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   )
