@@ -48,8 +48,8 @@ export default function ImportIncomesDialog() {
     mutationKey: ['import-incomes'],
     mutationFn: importIncomes,
     onSuccess: () => {
-      toast.success("Recebimentos importados com sucesso!"),
-        queryClient.invalidateQueries({ queryKey: ['get-incomes'] })
+      toast.success("Recebimentos importados com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ['get-incomes'] })
     },
     onError: (error: Error) => {
       toast.error(error.message)

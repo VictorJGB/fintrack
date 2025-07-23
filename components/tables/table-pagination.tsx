@@ -13,7 +13,6 @@ interface Props {
 
 export default function TablePagination({
   firstPage,
-  lastPage,
   page,
   pageCount,
 }: Props) {

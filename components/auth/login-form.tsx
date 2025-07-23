@@ -26,6 +26,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form"
 // actions
 
 // icons
+import Login from "@/actions/user/login"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 
 
@@ -60,6 +61,7 @@ export default function LoginForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
       try {
+        await Login(values)
         toast.success('Usuario autenticado com sucesso!')
         replace('/')
       } catch (e) {

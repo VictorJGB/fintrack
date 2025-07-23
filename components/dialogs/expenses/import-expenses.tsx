@@ -49,8 +49,8 @@ export default function ImportExpensesDialog() {
     mutationKey: ['import-expenses'],
     mutationFn: importExpenses,
     onSuccess: () => {
-      toast.success("Despesas importadas com sucesso!"),
-        queryClient.invalidateQueries({ queryKey: ['get-expenses'] })
+      toast.success("Despesas importadas com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ['get-expenses'] })
     },
     onError: (error: Error) => {
       toast.error(error.message)
