@@ -48,7 +48,7 @@ import type Expense from "@/interfaces/expense";
 import { CalendarIcon, Loader2, Pencil } from "lucide-react";
 
 const formSchema = z.object({
-  date: z.string({ required_error: "Data é obrigatório" }),
+  date: z.date({ required_error: "Data é obrigatório" }),
   company: z.string().min(2, { message: "Minimo 2 caracteres" }),
   description: z.string(),
   recipient: z.string().optional(),
@@ -92,7 +92,7 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: data.date.toString(),
+      date: data.date,
       company: data.company,
       description: data.description,
       recipient: data.recipient,
@@ -113,7 +113,12 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    mutate({ id: data._id, formData: values });
+    mutate({
+      id: data._id, formData: {
+        ...values,
+        date: new Date(values.date),
+      }
+    });
   }
 
   return (
