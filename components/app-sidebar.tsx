@@ -17,6 +17,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import UserCombobox from "./header/user-combobox";
 
@@ -30,6 +31,7 @@ import ModeToggle from "./mode-toggle";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { toggleSidebar } = useSidebar()
 
   return (
     <Sidebar {...props}>
@@ -62,6 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
               key={index}
               variant={"ghost"}
+              onClick={toggleSidebar}
             >
               <Link href={path}>
                 <LucideIconStore name={icon} />

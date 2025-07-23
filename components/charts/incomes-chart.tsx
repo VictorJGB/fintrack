@@ -43,7 +43,7 @@ export default function IncomesChart() {
     <Card className="w-full rounded-2xl">
       <CardHeader>
         <CardTitle>Total de recebimentos</CardTitle>
-        <CardDescription>Recebimentos dos últimos 3 meses</CardDescription>
+        <CardDescription>Recebimentos do mês</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading && <Skeleton className="h-[250px] w-full rounded-2xl" />}

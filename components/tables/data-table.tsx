@@ -71,8 +71,9 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {/* filter */}
-      <div className="flex items-center py-4">
+      <div className="flex flex-col sm:flex-row items-center py-4 gap-4 sm:gap-0">
         <Input
+          className="w-full sm:max-w-sm"
           placeholder="Digite o seu filtro..."
           value={globalFilter ?? ""}
           onChange={(e) => {
@@ -80,9 +81,8 @@ export function DataTable<TData, TValue>({
             table.setGlobalFilter(String(e.target.value))
           }
           }
-          className="max-w-sm"
         />
-        <div className="ml-auto flex items-center space-x-2">
+        <div className="w-full sm:w-fit sm:ml-auto flex items-center justify-between sm:justify-center space-x-2">
           {ImportDialogComponent && <ImportDialogComponent />}
           {AddDialogComponent && <AddDialogComponent />}
         </div>

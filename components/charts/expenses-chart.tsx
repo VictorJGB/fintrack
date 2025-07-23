@@ -56,7 +56,7 @@ export default function ExpensesChart() {
     <Card className="w-full rounded-2xl">
       <CardHeader>
         <CardTitle>Total de despesas</CardTitle>
-        <CardDescription>Despesas dos últimos 3 meses</CardDescription>
+        <CardDescription>Despesas do mês</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading && <Skeleton className="h-[250px] w-full rounded-2xl" />}
