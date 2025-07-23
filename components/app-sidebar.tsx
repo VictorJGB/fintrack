@@ -80,7 +80,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 className="hidden sm:flex rounded items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
                 key={index}
                 variant={"ghost"}
-                onClick={toggleSidebar}
               >
                 <Link href={path}>
                   <LucideIconStore name={icon} />
