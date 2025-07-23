@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from 'sonner'
 // icons
-import { FileUp, Loader2 } from "lucide-react"
+import { FileUp, Info, Loader2 } from "lucide-react"
 // forms
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -27,6 +27,8 @@ import { queryClient } from '@/lib/react-query'
 import { useMutation } from '@tanstack/react-query'
 // actions
 import importExpenses from '@/actions/expenses/import-expenses'
+import Link from 'next/link'
+import ImportExpenseTemplateInfoDialog from './template-info'
 
 const MAX_FILES = 1
 const MAX_SIZE = 2 * 1024 * 1024 // 2MB
@@ -119,6 +121,29 @@ export default function ImportExpensesDialog() {
                 </FormItem>
               )}
             />
+
+            {/* Download template */}
+            <div className='flex items-center justify-start gap-2'>
+              <Info className='size-5 text-primary' />
+              <p>Não sabe qual o modelo correto a ser preenchido?</p>
+              <p>Baixe o&nbsp;
+                <Link
+                  className='text-primary underline'
+                  href={'/sheets/despesas_template.xlsx'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                >nosso modelo
+                </Link>
+              </p>
+            </div>
+
+            {/* how to fill */}
+            <div className='flex items-center justify-start gap-2'>
+              <Info className='size-5 text-primary' />
+              <p>Não sabe como preencher o modelo?</p>
+              <p>Verifique <ImportExpenseTemplateInfoDialog /></p>
+            </div>
 
             <DialogFooter>
               <DialogClose asChild onClick={() => form.reset()}>
