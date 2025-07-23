@@ -36,5 +36,5 @@ export default function LucideIconStore({ name, className, size = 24, color = "c
   }
 
   // ícone não encontrado: você pode retornar um placeholder, um erro, ou nada
-  return <span className="text-destructive">Ícone "{name}" não encontrado</span>;
+  return <span className="text-destructive">Ícone &quot{name}&quot não encontrado</span>;
 }

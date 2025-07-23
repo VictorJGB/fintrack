@@ -1,7 +1,4 @@
-
-type Props = {}
-
-export default function BankNoteArrowUpIcon({ }: Props) {
+export default function BankNoteArrowUpIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       width="24"

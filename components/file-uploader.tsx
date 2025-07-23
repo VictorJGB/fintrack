@@ -24,8 +24,6 @@ interface Props {
 }
 
 export default function FileUploader({ formValue, onFormValueChange, maxFiles, disabled, maxSize }: Props) {
-  const [files, setFiles] = React.useState<File[]>([]);
-
   const onFileValidate = React.useCallback(
     (file: File): string | null => {
 
@@ -45,7 +43,7 @@ export default function FileUploader({ formValue, onFormValueChange, maxFiles, d
 
       return null;
     },
-    [files],
+    [maxSize],
   );
 
   const onFileReject = React.useCallback((file: File, message: string) => {

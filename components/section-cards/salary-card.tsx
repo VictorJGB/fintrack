@@ -9,9 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatToBRL } from "@/utils/formatters";
 import { SectionCard, SectionCardSkeleton } from "./card";
 
-type Props = {}
-
-export default function SalaryCard({ }: Props) {
+export default function SalaryCard() {
   // user verification
   const { data: authData, isLoading: isAuthenticating, error: AuthError } = useQuery({
     queryKey: ['verify-user'],

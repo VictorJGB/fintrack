@@ -24,7 +24,6 @@ import { toast } from 'sonner'
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form"
 
 // actions
-import Login from "@/actions/user/login"
 
 // icons
 import { Eye, EyeOff, Loader2 } from "lucide-react"
@@ -61,7 +60,6 @@ export default function LoginForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
       try {
-        const data = await Login(values)
         toast.success('Usuario autenticado com sucesso!')
         replace('/')
       } catch (e) {

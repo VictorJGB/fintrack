@@ -42,8 +42,6 @@ const formSchema = z.object({
 })
 
 
-interface FormValues extends z.infer<typeof formSchema> { }
-
 export default function ImportExpensesDialog() {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -60,7 +58,7 @@ export default function ImportExpensesDialog() {
   })
 
   // form
-  const form = useForm<FormValues>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       files: [],
@@ -70,14 +68,14 @@ export default function ImportExpensesDialog() {
   const isFilesUploaded = useMemo(() => {
     console.log(form.getValues("files"))
     return form.watch("files")?.length >= MAX_FILES
-  }, [form.watch("files")])
+  }, [form])
 
   function resetForm() {
     form.reset()
     setIsOpen(false)
   }
 
-  async function onSubmit(data: FormValues) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     // Create FormData to send the file
     const formData = new FormData()
     formData.append('file', data.files[0])

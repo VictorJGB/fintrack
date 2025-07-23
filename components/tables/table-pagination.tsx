@@ -23,23 +23,23 @@ export default function TablePagination({
   const canGoNextPage = page + 1 <= pageCount;
   const canGoPrevPage = page - 1 >= firstPage;
 
-  function getFirstPageLink() {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", firstPage.toString());
+  // function getFirstPageLink() {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   params.set("page", firstPage.toString());
 
-    const href = `${pathname}?${params.toString()}`;
+  //   const href = `${pathname}?${params.toString()}`;
 
-    return href;
-  }
+  //   return href;
+  // }
 
-  function getLastPageLink() {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", lastPage.toString());
+  // function getLastPageLink() {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   params.set("page", lastPage.toString());
 
-    const href = `${pathname}?${params.toString()}`;
+  //   const href = `${pathname}?${params.toString()}`;
 
-    return href;
-  }
+  //   return href;
+  // }
 
   function getNextPageLink() {
     const nextPage = page + 1;

@@ -14,7 +14,7 @@ interface ActiveRoute {
 }
 
 
-export default function ActiveBreadcrumb({ href, label, pathname }: ActiveRoute) {
+export default function ActiveBreadcrumb({ label, pathname }: ActiveRoute) {
   const isHomePage = pathname === '/'
 
   return (

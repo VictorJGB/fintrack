@@ -18,7 +18,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import UserCombobox from "./header/user-combobox";
+import UserCombobox from "./header/user-combobox/user-combobox";
 
 // icons
 import Image from "next/image";

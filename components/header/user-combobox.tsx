@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { toast } from 'sonner'
-import UserInfoDialog from "../user-info-dialog"
+import UserInfoDialog from "./user-info-dialog"
 
 
 export default function UserCombobox() {
