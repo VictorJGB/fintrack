@@ -33,6 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar()
 
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="p-4 flex-row">
@@ -58,19 +59,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             path = `${href}?page=${urlParams.page}&items_per_page=${urlParams.itemsPerPage}`;
 
           return (
-            <Button
-              asChild
-              data-active={pathname === href}
-              className="rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
-              key={index}
-              variant={"ghost"}
-              onClick={toggleSidebar}
-            >
-              <Link href={path}>
-                <LucideIconStore name={icon} />
-                {label}
-              </Link>
-            </Button>
+            <>
+              <Button
+                asChild
+                data-active={pathname === href}
+                className="sm:hidden rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
+                key={index}
+                variant={"ghost"}
+                onClick={toggleSidebar}
+              >
+                <Link href={path}>
+                  <LucideIconStore name={icon} />
+                  {label}
+                </Link>
+              </Button>
+
+              <Button
+                asChild
+                data-active={pathname === href}
+                className="hidden sm:flex rounded items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
+                key={index}
+                variant={"ghost"}
+                onClick={toggleSidebar}
+              >
+                <Link href={path}>
+                  <LucideIconStore name={icon} />
+                  {label}
+                </Link>
+              </Button>
+            </>
           );
         })}
       </SidebarContent>
