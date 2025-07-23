@@ -20,7 +20,7 @@ interface Props {
 export default function InfoIncomeDialog({ data }: Props) {
 
   const infos = [
-    { label: 'Data', value: data.date },
+    { label: 'Data', value: data.date.toString() },
     { label: 'Fonte', value: data.source },
     { label: 'Valor', value: `${formatToBRL(data.amount)}` },
   ]
