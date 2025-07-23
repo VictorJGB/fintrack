@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"; // ou só usa className direto
 import { icons as lucideIcons } from "lucide-react";
+import type { ComponentType } from "react";
 
 type Props = {
   name: string;
@@ -18,7 +19,7 @@ const fallbackSvgs: Record<string, string> = {
 };
 
 export default function LucideIconStore({ name, className, size = 24, color = "currentColor" }: Props) {
-  const LucideIcon = (lucideIcons as any)[name];
+  const LucideIcon = (lucideIcons as Record<string, ComponentType<{ className?: string; size?: number; color?: string }>>)[name];
 
   if (LucideIcon) {
     return <LucideIcon className={className} size={size} color={color} />;

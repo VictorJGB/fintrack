@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 export default function TablePagination({
   firstPage,
+  lastPage,
   page,
   pageCount,
 }: Props) {
@@ -22,23 +24,23 @@ export default function TablePagination({
   const canGoNextPage = page + 1 <= pageCount;
   const canGoPrevPage = page - 1 >= firstPage;
 
-  // function getFirstPageLink() {
-  //   const params = new URLSearchParams(searchParams.toString());
-  //   params.set("page", firstPage.toString());
+  function getFirstPageLink() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", firstPage.toString());
 
-  //   const href = `${pathname}?${params.toString()}`;
+    const href = `${pathname}?${params.toString()}`;
 
-  //   return href;
-  // }
+    return href;
+  }
 
-  // function getLastPageLink() {
-  //   const params = new URLSearchParams(searchParams.toString());
-  //   params.set("page", lastPage.toString());
+  function getLastPageLink() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", lastPage.toString());
 
-  //   const href = `${pathname}?${params.toString()}`;
+    const href = `${pathname}?${params.toString()}`;
 
-  //   return href;
-  // }
+    return href;
+  }
 
   function getNextPageLink() {
     const nextPage = page + 1;
@@ -62,26 +64,47 @@ export default function TablePagination({
   }
 
   return (
-    <div className="flex items-center justify-between space-x-2 py-4">
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={!canGoPrevPage}
-        onClick={() => push(getPrevPageLink())}
-      >
-        Anterior
-      </Button>
+    <div className="flex items-center justify-center gap-4 py-4">
+      <div className="flex items-center justify-center gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={!canGoPrevPage}
+          onClick={() => push(getFirstPageLink())}
+        >
+          <ChevronsLeft className="size-3" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={!canGoPrevPage}
+          onClick={() => push(getPrevPageLink())}
+        >
+          <ChevronLeft className="size-3" />
+        </Button>
+      </div>
       <span>
         página {page} de {pageCount}
       </span>
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={!canGoNextPage}
-        onClick={() => push(getNextPageLink())}
-      >
-        Próximo
-      </Button>
+      {/* next page buttons */}
+      <div className="flex items-center justify-center gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={!canGoNextPage}
+          onClick={() => push(getNextPageLink())}
+        >
+          <ChevronRight className="size-3" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={!canGoNextPage}
+          onClick={() => push(getLastPageLink())}
+        >
+          <ChevronsRight className="size-3" />
+        </Button>
+      </div>
     </div>
   );
 }
