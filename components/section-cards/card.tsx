@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 // icons
 import { ExternalLink } from "lucide-react"
 // components
-import type { ElementType } from "react"
+import type { ReactNode } from "react"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Skeleton } from "../ui/skeleton"
 
@@ -16,24 +16,24 @@ interface Props {
   description: string
   path?: string
   variant?: 'default' | 'success' | 'destructive'
-  iconButton?: ElementType
+  iconButton?: ReactNode
 }
 
 const variantClassname = {
   default: {
-    card: 'bg-background',
+    card: 'from-card to-background',
     title: 'text-foreground',
     subtitle: 'text-muted-foreground',
     link: 'hover:text-primary'
   },
   success: {
-    card: 'bg-background border-primary/40',
+    card: 'from-card to-background',
     title: 'text-primary',
     subtitle: 'text-primary/70',
     link: 'hover:text-primary'
   },
   destructive: {
-    card: 'bg-background border-destructive/40',
+    card: 'from-card to-background',
     title: 'text-destructive',
     subtitle: 'text-destructive/70',
     link: 'hover:text-destructive'
@@ -42,11 +42,11 @@ const variantClassname = {
 
 export function SectionCard({ title, subtitle, description, path, variant = 'default', iconButton: IconButton }: Props) {
   return (
-    <Card className={cn("@container/card rounded-2xl bg-background", variantClassname[variant].card)}>
+    <Card className={cn("@container/card rounded-2xl bg-gradient-to-t", variantClassname[variant].card)}>
       <CardHeader className="relative">
         <div className="flex items-center justify-between w-full">
           <CardDescription className={variantClassname[variant].subtitle}>{subtitle}</CardDescription>
-          {IconButton && <IconButton />}
+          {IconButton}
         </div>
         <CardTitle className={cn("@[250px]/card:text-3xl text-2xl font-semibold tabular-nums", variantClassname[variant].title)}>
           {title}

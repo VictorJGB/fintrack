@@ -2,6 +2,7 @@ import { useState, type Dispatch, type SetStateAction } from 'react'
 // icons
 import { CheckCircle2, Info, Loader2, Pencil } from 'lucide-react'
 // libs
+import { queryClient } from '@/lib/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { CurrencyInput } from 'react-currency-mask'
@@ -48,6 +49,7 @@ export default function UserInfoDialog({ user, triggerClassname, setIsParentOpen
     mutationFn: updateUser,
     onSuccess: () => {
       toast.success('Usuário atualizado com sucesso!')
+      queryClient.invalidateQueries({ queryKey: ['user', user._id] })
       setIsEditing(false)
     },
     onError: (error: Error) => {
