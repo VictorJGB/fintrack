@@ -81,11 +81,9 @@ export default function AddExpenseDialog() {
   const resetForm = () => form.reset()
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-
     const resBody = {
       ...values,
-      date: Date.now()
+      date: new Date()
     }
     mutate(resBody)
   }
