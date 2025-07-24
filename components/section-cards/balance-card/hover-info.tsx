@@ -18,7 +18,7 @@ export default function BalanceHoverInfo({ totalExpense, totalIncome, totalBalan
           <Info />
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className='flex flex-col items-start justify-center space-y-4 w-[400px] rounded-2xl bg-gradient-to-t from-card to-background'>
+      <HoverCardContent className='flex flex-col items-start justify-center space-y-4 w-[400px] rounded-2xl'>
         <h3 className='font-semibold'>Como esse cálculo é feito?</h3>
         <p>Utilizamos a soma de
           <strong className='text-primary'> recebimentos </strong>

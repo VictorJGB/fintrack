@@ -28,11 +28,13 @@ import LucideIconStore from "./lucide-icon-store";
 // assets
 import logo from "@/public/images/fintrack_logo_02_no_bg.png";
 import ModeToggle from "./mode-toggle";
+// hooks
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar()
-
+  const isMobile = useIsMobile()
 
   return (
     <Sidebar {...props}>
@@ -59,34 +61,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             path = `${href}?page=${urlParams.page}&items_per_page=${urlParams.itemsPerPage}`;
 
           return (
-            <>
-              <Button
-                asChild
-                data-active={pathname === href}
-                className="sm:hidden rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
-                key={index}
-                variant={"ghost"}
-                onClick={toggleSidebar}
-              >
-                <Link href={path}>
-                  <LucideIconStore name={icon} />
-                  {label}
-                </Link>
-              </Button>
-
-              <Button
-                asChild
-                data-active={pathname === href}
-                className="hidden sm:flex rounded items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
-                key={index}
-                variant={"ghost"}
-              >
-                <Link href={path}>
-                  <LucideIconStore name={icon} />
-                  {label}
-                </Link>
-              </Button>
-            </>
+            <Button
+              asChild
+              data-active={pathname === href}
+              className="rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
+              key={index}
+              variant={"ghost"}
+              onClick={isMobile ? toggleSidebar : () => { }}
+            >
+              <Link href={path}>
+                <LucideIconStore name={icon} />
+                {label}
+              </Link>
+            </Button>
           );
         })}
       </SidebarContent>

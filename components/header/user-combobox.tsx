@@ -1,15 +1,13 @@
 "use client"
 import { useState } from 'react'
 // libs
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 // navigation
 import { useRouter } from "next/navigation"
 // icons
 import { Loader2, LogOut, MoreVerticalIcon } from "lucide-react"
 // actions
-import getUser from '@/actions/user/get-user'
 import Logout from '@/actions/user/logout'
-import verifyUser from '@/actions/user/verify-user'
 // components
 import { Button } from "@/components/ui/button"
 import {
@@ -22,23 +20,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from 'sonner'
 import UserInfoDialog from "./user-info-dialog"
-
+// context
+import { useUser } from '@/context/user'
 
 export default function UserCombobox() {
   const [open, setOpen] = useState(false)
-
-  // User Authentication
-  const { data: authData, isLoading: IsAuthenticating, error: authError } = useQuery({
-    queryKey: ['verify-user'],
-    queryFn: verifyUser
-  })
-
-  // Retrieving user data
-  const { data: user, error, isLoading } = useQuery({
-    queryKey: ['user', authData?.userID],
-    queryFn: () => getUser(authData?.userID || ''),
-    enabled: !!authData?.userID
-  })
+  const { user, setUser } = useUser()
 
   // Logout 
   const { mutate, isPending } = useMutation({
@@ -46,6 +33,7 @@ export default function UserCombobox() {
     mutationFn: Logout,
     onSuccess: () => {
       setOpen(false)
+      setUser(null)
       replace('/login')
     },
     onError: (error) => {
@@ -58,7 +46,7 @@ export default function UserCombobox() {
 
   async function logout() { await mutate() }
 
-  if (isLoading || IsAuthenticating || isPending) return (
+  if (!user) return (
     <Button
       variant="outline"
       disabled={true}
@@ -67,15 +55,6 @@ export default function UserCombobox() {
       <Loader2 className='size-4 animate-spin' />
     </Button>
   )
-
-  if (error || authError) return (
-    <Button
-      variant="destructive"
-      disabled={true}
-      className="py-5 rounded cursor-pointer"
-    >
-      {error?.message || authError?.message || 'Erro ao carregar usuário'}
-    </Button>)
 
   if (user) return (
     <DropdownMenu>

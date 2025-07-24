@@ -3,29 +3,17 @@
 // actions
 import getExpenses from "@/actions/expenses/get-expenses"
 import getIncomes from "@/actions/incomes/get-incomes"
-import getUser from "@/actions/user/get-user"
-import verifyUser from "@/actions/user/verify-user"
 // components
 import { SectionCard, SectionCardSkeleton } from "../card"
 import BalanceHoverInfo from "./hover-info"
 // utils
 import { formatToBRL } from "@/utils/formatters"
 // libs
+import { useUser } from "@/context/user"
 import { useQuery } from "@tanstack/react-query"
 
 export default function BalanceCard() {
-  // user verification
-  const { data: authData, isLoading: isAuthenticating } = useQuery({
-    queryKey: ['verify-user'],
-    queryFn: verifyUser
-  })
-
-  // Retrieving user data
-  const { data: user, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['user', authData?.userID],
-    queryFn: () => getUser(authData?.userID || ''),
-    enabled: !!authData?.userID
-  })
+  const { user } = useUser()
 
   const { data: expenses, isLoading: isLoadingExpense, error: expenseError } = useQuery({
     queryKey: ["card-expenses"],
@@ -36,7 +24,7 @@ export default function BalanceCard() {
     queryFn: () => getIncomes()
   })
 
-  if (isLoadingExpense || isLoadingIncomes || isAuthenticating || isLoadingUser) return <SectionCardSkeleton />
+  if (isLoadingExpense || isLoadingIncomes || !user) return <SectionCardSkeleton />
 
   if (expenses && incomes) {
     const totalExpenses = expenses.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0)
