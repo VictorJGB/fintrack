@@ -112,12 +112,8 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     mutate({
-      id: data._id, formData: {
-        ...values,
-        date: new Date(values.date),
-      }
+      id: data._id, formData: values
     });
   }
 
@@ -275,7 +271,16 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
                   <FormItem className="grid gap-2">
                     <FormLabel>Parcelas pagas</FormLabel>
                     <FormControl>
-                      <Input type="number" max={12} required {...field} />
+                      <Input
+                        type="number"
+                        max={12}
+                        required
+                        {...field}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          field.onChange(Number(value));
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

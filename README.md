@@ -34,8 +34,13 @@ An financial manager for expenses, incomes, plannings and many more
 
 ### TO-DO
 
-[] Add the import from csv function
-[] Add pay expense function from the expenses table
+#### ERRORS
+- Mobile: Cookie não sendo mantido na sessão []
+- Ao editar despesa (possívelmente recebimento também) transformar data de string pra date []
+- Mostrar despesas no dashboard apenas do mês atual []
+- Mostrar despesas por destinatário []
+- adicionar botão para pagar as parcelas do mês automaticamente []
+- Consertar responsividade do dialog de importação de despesas e recebimentos []
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
