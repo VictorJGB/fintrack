@@ -35,8 +35,8 @@ An financial manager for expenses, incomes, plannings and many more
 ### TO-DO
 
 #### ERRORS
-- Mobile: Cookie não sendo mantido na sessão []
-- Ao editar despesa (possívelmente recebimento também) transformar data de string pra date []
+- Mobile: Cookie não sendo mantido na sessão [x]
+- Ao editar despesa (possívelmente recebimento também) transformar data de string pra date [x]
 - Mostrar despesas no dashboard apenas do mês atual []
 - Mostrar despesas por destinatário []
 - adicionar botão para pagar as parcelas do mês automaticamente []
