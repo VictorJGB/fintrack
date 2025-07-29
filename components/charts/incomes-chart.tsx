@@ -32,10 +32,11 @@ const chartConfig = {
 
 export default function IncomesChart() {
   const page = "1";
-  const itemsPerPage = "100";
+  const itemsPerPage = undefined;
+  const period = 'current' //current month
 
   const { data, isLoading, error } = useQuery({
-    queryFn: () => getIncomes(page, itemsPerPage),
+    queryFn: () => getIncomes(page, itemsPerPage, period),
     queryKey: ["chart-incomes"],
   });
 

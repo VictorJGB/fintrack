@@ -59,7 +59,7 @@ export default function EditIncomeDialog({ data }: Props) {
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes'] })
     },
     onError: (err) => {
       console.error(err)
@@ -70,7 +70,7 @@ export default function EditIncomeDialog({ data }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: data.date,
+      date: new Date(data.date),
       source: data.source,
       amount: data.amount,
     }

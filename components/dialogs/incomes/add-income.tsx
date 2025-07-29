@@ -43,7 +43,7 @@ export default function AddIncomeDialog() {
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes'] })
     },
     onError: (err) => {
       console.error(err)

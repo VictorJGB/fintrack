@@ -92,7 +92,7 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: data.date,
+      date: new Date(data.date),
       company: data.company,
       description: data.description,
       recipient: data.recipient,
