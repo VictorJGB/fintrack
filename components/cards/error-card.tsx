@@ -11,7 +11,7 @@ interface Props {
 
 export default function ErrorCard({ error, className, title, description }: Props) {
   return (
-    <Card className={cn('min-h-[250px] rounded-2xl bg-destructive/20', className)}>
+    <Card className={cn('h-[250px] rounded-2xl bg-destructive/20', className)}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

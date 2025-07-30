@@ -41,7 +41,7 @@ export default function GroupedExpensesChart({ className }: Props) {
   const [chartConfig, setChartConfig] = useState<ChartConfig>(initialChartConfig)
   const { data, isLoading, error } = useQuery({
     queryKey: ["grouped-expenses"],
-    queryFn: getGroupedExpenses,
+    queryFn: () => getGroupedExpenses(),
   })
 
   const chartData = useMemo(() => data?.map((item) => (
@@ -72,7 +72,7 @@ export default function GroupedExpensesChart({ className }: Props) {
     }
   }, [data])
 
-  if (isLoading || !chartData) return <Skeleton className={cn("h-[250px] rounded-2xl", className)} />
+  if (isLoading || !chartData) return <Skeleton className={cn("rounded-2xl", className)} />
 
   if (error) return <ErrorCard title="Erro ao carregar despesas" error={error.message} className={className} />
 

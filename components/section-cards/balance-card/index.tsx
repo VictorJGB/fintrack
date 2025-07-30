@@ -1,7 +1,6 @@
 'use client'
 
 // actions
-import getExpenses from "@/actions/expenses/get-expenses"
 import getIncomes from "@/actions/incomes/get-incomes"
 // components
 import { SectionCard, SectionCardSkeleton } from "../card"
@@ -9,15 +8,18 @@ import BalanceHoverInfo from "./hover-info"
 // utils
 import { formatToBRL } from "@/utils/formatters"
 // libs
+import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
+import ErrorCard from "@/components/cards/error-card"
 import { useUser } from "@/context/user"
 import { useQuery } from "@tanstack/react-query"
 
 export default function BalanceCard() {
   const { user } = useUser()
+  const searchRecipient: string = 'Eu'
 
   const { data: expenses, isLoading: isLoadingExpense, error: expenseError } = useQuery({
-    queryKey: ["card-expenses"],
-    queryFn: () => getExpenses()
+    queryKey: ["grouped-expenses", searchRecipient],
+    queryFn: () => getGroupedExpenses(searchRecipient)
   })
   const { data: incomes, isLoading: isLoadingIncomes, error: incomesError } = useQuery({
     queryKey: ["card-incomes"],
@@ -27,7 +29,7 @@ export default function BalanceCard() {
   if (isLoadingExpense || isLoadingIncomes || !user) return <SectionCardSkeleton />
 
   if (expenses && incomes) {
-    const totalExpenses = expenses.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0)
+    const totalExpenses = expenses[0].total_amount
     const totalIncomes = incomes.data.reduce((acc, income) => { return acc + income.amount }, 0)
     const balance = (totalIncomes + (user?.salary ?? 1518)) - totalExpenses
     const formatedBalance = formatToBRL(balance)
@@ -45,5 +47,11 @@ export default function BalanceCard() {
     )
   }
 
-  if (incomesError || expenseError) return <p className="text-destructive">{JSON.stringify(incomesError ?? expenseError, null, 2)}</p>
+  if (incomesError !== null || expenseError !== null) return (
+    <ErrorCard
+      title="Erro ao carregar dados"
+      error={incomesError?.message || expenseError?.message || 'Erro desconhecido, tente novamente'}
+      className="@container/card h-auto"
+    />
+  )
 }

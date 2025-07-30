@@ -8,8 +8,18 @@ interface ResProps {
   data: Expense[]
   total_amount: number
 }
-export default async function getGroupedExpenses(): Promise<ResProps[]> {
-  const response = await apiFetcher('expenses/grouped', {
+
+export default async function getGroupedExpenses(recipient?: string): Promise<ResProps[]> {
+  let url = 'expenses/grouped'
+
+  if (recipient) {
+    const params = new URLSearchParams({ recipient }).toString()
+    url += `?${params}`
+  }
+
+  console.log('grouped expenses url', url)
+
+  const response = await apiFetcher(url, {
     method: 'GET',
   })
 
