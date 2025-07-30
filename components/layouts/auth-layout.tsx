@@ -45,7 +45,7 @@ export default function AuthLayout({ children }: Props) {
       setUser(user)
     }
 
-  }, [authError, user])
+  }, [authError, user, isLoading, setUser, push])
 
   return (
     <div className="size-full">

@@ -41,13 +41,10 @@ export default function IncomesChart() {
     queryKey: ["chart-incomes"],
   });
 
-  { isLoading && <Skeleton className="h-[250px] w-full rounded-2xl" /> }
+  if (isLoading) <Skeleton className="h-[250px] w-full rounded-2xl" />
 
-  {
-    error && (
-      <ErrorCard title="Erro ao carregar recebimentos" error={error.message} className="h-[250px]" />
-    )
-  }
+
+  if (error) <ErrorCard title="Erro ao carregar recebimentos" error={error.message} className="h-[250px]" />
 
   if (data) return (
     <Card className="w-full rounded-2xl">
