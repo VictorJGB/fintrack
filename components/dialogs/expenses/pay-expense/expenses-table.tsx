@@ -32,7 +32,7 @@ export default function PayExpensesTable() {
     }
   }, [data, updatedData])
 
-  function getIsMinusDisabled(installmentsPaid: number, installments: number,) {
+  function getIsMinusDisabled(installmentsPaid: number) {
     return installmentsPaid <= 0
   }
 
@@ -74,7 +74,7 @@ export default function PayExpensesTable() {
               <Button
                 variant={'secondary'}
                 className='size-6 rounded-full'
-                disabled={getIsMinusDisabled(row.installments_paid, row.installments_paid--)}
+                disabled={getIsMinusDisabled(row.installments_paid)}
                 onClick={() => onInstallmentsChange(row, row.installments_paid--)}
               >
                 <Minus className='size-4' />
