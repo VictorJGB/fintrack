@@ -49,9 +49,9 @@ export default function PayExpensesTable() {
     setUpdatedData(formatedData)
   }
 
-  if (isLoading) <TableSkeleton rowsNumber={10} />
+  if (isLoading) return <TableSkeleton rowsNumber={10} />
 
-  if (error) <p className="text-destructive font-semibold">{error.message}</p>
+  if (error) return <p className="text-destructive font-semibold">{error.message}</p>
 
   if (updatedData) return (
     <Table>
