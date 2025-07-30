@@ -10,3 +10,7 @@ export function formatToBRL(value: number) {
 
   return formatter.format(value);
 }
+
+export function Capitalize(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

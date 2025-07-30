@@ -26,6 +26,7 @@ import { useQuery } from "@tanstack/react-query"
 // actions
 import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import ErrorCard from "@/components/cards/error-card"
+import { Capitalize, formatToBRL } from "@/utils/formatters"
 
 interface Props {
   className?: string
@@ -84,11 +85,41 @@ export default function GroupedExpensesChart({ className }: Props) {
         <CardContent className="flex-1 pb-0">
           <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square max-h-[300px] w-full"
+            className="mx-auto aspect-square max-h-[300px] w-full [&_.recharts-pie-label-text]:fill-foreground pb-0"
           >
             <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <Pie data={chartData} dataKey="value" label nameKey="_id" />
+              <ChartTooltip content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value, name) => {
+                    const amount = formatToBRL(Number(value))
+                    const recipient = Capitalize(name.toString())
+                    return <span>{recipient}: <strong>{amount}</strong></span>
+                  }
+                  }
+                  labelFormatter={(value) => formatToBRL(Number(value))}
+                />
+              } />
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="_id"
+                label={({ payload, ...props }) => {
+                  return (
+                    <text
+                      cx={props.cx}
+                      cy={props.cy}
+                      x={props.x}
+                      y={props.y}
+                      textAnchor={props.textAnchor}
+                      dominantBaseline={props.dominantBaseline}
+                      className="fill-foreground"
+                    >
+                      {formatToBRL(payload.value)}
+                    </text>
+                  )
+                }}
+              />
               <ChartLegend
                 content={
                   <ChartLegendContent
