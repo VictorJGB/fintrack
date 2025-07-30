@@ -46,7 +46,7 @@ export default function GroupedExpensesChart({ className }: Props) {
 
   const chartData = useMemo(() => data?.map((item) => (
     {
-      _id: item._id,
+      _id: item._id.toLowerCase(),
       value: item.total_amount,
       fill: `var(--color-${item._id.toLowerCase()})`
     }
@@ -67,8 +67,6 @@ export default function GroupedExpensesChart({ className }: Props) {
           }
         ), {}),
       })
-
-      console.log({ chartConfig, chartData })
     }
   }, [data])
 
