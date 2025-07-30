@@ -7,6 +7,7 @@ import ActiveBreadcrumb from "./active-breadcrumb"
 // utils
 import { appLinks } from "@/utils/routes"
 
+import PayExpensesDialog from "@/components/dialogs/expenses/pay-expense"
 import { usePathname } from "next/navigation"
 
 
@@ -23,6 +24,7 @@ export default function MainSidebarHeader() {
         label={activeRoute?.label ?? ''}
         pathname={path}
       />
+      <PayExpensesDialog triggerClassName="ml-auto" />
     </header>
   )
 }

@@ -125,8 +125,7 @@ export default function ImportExpensesDialog() {
             {/* Download template */}
             <div className='flex items-center justify-start gap-2'>
               <Info className='size-5 text-primary' />
-              <p>Não sabe qual o modelo correto a ser preenchido?</p>
-              <p>Baixe o&nbsp;
+              <p>Não sabe qual o modelo correto a ser preenchido? Baixe o&nbsp;
                 <Link
                   className='text-primary underline'
                   href={'/sheets/despesas_template.xlsx'}
@@ -141,8 +140,7 @@ export default function ImportExpensesDialog() {
             {/* how to fill */}
             <div className='flex items-center justify-start gap-2'>
               <Info className='size-5 text-primary' />
-              <p>Não sabe como preencher o modelo?</p>
-              <p>Verifique <ImportExpenseTemplateInfoDialog /></p>
+              <p>Não sabe como preencher o modelo? Verifique <ImportExpenseTemplateInfoDialog /> </p>
             </div>
 
             <DialogFooter>

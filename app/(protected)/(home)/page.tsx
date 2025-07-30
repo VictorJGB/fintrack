@@ -9,8 +9,8 @@ export default function Home() {
     <div className="@container/main flex flex-col items-start justify-start size-full gap-6">
       <SectionCards />
       <div className="flex flex-col md:flex-row gap-6 w-full">
-        <ExpensesChart className="basis-full md:basis-2/4 xl:basis-2/3" />
-        <GroupedExpensesChart className="basis-full md:basis-2/4 xl:basis-1/3" />
+        <ExpensesChart className="basis-full sm:basis-2/4 md:basis-2/3" />
+        <GroupedExpensesChart className="basis-full sm:basis-2/4 md:basis-1/3" />
       </div>
       <IncomesChart />
     </div>
