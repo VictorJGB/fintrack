@@ -15,9 +15,6 @@ interface Props {
   triggerClassName?: string
 }
 
-interface FooterProps {
-  handleSubmit: () => void
-}
 
 
 export default function PayExpensesDialog({ triggerClassName }: Props) {
