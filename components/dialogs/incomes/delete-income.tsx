@@ -25,10 +25,10 @@ export default function DeleteIncomeDialog({ incomeID }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteIncome,
-    mutationKey: ['delete-income'],
+    mutationKey: ['incomes', 'delete'],
     onSuccess: ({ message }) => {
       toast.success(message)
-      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes', 'card-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['incomes'] })
       setIsOpen(false)
     },
     onError: ({ message }) => {

@@ -47,11 +47,11 @@ export default function AddIncomeDialog() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createIncome,
-    mutationKey: ['create-income'],
+    mutationKey: ['incomes', 'add'],
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['incomes'] })
     },
     onError: (err) => {
       console.error(err)

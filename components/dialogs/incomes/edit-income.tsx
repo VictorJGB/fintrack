@@ -55,11 +55,11 @@ export default function EditIncomeDialog({ data }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateIncome,
-    mutationKey: ['update-expense'],
+    mutationKey: ['incomes', 'edit'],
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes', 'card-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['incomes'] })
     },
     onError: (err) => {
       console.error(err)

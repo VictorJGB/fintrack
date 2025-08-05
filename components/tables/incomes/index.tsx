@@ -25,7 +25,7 @@ export default function IncomesTable() {
   const itemsPerPage = searchParams.get("items_per_page") ?? "10";
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["get-incomes", page],
+    queryKey: ["incomes", page],
     queryFn: () => getIncomes(page, itemsPerPage),
   });
 

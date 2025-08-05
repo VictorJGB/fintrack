@@ -47,11 +47,11 @@ export default function ImportIncomesDialog() {
   const [isOpen, setIsOpen] = useState(false)
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['import-incomes'],
+    mutationKey: ['incomes', 'import'],
     mutationFn: importIncomes,
     onSuccess: () => {
       toast.success("Recebimentos importados com sucesso!");
-      queryClient.invalidateQueries({ queryKey: ['get-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['incomes'] })
     },
     onError: (error: Error) => {
       toast.error(error.message)

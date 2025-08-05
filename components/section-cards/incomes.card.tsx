@@ -16,7 +16,7 @@ export default function IncomesCard() {
   const itemsPerPage = ""
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["dashboard-incomes"],
+    queryKey: ["incomes", "card"],
     queryFn: () => getIncomes(page, period, itemsPerPage),
   });
 
