@@ -14,3 +14,5 @@ export interface APIResponse {
   itemsPerPage: number;
   data: Income[];
 }
+
+export type MonthFilter = 'current' | 'quarter' | 'last-year'

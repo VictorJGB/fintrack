@@ -10,14 +10,14 @@ import getIncomes from "@/actions/incomes/get-incomes";
 import { useQuery } from "@tanstack/react-query";
 
 // data table
-import AddIncomeDialog from "@/components/dialogs/incomes/add-income";
 import { DataTable } from "../data-table";
 import TableSkeleton from "../table-skeleton";
-import { columns } from "./columns";
 
 // components
+import AddIncomeDialog from "@/components/dialogs/incomes/add-income";
 import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import { toast } from "sonner";
+import { columns } from "./columns";
 
 export default function IncomesTable() {
   const searchParams = useSearchParams();
@@ -54,9 +54,12 @@ export default function IncomesTable() {
       )}
 
       {!data && !isLoading && (
-        <div className='size-full flex flex-col items-center justify-center gap-4'>
+        <div className='w-full mt-8 flex flex-col items-center justify-center gap-4'>
           <p className='text-muted-foreground font-semibold'>Nenhum recebimento encontrado!</p>
-          <AddIncomeDialog />
+          <div className="flex items-center gap-2">
+            <AddIncomeDialog />
+            <ImportIncomesDialog />
+          </div>
         </div>
       )}
     </div>

@@ -9,6 +9,7 @@ import { SectionCard, SectionCardSkeleton } from "./card"
 import { formatToBRL } from "@/utils/formatters"
 
 export default function ExpensesCard() {
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["card-expenses"],
     queryFn: () => getExpenses()

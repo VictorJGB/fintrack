@@ -8,11 +8,13 @@ import type { APIResponse } from "@/interfaces/expense";
 
 export default async function getExpenses(
   page?: string,
+  period?: string,
   itemsPerPage?: string
 ): Promise<APIResponse> {
 
   const params = new URLSearchParams({
     page: page ?? "1",
+    period: period ?? "",
     items_per_page: itemsPerPage ?? "",
   }).toString();
 

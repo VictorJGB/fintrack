@@ -20,6 +20,11 @@ import {
 } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from "@/components/ui/input"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { toast } from 'sonner'
 
@@ -27,9 +32,14 @@ import { toast } from 'sonner'
 import createExpense from '@/actions/expenses/create-expense'
 
 // icons
-import { Loader2, PlusCircle } from "lucide-react"
+import { Calendar } from '@/components/ui/calendar'
+import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { CalendarIcon, Loader2, PlusCircle } from "lucide-react"
 
 const formSchema = z.object({
+  date: z.date({ required_error: "Data é obrigatório" }),
   company: z.string().min(2, { message: 'Minimo 2 caracteres' }),
   description: z.string(),
   recipient: z.string().optional(),
@@ -48,7 +58,7 @@ export default function AddExpenseDialog() {
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-expenses'] })
+      queryClient.invalidateQueries({ queryKey: ['get-expenses', 'chart-expenses', 'card-expenses'] })
       resetForm()
     },
     onError: (err) => {
@@ -60,6 +70,7 @@ export default function AddExpenseDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      date: new Date(),
       company: '',
       description: '',
       recipient: '',
@@ -107,6 +118,47 @@ export default function AddExpenseDialog() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className='flex flex-col gap-4'>
+              {/* date */}
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Data da despesa</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP", { locale: ptBR })
+                            ) : (
+                              <span>Escolha uma data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          locale={ptBR}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* company */}
               <FormField
                 control={form.control}

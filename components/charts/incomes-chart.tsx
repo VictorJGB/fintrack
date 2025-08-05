@@ -15,6 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import ErrorCard from "../cards/error-card";
 import { Skeleton } from "../ui/skeleton";
 
 // actions
@@ -22,7 +23,8 @@ import getIncomes from "@/actions/incomes/get-incomes";
 import { useQuery } from "@tanstack/react-query";
 // utils
 import { formatToBRL } from "@/utils/formatters";
-import ErrorCard from "../cards/error-card";
+// types
+import type { MonthFilter } from "@/interfaces/income";
 
 const chartConfig = {
   incomes: {
@@ -32,21 +34,18 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function IncomesChart() {
-  const page = "1";
-  const period = 'quarter' //current month
+  const page = "";
+  const period: MonthFilter = 'current' //current month
+  const itemsPerPage = ""
 
   const { data, isLoading, error } = useQuery({
-    queryFn: () => getIncomes(page, period),
-    queryKey: ["chart-incomes"],
+    queryFn: () => getIncomes(page, period, itemsPerPage),
+    queryKey: ["dashboard-incomes"],
   });
 
-  if (isLoading) return <Skeleton className="h-[250px] w-full rounded-2xl" />
+  if (isLoading) return <Skeleton className="h-[300px] w-full rounded-2xl" />
 
   if (error) return <ErrorCard title="Erro ao carregar recebimentos" error={error.message} className="h-[250px] w-full" />
-
-  // if (!error && data && data.data.length === 0) return (
-
-  // )
 
   if (data) return (
     <Card className="w-full rounded-2xl">
@@ -55,60 +54,65 @@ export default function IncomesChart() {
         <CardDescription>Recebimentos do mês</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <BarChart
-            accessibilityLayer
-            data={data.data}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+        {data.data.length === 0 && <p className="size-full text-center text-medium text-muted-foreground">Nenhum recebimento encontrado</p>}
+
+
+        {data.data.length > 0 &&
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[250px] w-full"
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("pt-BR", {
-                  month: "short",
-                  day: "numeric",
-                });
+            <BarChart
+              accessibilityLayer
+              data={data.data}
+              margin={{
+                left: 12,
+                right: 12,
               }}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="description"
-                  formatter={(value) => {
-                    return (
-                      <div className="flex items-center justify-center gap-2">
-                        <strong className="text-primary">
-                          Recebimento:{" "}
-                        </strong>
-                        <span>{formatToBRL(+value)}</span>
-                      </div>
-                    );
-                  }}
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("pt-BR", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    });
-                  }}
-                />
-              }
-            />
-            <Bar dataKey="amount" fill="var(--color-incomes)" radius={8} />
-          </BarChart>
-        </ChartContainer>
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString("pt-BR", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="description"
+                    formatter={(value) => {
+                      return (
+                        <div className="flex items-center justify-center gap-2">
+                          <strong className="text-primary">
+                            Recebimento:{" "}
+                          </strong>
+                          <span>{formatToBRL(+value)}</span>
+                        </div>
+                      );
+                    }}
+                    labelFormatter={(value) => {
+                      return new Date(value).toLocaleDateString("pt-BR", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      });
+                    }}
+                  />
+                }
+              />
+              <Bar dataKey="amount" fill="var(--color-incomes)" radius={8} />
+            </BarChart>
+          </ChartContainer>
+        }
       </CardContent>
     </Card>
   );

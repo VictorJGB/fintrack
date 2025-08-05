@@ -123,9 +123,8 @@ export default function ImportIncomesDialog() {
 
             {/* Download template */}
             <div className='flex items-center justify-start gap-2'>
-              <Info className='size-5 text-primary' />
-              <p>Não sabe qual o modelo correto a ser preenchido?</p>
-              <p>Baixe o&nbsp;
+              <Info className='size-8 sm:size-5 text-primary' />
+              <p>Não sabe qual o modelo correto a ser preenchido? Baixe o&nbsp;
                 <Link
                   className='text-primary underline'
                   href={'/sheets/recebimentos_template.xlsx'}
@@ -139,9 +138,8 @@ export default function ImportIncomesDialog() {
 
             {/* how to fill */}
             <div className='flex items-center justify-start gap-2'>
-              <Info className='size-5 text-primary' />
-              <p>Não sabe como preencher o modelo?</p>
-              <p>Verifique <ImportIncomeTemplateInfoDialog /></p>
+              <Info className='size-8 sm:size-5 text-primary' />
+              <p>Não sabe como preencher o modelo? Verifique <ImportIncomeTemplateInfoDialog /></p>
             </div>
 
             <DialogFooter>

@@ -39,14 +39,12 @@ interface Props {
 }
 
 export default function ExpensesChart({ className }: Props) {
-  const page = "1";;
-
   const { data, isLoading, error } = useQuery({
-    queryFn: () => getExpenses(page),
+    queryFn: () => getExpenses(),
     queryKey: ["chart-expenses"],
   });
 
-  if (isLoading) return <Skeleton className={cn("h-[250px] rounded-2xl", className)} />
+  if (isLoading) return <Skeleton className={cn("h-[300px] rounded-2xl", className)} />
 
   if (error) return <ErrorCard title="Erro ao carregar despesas" error={error.message} />
 
@@ -57,64 +55,68 @@ export default function ExpensesChart({ className }: Props) {
         <CardDescription>Despesas do mês</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <BarChart
-            accessibilityLayer
-            data={data.data}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+        {data.data.length === 0 && <p className="size-full text-center text-medium text-muted-foreground">Nenhuma despesa encontrada</p>}
+
+        {data.data.length > 0 &&
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[250px] w-full"
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("pt-BR", {
-                  month: "short",
-                  day: "numeric",
-                });
+            <BarChart
+              accessibilityLayer
+              data={data.data}
+              margin={{
+                left: 12,
+                right: 12,
               }}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="description"
-                  formatter={(value) => {
-                    return (
-                      <div className="flex items-center justify-center gap-2">
-                        <strong className="text-destructive">
-                          Despesa:{" "}
-                        </strong>
-                        <span>{formatToBRL(+value)}</span>
-                      </div>
-                    );
-                  }}
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("pt-BR", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    });
-                  }}
-                />
-              }
-            />
-            <Bar
-              dataKey="amount_per_installment"
-              fill="var(--color-expenses)"
-              radius={8}
-            />
-          </BarChart>
-        </ChartContainer>
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString("pt-BR", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="description"
+                    formatter={(value) => {
+                      return (
+                        <div className="flex items-center justify-center gap-2">
+                          <strong className="text-destructive">
+                            Despesa:{" "}
+                          </strong>
+                          <span>{formatToBRL(+value)}</span>
+                        </div>
+                      );
+                    }}
+                    labelFormatter={(value) => {
+                      return new Date(value).toLocaleDateString("pt-BR", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      });
+                    }}
+                  />
+                }
+              />
+              <Bar
+                dataKey="amount_per_installment"
+                fill="var(--color-expenses)"
+                radius={8}
+              />
+            </BarChart>
+          </ChartContainer>
+        }
       </CardContent>
     </Card>
   );

@@ -7,11 +7,17 @@ import { useQuery } from "@tanstack/react-query";
 import { SectionCard, SectionCardSkeleton } from "./card";
 // utils
 import { formatToBRL } from "@/utils/formatters";
+// types
+import type { MonthFilter } from "@/interfaces/expense";
 
 export default function IncomesCard() {
+  const page = "";
+  const period: MonthFilter = "current";
+  const itemsPerPage = ""
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["card-incomes"],
-    queryFn: () => getIncomes(),
+    queryKey: ["dashboard-incomes"],
+    queryFn: () => getIncomes(page, period, itemsPerPage),
   });
 
   if (isLoading) return <SectionCardSkeleton />;

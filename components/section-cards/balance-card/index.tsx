@@ -1,4 +1,5 @@
 'use client'
+import { useUser } from "@/context/user"
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes"
@@ -10,20 +11,25 @@ import { formatToBRL } from "@/utils/formatters"
 // libs
 import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import ErrorCard from "@/components/cards/error-card"
-import { useUser } from "@/context/user"
 import { useQuery } from "@tanstack/react-query"
+// types
+import type { MonthFilter } from "@/interfaces/income"
 
 export default function BalanceCard() {
   const { user } = useUser()
   const searchRecipient: string = 'Eu'
+
+  const incomesPage = ""
+  const incomesPeriod: MonthFilter = "current"
+  const incomesPerPage = ""
 
   const { data: expenses, isLoading: isLoadingExpense, error: expenseError } = useQuery({
     queryKey: ["grouped-expenses", searchRecipient],
     queryFn: () => getGroupedExpenses(searchRecipient)
   })
   const { data: incomes, isLoading: isLoadingIncomes, error: incomesError } = useQuery({
-    queryKey: ["card-incomes"],
-    queryFn: () => getIncomes()
+    queryKey: ["dashboard-incomes"],
+    queryFn: () => getIncomes(incomesPage, incomesPeriod, incomesPerPage),
   })
 
   if (isLoadingExpense || isLoadingIncomes || !user) return <SectionCardSkeleton />
