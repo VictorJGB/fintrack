@@ -33,17 +33,20 @@ const chartConfig = {
 
 export default function IncomesChart() {
   const page = "1";
-  const itemsPerPage = undefined;
-  const period = 'current' //current month
+  const period = 'quarter' //current month
 
   const { data, isLoading, error } = useQuery({
-    queryFn: () => getIncomes(page, itemsPerPage, period),
+    queryFn: () => getIncomes(page, period),
     queryKey: ["chart-incomes"],
   });
 
   if (isLoading) return <Skeleton className="h-[250px] w-full rounded-2xl" />
 
-  if (error) return <ErrorCard title="Erro ao carregar recebimentos" error={error.message} className="h-[250px]" />
+  if (error) return <ErrorCard title="Erro ao carregar recebimentos" error={error.message} className="h-[250px] w-full" />
+
+  // if (!error && data && data.data.length === 0) return (
+
+  // )
 
   if (data) return (
     <Card className="w-full rounded-2xl">
