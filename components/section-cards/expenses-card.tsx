@@ -1,7 +1,7 @@
 'use client'
 
 // actions
-import getExpenses from "@/actions/expenses/get-expenses"
+import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import { useQuery } from "@tanstack/react-query"
 // components
 import { SectionCard, SectionCardSkeleton } from "./card"
@@ -9,16 +9,18 @@ import { SectionCard, SectionCardSkeleton } from "./card"
 import { formatToBRL } from "@/utils/formatters"
 
 export default function ExpensesCard() {
+  const recipient = 'Eu'
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["card-expenses"],
-    queryFn: () => getExpenses()
+    queryKey: ["expenses", 'card'],
+    queryFn: () => getGroupedExpenses(recipient)
   })
 
   if (isLoading) return <SectionCardSkeleton />
 
+
   if (data) {
-    const total = formatToBRL(data.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0))
+    const total = formatToBRL(data[0].data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0))
     const path = '/expenses?page=1&items_per_page=1'
 
     return (

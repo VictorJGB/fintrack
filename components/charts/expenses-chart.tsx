@@ -41,7 +41,7 @@ interface Props {
 export default function ExpensesChart({ className }: Props) {
   const { data, isLoading, error } = useQuery({
     queryFn: () => getExpenses(),
-    queryKey: ["chart-expenses"],
+    queryKey: ["expenses", "chart"],
   });
 
   if (isLoading) return <Skeleton className={cn("h-[300px] rounded-2xl", className)} />

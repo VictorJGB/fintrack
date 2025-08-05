@@ -28,7 +28,7 @@ export default function DeleteIncomeDialog({ incomeID }: Props) {
     mutationKey: ['delete-income'],
     onSuccess: ({ message }) => {
       toast.success(message)
-      queryClient.invalidateQueries({ queryKey: ['get-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes', 'card-incomes'] })
       setIsOpen(false)
     },
     onError: ({ message }) => {

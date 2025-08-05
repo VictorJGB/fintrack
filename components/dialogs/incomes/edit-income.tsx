@@ -59,7 +59,7 @@ export default function EditIncomeDialog({ data }: Props) {
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['get-incomes', 'chart-incomes', 'card-incomes'] })
     },
     onError: (err) => {
       console.error(err)
@@ -111,7 +111,7 @@ export default function EditIncomeDialog({ data }: Props) {
                 name='date'
                 render={({ field }) => (
                   <FormItem className="grid gap-2">
-                    <FormLabel>Date of birth</FormLabel>
+                    <FormLabel>Data do recebimento</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>

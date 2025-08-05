@@ -40,7 +40,7 @@ interface Props {
 
 export default function PayExpensesTable({ handleDialogClose }: Props) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['get-expenses'],
+    queryKey: ['expenses'],
     queryFn: () => getExpenses()
   })
 

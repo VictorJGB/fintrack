@@ -10,6 +10,7 @@ import { z } from 'zod'
 
 // components
 import { Button } from "@/components/ui/button"
+import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogClose,
@@ -31,11 +32,12 @@ import { toast } from 'sonner'
 // actions
 import createExpense from '@/actions/expenses/create-expense'
 
-// icons
-import { Calendar } from '@/components/ui/calendar'
+// utils
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+
+// icons
 import { CalendarIcon, Loader2, PlusCircle } from "lucide-react"
 
 const formSchema = z.object({
@@ -54,11 +56,11 @@ export default function AddExpenseDialog() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createExpense,
-    mutationKey: ['update-expense'],
+    mutationKey: ['expenses', 'add'],
     onSuccess: ({ message }) => {
       toast.success(message)
       toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['get-expenses', 'chart-expenses', 'card-expenses'] })
+      queryClient.invalidateQueries({ queryKey: ['expenses'] })
       resetForm()
     },
     onError: (err) => {
@@ -73,7 +75,7 @@ export default function AddExpenseDialog() {
       date: new Date(),
       company: '',
       description: '',
-      recipient: '',
+      recipient: 'Eu',
       installments: 1,
       installments_paid: 0,
       amount_per_installment: 1,

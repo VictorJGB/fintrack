@@ -77,11 +77,11 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateExpense,
-    mutationKey: ["update-expense"],
+    mutationKey: ["expenses", "edit"],
     onSuccess: ({ message }) => {
       toast.success(message);
       toggleModalOpen();
-      queryClient.invalidateQueries({ queryKey: ["get-expenses"] });
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
     },
     onError: (err) => {
       console.error(err);
@@ -142,7 +142,7 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
                 name="date"
                 render={({ field }) => (
                   <FormItem className="grid gap-2">
-                    <FormLabel>Date of birth</FormLabel>
+                    <FormLabel>Data da despesa</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>

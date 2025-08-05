@@ -25,7 +25,7 @@ export default function ExpensesTable() {
   const period = ''
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['get-expenses', page],
+    queryKey: ['expenses', page],
     queryFn: () => getExpenses(page, period, itemsPerPage),
   })
 

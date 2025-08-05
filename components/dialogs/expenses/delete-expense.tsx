@@ -26,10 +26,10 @@ export default function DeleteExpenseDialog({ expenseID, handleModalClose }: Pro
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteExpense,
-    mutationKey: ['delete-expense'],
+    mutationKey: ['expenses', 'delete'],
     onSuccess: ({ message }) => {
       toast.success(message)
-      queryClient.invalidateQueries({ queryKey: ['get-expenses'] })
+      queryClient.invalidateQueries({ queryKey: ['expenses'] })
       setIsOpen(false)
     },
     onError: ({ message }) => {
