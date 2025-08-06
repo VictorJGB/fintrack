@@ -89,7 +89,7 @@ export default function ExpensesChart({ className }: Props) {
                   <ChartTooltipContent
                     className="w-[150px]"
                     nameKey="description"
-                    formatter={(value) => {
+                    formatter={(value, name) => {
                       return (
                         <div className="flex items-center justify-center gap-2">
                           <strong className="text-destructive">

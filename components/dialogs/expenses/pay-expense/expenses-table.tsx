@@ -95,7 +95,7 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
 
   if (isLoading && state.length === 0) return <TableSkeleton rowsNumber={10} />
 
-  if (error) return <p className="text-destructive font-semibold">{error.message}</p>
+  if (error || updateError) return <p className="text-destructive font-semibold">{error?.message || updateError?.message}</p>
 
   return (
     <div className='size-full flex flex-col gap-3'>
