@@ -1,20 +1,23 @@
 'use client'
+import { useEffect, useReducer } from 'react'
 
 // components
 import TableSkeleton from '@/components/tables/table-skeleton'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { toast } from 'sonner'
 // interfaces
 import type Expense from '@/interfaces/expense'
 // utils
 import { formatDateToPTBR, formatToBRL } from '@/utils/formatters'
 // icons
-import { Minus, Plus } from 'lucide-react'
+import { Loader2, Minus, Plus } from 'lucide-react'
 // libs
-import { useQuery } from '@tanstack/react-query'
+import { queryClient } from '@/lib/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
-import { useEffect, useReducer } from 'react'
+import updateManyExpenses from '@/actions/expenses/update-many-expenses'
 
 const collumns = ['Data', 'Empresa', 'Descrição', 'Valor por parcela', 'Parcelas']
 const MAX_INSTALLMENTS = 12
@@ -44,6 +47,19 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
     queryFn: () => getExpenses()
   })
 
+  const { mutate, isPending: isUpdating, error: updateError } = useMutation({
+    mutationFn: updateManyExpenses,
+    mutationKey: ['update-many-expenses'],
+    onSuccess: () => {
+      toast.success('Despesas pagas com sucesso!')
+      queryClient.invalidateQueries({ queryKey: ['expenses'] })
+      handleDialogClose?.()
+    },
+    onError: ({ message }) => {
+      toast.error(message)
+    }
+  })
+
   const [state, dispatch] = useReducer(reducer, [])
 
   useEffect(() => {
@@ -60,11 +76,11 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
   }, [data])
 
   function getIsMinusDisabled(installmentsPaid: number) {
-    return installmentsPaid <= 0
+    return installmentsPaid <= 0 || isUpdating
   }
 
   function getIsPlusDisabled(installments: number,) {
-    return installments >= MAX_INSTALLMENTS
+    return installments >= MAX_INSTALLMENTS || isUpdating
   }
 
   function onInstallmentsChange(row: Expense, installments: number,) {
@@ -74,7 +90,7 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
   }
 
   function handleUpdateExpenses() {
-    console.log(state)
+    mutate(state)
   }
 
   if (isLoading && state.length === 0) return <TableSkeleton rowsNumber={10} />
@@ -123,8 +139,20 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
         </TableBody>
       </Table >
       <div className='flex items-center justify-end gap-2 my-4'>
-        {handleDialogClose && <Button onClick={handleDialogClose} variant={'secondary'}>Fechar</Button>}
-        <Button onClickCapture={handleUpdateExpenses}>Salvar</Button>
+        {
+          handleDialogClose &&
+          <Button
+            onClick={handleDialogClose}
+            disabled={isUpdating || isLoading}
+            variant={'secondary'}
+          >
+            Fechar
+          </Button>
+        }
+        <Button onClick={handleUpdateExpenses} disabled={isUpdating || isLoading}>
+          {isUpdating && <Loader2 className='mr-2 size-3 animate-spin' />}
+          {isUpdating ? 'Pagando despesas...' : 'Pagar despesas'}
+        </Button>
       </div>
     </div>
   )

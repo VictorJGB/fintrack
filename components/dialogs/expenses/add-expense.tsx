@@ -91,7 +91,10 @@ export default function AddExpenseDialog() {
     setIsOpen(!isOpen)
   }
 
-  const resetForm = () => form.reset()
+  const resetForm = () => {
+    form.reset()
+    setIsOpen(false)
+  }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const resBody = {

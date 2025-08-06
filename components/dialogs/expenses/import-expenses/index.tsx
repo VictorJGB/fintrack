@@ -68,7 +68,6 @@ export default function ImportExpensesDialog() {
   })
 
   const isFilesUploaded = useMemo(() => {
-    console.log(form.getValues("files"))
     return form.watch("files")?.length >= MAX_FILES
   }, [form])
 

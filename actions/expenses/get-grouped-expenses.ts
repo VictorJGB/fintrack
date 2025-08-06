@@ -17,8 +17,6 @@ export default async function getGroupedExpenses(recipient?: string): Promise<Re
     url += `?${params}`
   }
 
-  console.log('grouped expenses url', url)
-
   const response = await apiFetcher(url, {
     method: 'GET',
   })
