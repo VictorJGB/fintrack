@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 
 // components
 import { Button } from '@/components/ui/button'
@@ -8,15 +9,10 @@ import PayExpensesTable from './expenses-table'
 import { cn } from '@/lib/utils'
 // icons
 import { CircleDollarSign } from 'lucide-react'
-import { useState } from 'react'
-// libs
 
 interface Props {
   triggerClassName?: string
 }
-
-
-
 export default function PayExpensesDialog({ triggerClassName }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
