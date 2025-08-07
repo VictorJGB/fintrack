@@ -34,13 +34,10 @@ An financial manager for expenses, incomes, plannings and many more
 
 ### TO-DO
 
-#### ERRORS
-- Mobile: Cookie não sendo mantido na sessão [x]
-- Ao editar despesa (possívelmente recebimento também) transformar data de string pra date [x]
-- Mostrar despesas no dashboard apenas do mês atual [x]
-- Mostrar despesas por destinatário [x]
-- adicionar botão para pagar as parcelas do mês automaticamente [x]
-- Consertar responsividade do dialog de importação de despesas e recebimentos [x]
+#### FEATURES
+- [] Adicionar tela de despesas planejadas
+- [] Adicionar tela de despesas fixas
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

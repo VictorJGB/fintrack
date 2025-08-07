@@ -19,15 +19,15 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import UserCombobox from "./header/user-combobox";
+import UserCombobox from "../header/user-combobox";
 
 // icons
 import Image from "next/image";
-import LucideIconStore from "./lucide-icon-store";
+import LucideIconStore from "../lucide-icon-store";
 
 // assets
 import logo from "@/public/images/fintrack_logo_02_no_bg.png";
-import ModeToggle from "./mode-toggle";
+import ModeToggle from "../mode-toggle";
 // hooks
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -64,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <Button
               asChild
               data-active={pathname === href}
-              className="rounded flex items-center justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
+              className="rounded flex items-start justify-start data-[active=true]:text-background data-[active=true]:bg-foreground text-muted-foreground px-4 py-2"
               key={index}
               variant={"ghost"}
               onClick={isMobile ? toggleSidebar : () => { }}

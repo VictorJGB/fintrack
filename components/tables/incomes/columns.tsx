@@ -76,6 +76,7 @@ export const columns: ColumnDef<Income>[] = [
   },
   {
     id: 'actions',
+    header: 'Ações',
     cell: ({ row }) => {
       const income = row.original
 
