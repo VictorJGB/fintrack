@@ -14,7 +14,7 @@ export default async function getIncomes(
   const params = new URLSearchParams({
     page: page ?? "1",
     items_per_page: itemsPerPage ?? "10",
-    period: period ?? "DEFAULT",
+    period: period ?? "",
   }).toString();
 
   const response = await apiFetcher(`incomes?${params}`, {

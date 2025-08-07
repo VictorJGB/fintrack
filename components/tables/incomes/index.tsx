@@ -40,7 +40,7 @@ export default function IncomesTable() {
     <div className="container mx-auto py-10">
       {isLoading && <TableSkeleton rowsNumber={10} />}
 
-      {data && (
+      {data && data.data.length > 0 && (
         <DataTable
           columns={columns}
           data={data.data}

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 // components
-import InfoFixedExpenseDialog from "@/components/dialogs/fixed-expenses/info-fixed-expense";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -40,10 +39,6 @@ export default function ActionsDropdownMenu({ data }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Ações</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="w-full" asChild>
-          <InfoFixedExpenseDialog data={data} />
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="w-full" asChild>
           <EditFixedExpenseDialog data={data} handleModalClose={closeModal} />
