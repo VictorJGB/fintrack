@@ -17,7 +17,7 @@ export default function IncomesCard() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["incomes", "card"],
-    queryFn: () => getIncomes(page, period, itemsPerPage),
+    queryFn: () => getIncomes(page, itemsPerPage, period),
   });
 
   if (isLoading) return <SectionCardSkeleton />;

@@ -36,6 +36,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { toggleSidebar } = useSidebar()
   const isMobile = useIsMobile()
 
+  const createQueryParamsUrl = (href: string, urlParams: object) => {
+    const params = new URLSearchParams({ ...urlParams });
+    return `${href}?${params.toString()}`
+  }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="p-4 flex-row">
@@ -56,9 +61,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <Separator />
       <SidebarContent className="px-4 py-6">
         {appLinks.map(({ label, href, icon, urlParams }, index) => {
-          let path = href;
-          if (urlParams)
-            path = `${href}?page=${urlParams.page}&items_per_page=${urlParams.itemsPerPage}`;
+          const path = urlParams ? createQueryParamsUrl(href, urlParams) : href
 
           return (
             <Button

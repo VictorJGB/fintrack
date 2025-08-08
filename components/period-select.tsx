@@ -1,5 +1,3 @@
-import type { Dispatch, SetStateAction } from "react"
-
 // utils
 import { cn } from "@/lib/utils"
 // components
@@ -7,7 +5,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 interface Props {
   period: string
-  onPeriodChange: Dispatch<SetStateAction<string>>
+  onPeriodChange: (value: string) => void
   className?: string
 }
 
@@ -18,12 +16,11 @@ const periods = [
 ]
 
 export default function PeriodSelect({ period, onPeriodChange, className }: Props) {
-  const getPeriodLabel = (value: string) => periods.find(period => period.value === value)?.label
 
   return (
-    <Select>
+    <Select onValueChange={onPeriodChange} defaultValue={period}>
       <SelectTrigger className={cn('w-[200px]', className)}>
-        <SelectValue defaultValue={period} placeholder={getPeriodLabel(period)} />
+        <SelectValue placeholder="Seleciione um período" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
@@ -32,7 +29,6 @@ export default function PeriodSelect({ period, onPeriodChange, className }: Prop
             <SelectItem
               key={index}
               value={period.value}
-              onClick={() => onPeriodChange(period.value)}
             >
               {period.label}
             </SelectItem>

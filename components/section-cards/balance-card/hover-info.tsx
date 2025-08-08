@@ -23,7 +23,7 @@ export default function BalanceHoverInfo({ totalExpense, totalIncome, totalBalan
         <p>Utilizamos a soma de
           <strong className='text-primary'> recebimentos </strong>
           e da sua <strong> renda fixa mensal </strong> e os subtraimos do total de
-          <strong className='text-destructive'> despesas registradas </strong>
+          <strong className='text-destructive'> suas despesas registradas </strong>
         </p>
 
         <div className='flex items-center justify-center'>

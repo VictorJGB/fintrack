@@ -1,7 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
@@ -24,13 +24,22 @@ export default function IncomesTable() {
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
   const itemsPerPage = searchParams.get("items_per_page") ?? "10";
+  const period = searchParams.get("period") ?? "current";
 
-  const [period, setPeriod] = useState("current");
+  const { push } = useRouter()
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["incomes", page],
+    queryKey: ["incomes", page, itemsPerPage, period],
     queryFn: () => getIncomes(page, itemsPerPage, period),
   });
+
+  const onPeriodSelect = useCallback((period: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("period", period);
+    const url = `/incomes?${params.toString()}`
+
+    push(url)
+  }, [searchParams]);
 
   useEffect(() => {
     if (error) {
@@ -49,7 +58,7 @@ export default function IncomesTable() {
           data={data.data}
           AddDialogComponent={AddIncomeDialog}
           ImportDialogComponent={ImportIncomesDialog}
-          FilterComponent={<PeriodSelect period={period} onPeriodChange={setPeriod} />}
+          FilterComponent={<PeriodSelect period={period} onPeriodChange={onPeriodSelect} />}
           firstPage={data.firstPage}
           lastPage={data.lastPage}
           page={data.page}

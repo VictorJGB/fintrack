@@ -1,6 +1,7 @@
 interface URLParams {
   page: string
-  itemsPerPage?: string
+  items_per_page?: string
+  period?: string
 }
 
 interface Links {
@@ -23,7 +24,7 @@ export const appLinks: Links[] = [
     icon: "BankNoteArrowDown",
     urlParams: {
       page: '1',
-      itemsPerPage: '10'
+      items_per_page: '10'
     }
   },
   {
@@ -32,7 +33,7 @@ export const appLinks: Links[] = [
     icon: "Pin",
     urlParams: {
       page: '1',
-      itemsPerPage: '10'
+      items_per_page: '10'
     }
   },
   {
@@ -41,7 +42,7 @@ export const appLinks: Links[] = [
     icon: "NotebookPen",
     urlParams: {
       page: '1',
-      itemsPerPage: '10'
+      items_per_page: '10'
     }
   },
   {
@@ -50,7 +51,8 @@ export const appLinks: Links[] = [
     icon: "BankNoteArrowUp",
     urlParams: {
       page: '1',
-      itemsPerPage: '10'
+      items_per_page: '10',
+      period: 'current'
     }
   },
 ]

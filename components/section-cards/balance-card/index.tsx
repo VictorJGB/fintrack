@@ -32,8 +32,8 @@ export default function BalanceCard() {
     queryFn: () => getGroupedExpenses(searchRecipient)
   })
   const { data: incomes, isLoading: isLoadingIncomes, error: incomesError } = useQuery({
-    queryKey: ["dashboard", "incomes"],
-    queryFn: () => getIncomes(incomesPage, incomesPeriod, incomesPerPage),
+    queryKey: ["incomes", "dashboard"],
+    queryFn: () => getIncomes(incomesPage, incomesPerPage, incomesPeriod),
   })
 
   if (isLoadingExpense || isLoadingIncomes || !user) return <SectionCardSkeleton />
