@@ -29,7 +29,7 @@ export default function AuthLayout({ children }: Props) {
       push('/login')
     }
 
-  }, [error])
+  }, [error, push])
 
   return (
     <div className="size-full">
