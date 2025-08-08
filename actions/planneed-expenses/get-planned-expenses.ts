@@ -1,11 +1,11 @@
 'use server'
 
-import type { APIResponse } from "@/interfaces/fixed-expense";
+import type { APIResponse } from "@/interfaces/planned-expense";
 // interfaces
 // utils
 import { apiFetcher } from "@/utils/api";
 
-export default async function getFixedExpenses(
+export default async function getPlannedExpenses(
   page?: string,
   itemsPerPage?: string
 ): Promise<APIResponse> {
@@ -14,7 +14,7 @@ export default async function getFixedExpenses(
     items_per_page: itemsPerPage ?? "",
   }).toString();
 
-  const response = await apiFetcher(`expenses/fixed?${params}`, {
+  const response = await apiFetcher(`expenses/planned?${params}`, {
     method: 'GET',
   })
 
