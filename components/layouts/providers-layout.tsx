@@ -9,8 +9,6 @@ import { ThemeProvider } from "next-themes"
 
 // components
 import { Toaster } from "sonner"
-// context
-import { UserProvider } from "@/context/user"
 
 type Props = {
   children: ReactNode
@@ -27,12 +25,10 @@ export default function ProvidersLayout({ children }: Props) {
           disableTransitionOnChange
 
         >
-          <UserProvider>
-            {children}
-            <Toaster
-              richColors
-            />
-          </UserProvider>
+          {children}
+          <Toaster
+            richColors
+          />
         </ThemeProvider>
       </QueryClientProvider>
     </div >

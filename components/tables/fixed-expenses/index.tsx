@@ -38,7 +38,7 @@ export default function FixedExpensesTable() {
     <div className="container mx-auto py-10">
       {isLoading && <TableSkeleton rowsNumber={10} />}
 
-      {data && data.data.length > 0 && <DataTable
+      {data && <DataTable
         columns={columns}
         data={data.data}
         AddDialogComponent={AddFixedExpenseDialog}
@@ -49,16 +49,6 @@ export default function FixedExpensesTable() {
         lastPage={data.lastPage}
 
       />}
-
-      {!data && (
-        <div className='size-full flex flex-col items-center justify-center gap-4'>
-          <p className='text-muted-foreground font-semibold'>Nenhuma despesa encontrada!</p>
-          <div className='flex items-center justify-center gap-2'>
-            <AddFixedExpenseDialog />
-            {/* <ImportExpensesDialog /> */}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

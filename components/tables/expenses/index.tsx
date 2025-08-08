@@ -41,7 +41,7 @@ export default function ExpensesTable() {
 
       {isLoading && <TableSkeleton rowsNumber={10} />}
 
-      {data && data.data.length > 0 && (
+      {data && (
         <DataTable
           columns={columns}
           data={data.data}
@@ -53,16 +53,6 @@ export default function ExpensesTable() {
           lastPage={data.lastPage}
 
         />)}
-
-      {!data && !isLoading && (
-        <div className='size-full flex flex-col items-center justify-center gap-4'>
-          <p className='text-muted-foreground font-semibold'>Nenhuma despesa encontrada!</p>
-          <div className='flex items-center justify-center gap-2'>
-            <AddExpenseDialog />
-            <ImportExpensesDialog />
-          </div>
-        </div>
-      )}
     </div>
   )
 }

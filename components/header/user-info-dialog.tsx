@@ -36,7 +36,7 @@ const formSchema = z.object({
 })
 
 type Props = {
-  user: User
+  user: Omit<User, 'role'>
   triggerClassname: string | undefined
   setIsParentOpen: Dispatch<SetStateAction<boolean>>
 }

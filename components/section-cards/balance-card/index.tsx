@@ -1,5 +1,4 @@
 'use client'
-import { useUser } from "@/context/user"
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes"
@@ -13,10 +12,15 @@ import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import ErrorCard from "@/components/cards/error-card"
 import { useQuery } from "@tanstack/react-query"
 // types
+import verifyUser from "@/actions/user/verify-user"
 import type { MonthFilter } from "@/interfaces/income"
 
 export default function BalanceCard() {
-  const { user } = useUser()
+  const { data: user } = useQuery({
+    queryKey: ['verify-user'],
+    queryFn: verifyUser
+  })
+
   const searchRecipient: string = 'Eu'
 
   const incomesPage = ""
@@ -24,11 +28,11 @@ export default function BalanceCard() {
   const incomesPerPage = ""
 
   const { data: expenses, isLoading: isLoadingExpense, error: expenseError } = useQuery({
-    queryKey: ["grouped-expenses", searchRecipient],
+    queryKey: ["grouped", "expenses", searchRecipient],
     queryFn: () => getGroupedExpenses(searchRecipient)
   })
   const { data: incomes, isLoading: isLoadingIncomes, error: incomesError } = useQuery({
-    queryKey: ["dashboard-incomes"],
+    queryKey: ["dashboard", "incomes"],
     queryFn: () => getIncomes(incomesPage, incomesPeriod, incomesPerPage),
   })
 

@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react'
 // libs
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 // navigation
 import { useRouter } from "next/navigation"
 // icons
@@ -21,11 +21,16 @@ import {
 import { toast } from 'sonner'
 import UserInfoDialog from "./user-info-dialog"
 // context
-import { useUser } from '@/context/user'
+import verifyUser from '@/actions/user/verify-user'
 
 export default function UserCombobox() {
   const [open, setOpen] = useState(false)
-  const { user, setUser } = useUser()
+  const { push } = useRouter()
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['verify-user'],
+    queryFn: verifyUser
+  })
 
   // Logout 
   const { mutate, isPending } = useMutation({
@@ -33,8 +38,7 @@ export default function UserCombobox() {
     mutationFn: Logout,
     onSuccess: () => {
       setOpen(false)
-      setUser(null)
-      replace('/login')
+      push('/login')
     },
     onError: (error) => {
       toast.error(error instanceof Error ? error.message : 'Erro ao fazer logout')
@@ -42,11 +46,10 @@ export default function UserCombobox() {
     }
   })
 
-  const { replace } = useRouter()
 
-  async function logout() { await mutate() }
+  async function logout() { mutate() }
 
-  if (!user) return (
+  if (isLoading) return (
     <Button
       variant="outline"
       disabled={true}
@@ -100,3 +103,5 @@ export default function UserCombobox() {
     </DropdownMenu>
   )
 }
+
+

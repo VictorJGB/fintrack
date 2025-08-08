@@ -1,10 +1,9 @@
 'use server'
 
+import type User from "@/interfaces/user";
 import { apiFetcher } from "@/utils/api";
 
-interface UserResponse {
-  userID: string
-}
+type UserResponse = Omit<User, 'role'>
 
 export default async function verifyUser(): Promise<UserResponse> {
   const response = await apiFetcher('users/auth/verify-user', {

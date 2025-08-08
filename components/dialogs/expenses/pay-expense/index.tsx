@@ -4,7 +4,7 @@ import { useState } from 'react'
 // components
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import PayExpensesTable from './expenses-table'
+import PayExpensesTable from './pay-expenses-table'
 // utils
 import { cn } from '@/lib/utils'
 // icons

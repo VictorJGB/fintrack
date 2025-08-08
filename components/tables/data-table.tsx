@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ElementType } from "react"
+import { useState, type ElementType, type ReactNode } from "react"
 
 // react table
 import {
@@ -32,6 +32,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   AddDialogComponent?: ElementType,
   ImportDialogComponent?: ElementType,
+  FilterComponent?: ReactNode,
   pageCount: number
   page: number
   firstPage: number
@@ -43,6 +44,7 @@ export function DataTable<TData, TValue>({
   data,
   AddDialogComponent,
   ImportDialogComponent,
+  FilterComponent,
   pageCount,
   page,
   firstPage,
@@ -70,19 +72,25 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {/* filter */}
       <div className="flex flex-col sm:flex-row items-center py-4 gap-4 sm:gap-0">
-        <Input
-          className="w-full sm:max-w-sm"
-          placeholder="Digite o seu filtro..."
-          value={globalFilter ?? ""}
-          onChange={(e) => {
-            setGlobalFilter(e.target.value)
-            table.setGlobalFilter(String(e.target.value))
-          }
-          }
-        />
-        <div className="w-full sm:w-fit sm:ml-auto flex items-center justify-between sm:justify-center space-x-2">
+        {/* filters */}
+        <div className="flex items-center justify-center gap-2 basis-full sm:basis-2/4">
+          <Input
+            className="w-full sm:w-3/4"
+            placeholder="Digite o seu filtro..."
+            value={globalFilter ?? ""}
+            onChange={(e) => {
+              setGlobalFilter(e.target.value)
+              table.setGlobalFilter(String(e.target.value))
+            }
+            }
+          />
+
+          {FilterComponent && FilterComponent}
+        </div>
+
+        {/* actions */}
+        <div className="basis-full sm:basis-2/4 sm:ml-auto flex items-center justify-between sm:justify-end space-x-2">
           {ImportDialogComponent && <ImportDialogComponent />}
           {AddDialogComponent && <AddDialogComponent />}
         </div>
@@ -134,12 +142,14 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* pagination */}
-      <TablePagination
-        firstPage={firstPage}
-        lastPage={lastPage}
-        page={page}
-        pageCount={pageCount}
-      />
+      {pageCount >= 1 && (
+        <TablePagination
+          firstPage={firstPage}
+          lastPage={lastPage}
+          page={page}
+          pageCount={pageCount}
+        />
+      )}
     </div>
   )
 }
