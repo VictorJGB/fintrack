@@ -1,7 +1,6 @@
 'use client'
 
 // actions
-import getUser from "@/actions/user/get-user";
 import verifyUser from "@/actions/user/verify-user";
 // libs
 import { useQuery } from "@tanstack/react-query";
@@ -11,19 +10,12 @@ import { SectionCard, SectionCardSkeleton } from "./card";
 
 export default function SalaryCard() {
   // user verification
-  const { data: authData, isLoading: isAuthenticating, error: AuthError } = useQuery({
+  const { data: user, isLoading, error } = useQuery({
     queryKey: ['verify-user'],
     queryFn: verifyUser
   })
 
-  // Retrieving user data
-  const { data: user, isLoading: isLoading, error: userError } = useQuery({
-    queryKey: ['user', authData?.userID],
-    queryFn: () => getUser(authData?.userID || ''),
-    enabled: !!authData?.userID
-  })
-
-  if (isLoading || isAuthenticating) return <SectionCardSkeleton />;
+  if (isLoading) return <SectionCardSkeleton />;
 
   if (user) {
 
@@ -36,6 +28,6 @@ export default function SalaryCard() {
     );
   }
 
-  if (userError || AuthError)
-    return <p className="text-destructive">{JSON.stringify(userError ?? AuthError, null, 2)}</p>;
+  if (error)
+    return <p className="text-destructive">{JSON.stringify(error, null, 2)}</p>;
 }
