@@ -1,10 +1,11 @@
 'use client'
 
+import Logout from "@/actions/user/logout";
 // actions
 import verifyUser from "@/actions/user/verify-user";
 // context
 // react-query
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 // types
 import { useEffect, type ReactNode } from "react";
@@ -23,13 +24,18 @@ export default function AuthLayout({ children }: Props) {
     queryFn: verifyUser
   })
 
+  const { mutate } = useMutation({
+    mutationFn: Logout,
+    onSettled: () => push('/login')
+  })
+
   useEffect(() => {
     if (error) {
       toast.error(error?.message || 'Usuário não identificado!')
-      push('/login')
+      mutate()
     }
 
-  }, [error, push])
+  }, [error])
 
   return (
     <div className="size-full">

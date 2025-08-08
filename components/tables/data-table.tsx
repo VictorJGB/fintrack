@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex flex-col sm:flex-row items-center py-4 gap-4 sm:gap-0">
         {/* filters */}
-        <div className="flex items-center justify-center gap-2 basis-full sm:basis-2/4">
+        <div className="flex items-center justify-start gap-2 basis-full sm:basis-2/4">
           <Input
             className="w-full sm:w-3/4"
             placeholder="Digite o seu filtro..."
