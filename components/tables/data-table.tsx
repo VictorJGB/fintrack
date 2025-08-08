@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
         {/* filters */}
         <div className="flex items-center justify-start gap-2 basis-full sm:basis-2/4">
           <Input
-            className="w-full sm:w-3/4"
+            className="w-full sm:max-w-sm"
             placeholder="Digite o seu filtro..."
             value={globalFilter ?? ""}
             onChange={(e) => {

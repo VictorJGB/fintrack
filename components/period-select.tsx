@@ -1,6 +1,6 @@
 // utils
-import { cn } from "@/lib/utils"
 // components
+import { cn } from "@/lib/utils"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
 
 interface Props {
@@ -13,14 +13,15 @@ const periods = [
   { label: 'Mês atual', value: 'current' },
   { label: 'Últimos 3 meses', value: 'quarter' },
   { label: 'Último ano', value: 'last-year' },
+  { label: 'Todas', value: 'all' },
 ]
 
 export default function PeriodSelect({ period, onPeriodChange, className }: Props) {
 
   return (
     <Select onValueChange={onPeriodChange} defaultValue={period}>
-      <SelectTrigger className={cn('w-[200px]', className)}>
-        <SelectValue placeholder="Seleciione um período" />
+      <SelectTrigger className={cn('min-w-[150px]', className)}>
+        <SelectValue placeholder="Selecione um período" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

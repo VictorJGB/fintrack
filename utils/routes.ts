@@ -19,12 +19,13 @@ export const appLinks: Links[] = [
     icon: 'ChartNoAxesCombined',
   },
   {
-    label: 'Despesas',
+    label: 'Despesas mensais',
     href: '/expenses',
     icon: "BankNoteArrowDown",
     urlParams: {
       page: '1',
-      items_per_page: '10'
+      items_per_page: '10',
+      period: "all"
     }
   },
   {

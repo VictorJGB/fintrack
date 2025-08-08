@@ -1,6 +1,6 @@
 'use client'
-import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect } from 'react'
 
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
@@ -16,16 +16,19 @@ import { columns } from './columns'
 
 // components
 import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
+import PeriodSelect from '@/components/period-select'
 import { toast } from 'sonner'
 
 export default function ExpensesTable() {
+  const { push } = useRouter()
+
   const searchParams = useSearchParams()
   const page = searchParams.get('page') ?? '1'
   const itemsPerPage = searchParams.get('items_per_page') ?? '10'
-  const period = ''
+  const period = searchParams.get('period') ?? ""
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['expenses', page],
+    queryKey: ['expenses', page, itemsPerPage, period],
     queryFn: () => getExpenses(page, period, itemsPerPage),
   })
 
@@ -35,6 +38,14 @@ export default function ExpensesTable() {
       console.log(error)
     }
   }, [data, error])
+
+  const onPeriodSelect = useCallback((period: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("period", period);
+    const url = `/expenses?${params.toString()}`
+
+    push(url)
+  }, [searchParams]);
 
   return (
     <div className="container mx-auto py-10">
@@ -47,6 +58,7 @@ export default function ExpensesTable() {
           data={data.data}
           AddDialogComponent={AddExpenseDialog}
           ImportDialogComponent={ImportExpensesDialog}
+          FilterComponent={<PeriodSelect period={period} onPeriodChange={onPeriodSelect} />}
           page={data.page}
           pageCount={data.pageCount}
           firstPage={data.firstPage}
