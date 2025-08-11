@@ -3,17 +3,18 @@
 // actions
 import getIncomes from "@/actions/incomes/get-incomes"
 // components
+import ErrorCard from "@/components/cards/error-card"
 import { SectionCard, SectionCardSkeleton } from "../card"
 import BalanceHoverInfo from "./hover-info"
 // utils
 import { formatToBRL } from "@/utils/formatters"
 // libs
-import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
-import ErrorCard from "@/components/cards/error-card"
 import { useQueries, useQuery } from "@tanstack/react-query"
-// types
+// actions
+import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import getFixedExpenses from "@/actions/fixed-expenses/get-fixed-expenses"
 import verifyUser from "@/actions/user/verify-user"
+// types
 import type FixedExpense from "@/interfaces/fixed-expense"
 import type Income from "@/interfaces/income"
 import type { MonthFilter } from "@/interfaces/income"
