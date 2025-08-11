@@ -10,9 +10,12 @@ import { formatToBRL } from "@/utils/formatters"
 // libs
 import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import ErrorCard from "@/components/cards/error-card"
-import { useQuery } from "@tanstack/react-query"
+import { useQueries, useQuery } from "@tanstack/react-query"
 // types
+import getFixedExpenses from "@/actions/fixed-expenses/get-fixed-expenses"
 import verifyUser from "@/actions/user/verify-user"
+import type FixedExpense from "@/interfaces/fixed-expense"
+import type Income from "@/interfaces/income"
 import type { MonthFilter } from "@/interfaces/income"
 
 export default function BalanceCard() {
@@ -27,20 +30,20 @@ export default function BalanceCard() {
   const incomesPeriod: MonthFilter = "current"
   const incomesPerPage = ""
 
-  const { data: expenses, isLoading: isLoadingExpense, error: expenseError } = useQuery({
-    queryKey: ["grouped", "expenses", searchRecipient],
-    queryFn: () => getGroupedExpenses(searchRecipient)
-  })
-  const { data: incomes, isLoading: isLoadingIncomes, error: incomesError } = useQuery({
-    queryKey: ["incomes", "dashboard"],
-    queryFn: () => getIncomes(incomesPage, incomesPerPage, incomesPeriod),
+  const [grouped, fixed, incomes] = useQueries({
+    queries: [
+      { queryKey: ["grouped", "expenses", searchRecipient], queryFn: () => getGroupedExpenses(searchRecipient) },
+      { queryKey: ['fixed', 'expenses'], queryFn: () => getFixedExpenses() },
+      { queryKey: ["incomes", "dashboard"], queryFn: () => getIncomes(incomesPage, incomesPerPage, incomesPeriod), },
+    ]
   })
 
-  if (isLoadingExpense || isLoadingIncomes || !user) return <SectionCardSkeleton />
+  if (grouped.isLoading || fixed.isLoading || incomes.isLoading || !user) return <SectionCardSkeleton />
 
-  if (expenses && incomes) {
-    const totalExpenses = expenses[0].total_amount
-    const totalIncomes = incomes.data.reduce((acc, income) => { return acc + income.amount }, 0)
+  if (grouped.data && incomes.data && fixed.data) {
+    const totalFixedExpenses = fixed.data.data.reduce((acc: number, expense: FixedExpense) => { return acc + expense.amount }, 0)
+    const totalExpenses = grouped.data[0].total_amount + totalFixedExpenses
+    const totalIncomes = incomes.data.data.reduce((acc: number, income: Income) => { return acc + income.amount }, 0)
     const balance = (totalIncomes + (user?.salary ?? 1518)) - totalExpenses
     const formatedBalance = formatToBRL(balance)
 
@@ -57,10 +60,10 @@ export default function BalanceCard() {
     )
   }
 
-  if (incomesError !== null || expenseError !== null) return (
+  if (incomes.error !== null || grouped.error !== null || fixed.error !== null) return (
     <ErrorCard
       title="Erro ao carregar dados"
-      error={incomesError?.message || expenseError?.message || 'Erro desconhecido, tente novamente'}
+      error={incomes.error?.message || grouped.error?.message || fixed.error?.message || 'Erro desconhecido, tente novamente'}
       className="@container/card h-auto"
     />
   )

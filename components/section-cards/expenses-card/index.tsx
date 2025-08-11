@@ -6,7 +6,7 @@ import { useQueries } from "@tanstack/react-query"
 import { SectionCard, SectionCardSkeleton } from "../card"
 // utils
 import getExpenses from "@/actions/expenses/get-expenses"
-import getAllFixedExpenses from "@/actions/fixed-expenses/get-fixed-expenses"
+import getFixedExpenses from "@/actions/fixed-expenses/get-fixed-expenses"
 import { formatToBRL } from "@/utils/formatters"
 import { useEffect, useState } from "react"
 import ExpensesHoverInfo from "./expenses-hover-card"
@@ -15,7 +15,7 @@ export default function ExpensesCard() {
   const [expenses, fixedExpenses] = useQueries({
     queries: [
       { queryKey: ['expenses'], queryFn: () => getExpenses() },
-      { queryKey: ['fixed', 'expenses'], queryFn: () => getAllFixedExpenses() }
+      { queryKey: ['fixed', 'expenses'], queryFn: () => getFixedExpenses() }
     ]
   })
 
