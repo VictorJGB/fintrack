@@ -6,29 +6,37 @@ import { usePathname } from 'next/navigation'
 // components
 import { Button } from '../ui/button'
 import { useSidebar } from '../ui/sidebar'
-// incons
-import { cn } from '@/lib/utils'
+// icons
 import LucideIconStore from '../lucide-icon-store'
+// utils
+import { cn } from '@/lib/utils'
+import type { URLParams } from '@/utils/routes'
 
 type Props = {
   path: string
+  urlParams?: URLParams
   iconStr: string
   label: string
   className?: string
 }
 
-export default function NavButton({ path, iconStr, label, className }: Props) {
+const createQueryParamsUrl = (path: string, urlParams: object) => {
+  const params = new URLSearchParams({ ...urlParams });
+  return `${path}?${params.toString()}`
+}
+
+export default function NavButton({ path, iconStr, label, className, urlParams }: Props) {
   const { isMobile, toggleSidebar } = useSidebar()
   const pathname = usePathname()
 
   const isLinkActive = pathname === path
+  const linkURL = createQueryParamsUrl(path, urlParams ?? {})
 
   const handleMobileSidebar = () => {
     if (isMobile) {
       toggleSidebar()
     }
   }
-
 
   return (
     <Button
@@ -41,7 +49,7 @@ export default function NavButton({ path, iconStr, label, className }: Props) {
       variant={"ghost"}
       onClick={handleMobileSidebar}
     >
-      <Link href={path}>
+      <Link href={linkURL}>
         <LucideIconStore name={iconStr} />
         {label}
       </Link>

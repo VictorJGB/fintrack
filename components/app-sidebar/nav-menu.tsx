@@ -24,17 +24,10 @@ type Props = {
 export default function NavMenu({ triggerLabel, links, icon }: Props) {
   const pathname = usePathname()
 
-  const createQueryParamsUrl = (href: string, urlParams: object) => {
-    const params = new URLSearchParams({ ...urlParams });
-    return `${href}?${params.toString()}`
-  }
-
   const isChildrenSelected = useMemo(() => {
     const isChildrenSelected = links.some((link) => {
       return link.href === pathname
     })
-
-    console.log({ pathname, isChildrenSelected })
     return isChildrenSelected
   }, [links, pathname])
 
@@ -54,11 +47,9 @@ export default function NavMenu({ triggerLabel, links, icon }: Props) {
       <CollapsibleContent>
         <SidebarMenuSub>
           {links.map(({ icon, label, href, urlParams }, index) => {
-            const path = urlParams ? createQueryParamsUrl(href, urlParams) : href
-
             return (
               <SidebarMenuSubItem key={index}>
-                <NavButton iconStr={icon} label={label} path={path} />
+                <NavButton iconStr={icon} label={label} path={href} urlParams={urlParams} />
               </SidebarMenuSubItem>
             )
           })}

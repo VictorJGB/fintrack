@@ -45,7 +45,8 @@ export default function ExpensesTable() {
     const url = `/expenses?${params.toString()}`
 
     push(url)
-  }, [searchParams]);
+  }, [searchParams, push]);
+
 
   return (
     <div className="container mx-auto py-10">

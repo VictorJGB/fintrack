@@ -54,30 +54,7 @@ export const appLinks: Links[] = [
           items_per_page: '10'
         }
       },
-    ],
-    urlParams: {
-      page: '1',
-      items_per_page: '10',
-      period: "all"
-    }
-  },
-  {
-    label: 'Despesas fixas',
-    href: '/expenses/fixed',
-    icon: "Pin",
-    urlParams: {
-      page: '1',
-      items_per_page: '10'
-    }
-  },
-  {
-    label: 'Despesas planejadas',
-    href: '/expenses/planned',
-    icon: "NotebookPen",
-    urlParams: {
-      page: '1',
-      items_per_page: '10'
-    }
+    ]
   },
   {
     label: 'Recebimentos',
@@ -90,3 +67,19 @@ export const appLinks: Links[] = [
     }
   },
 ]
+
+// TO-DO
+// const routes = appLinks.reduce((acc, route) => {
+//   const childrens = route.children?.map((child) => child.href)
+//   if (childrens && childrens.length > 0)
+//     return [...acc, route.href, ...childrens]
+
+//   return [...acc, route.href]
+// }, [] as string[])
+
+// const getRoute = (href: string, urlParams?: URLParams) => {
+//   // Getting all routes href
+
+
+
+// }

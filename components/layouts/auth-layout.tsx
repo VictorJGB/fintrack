@@ -35,7 +35,7 @@ export default function AuthLayout({ children }: Props) {
       mutate()
     }
 
-  }, [error])
+  }, [error, mutate])
 
   return (
     <div className="size-full">

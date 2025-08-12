@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 // utils
 import { appLinks } from "@/utils/routes";
@@ -30,8 +29,6 @@ import NavMenu from "./nav-menu";
 // hooks
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname();
-
   const createQueryParamsUrl = (href: string, urlParams: object) => {
     const params = new URLSearchParams({ ...urlParams });
     return `${href}?${params.toString()}`

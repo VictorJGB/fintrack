@@ -39,7 +39,7 @@ export default function IncomesTable() {
     const url = `/incomes?${params.toString()}`
 
     push(url)
-  }, [searchParams]);
+  }, [searchParams, push]);
 
   useEffect(() => {
     if (error) {
