@@ -66,6 +66,11 @@ export const appLinks: Links[] = [
       period: 'current'
     }
   },
+  {
+    label: 'Relatórios',
+    href: '/reports',
+    icon: "FileText",
+  },
 ]
 
 // TO-DO
