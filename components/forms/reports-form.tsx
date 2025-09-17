@@ -10,10 +10,12 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 // form
+import getReports from "@/actions/reports/get-reports";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -24,17 +26,34 @@ const formSchema = z.object({
 })
 
 export default function ReportsForm() {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      report: undefined,
+      report: 'expenses',
       initial_date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       final_date: new Date()
     }
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  const { report, initial_date, final_date } = form.getValues()
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['reports', report, initial_date, final_date],
+    queryFn: () => getReports(report, initial_date, final_date),
+    enabled: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
+
+  async function onSubmit() {
+    try {
+      await refetch()
+      console.log({ data })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -150,7 +169,12 @@ export default function ReportsForm() {
           </CardContent>
         </Card>
 
-        <div className="w-full flex items-center justify-end mt-5"><Button type="submit">Gerar relatório</Button></div>
+        <div className="w-full flex items-center justify-end mt-5">
+          <Button type="submit">
+            {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+            Gerar relatório
+          </Button>
+        </div>
       </form>
     </Form>
   )
