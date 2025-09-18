@@ -2,6 +2,8 @@
 
 import { apiFetcher } from "@/utils/api";
 
+import { format } from "date-fns";
+
 type ReportsType = 'expenses' | 'incomes'
 
 export default async function getReports(type: ReportsType, initialDate: Date, finalDate: Date) {
@@ -17,8 +19,8 @@ export default async function getReports(type: ReportsType, initialDate: Date, f
   }
 
   const params = new URLSearchParams({
-    initial_date: initialDate.toString(),
-    final_date: finalDate.toString(),
+    initial_date: format(initialDate, "yyyy-MM-dd"),
+    final_date: format(finalDate, "yyyy-MM-dd"),
   }).toString()
 
   const url = `${getURLReport()}?${params}`
@@ -29,11 +31,20 @@ export default async function getReports(type: ReportsType, initialDate: Date, f
     method: 'GET',
   })
 
-  const blob = await response.blob();
-
   if (!response.ok) {
     throw new Error("Ocorreu um erro ao baixar o relatório.");
   }
 
-  return blob;
+  const contentDisposition = response.headers.get('content-disposition');
+  let filename = 'relatorio.pdf'; // fallback filename
+  if (contentDisposition) {
+    const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+    if (filenameMatch && filenameMatch.length > 1) {
+      filename = filenameMatch[1];
+    }
+  }
+
+  const blob = await response.blob();
+
+  return { blob, filename };
 }

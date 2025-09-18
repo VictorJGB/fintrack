@@ -25,6 +25,17 @@ const formSchema = z.object({
   final_date: z.date({ required_error: "Data é obrigatório" }),
 })
 
+function downloadPDF(blob: Blob | undefined, filename: string | undefined) {
+  if (!blob || !filename) return
+
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 export default function ReportsForm() {
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,7 +49,7 @@ export default function ReportsForm() {
 
   const { report, initial_date, final_date } = form.getValues()
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { isLoading, refetch } = useQuery({
     queryKey: ['reports', report, initial_date, final_date],
     queryFn: () => getReports(report, initial_date, final_date),
     enabled: false,
@@ -49,8 +60,8 @@ export default function ReportsForm() {
 
   async function onSubmit() {
     try {
-      await refetch()
-      console.log({ data })
+      const { data } = await refetch()
+      downloadPDF(data?.blob, data?.filename)
     } catch (error) {
       console.log(error)
     }
@@ -170,12 +181,12 @@ export default function ReportsForm() {
         </Card>
 
         <div className="w-full flex items-center justify-end mt-5">
-          <Button type="submit">
+          <Button type="submit" disabled={isLoading}>
             {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-            Gerar relatório
+            <span>{isLoading ? 'Gerando relatório...' : 'Gerar relatório'}</span>
           </Button>
         </div>
       </form>
-    </Form>
+    </Form >
   )
 }
