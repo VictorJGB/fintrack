@@ -27,7 +27,7 @@ export default function ExpensesHoverInfo({ totalExpenses, totalFixedExpenses, t
           <Info />
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className='flex flex-col items-start justify-center space-y-4 w-[400px] rounded-2xl'>
+      <HoverCardContent className='flex flex-col items-start justify-center space-y-4 w-[600px] rounded-2xl'>
         <h3 className='font-semibold'>Total de despesas calculadas</h3>
         <Separator />
 

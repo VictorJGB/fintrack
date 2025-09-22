@@ -61,7 +61,7 @@ export const columns: ColumnDef<PlannedExpense>[] = [
     }
   },
   {
-    accessorKey: "amount_per_installment",
+    accessorKey: "amount_per_installments",
     header: ({ column }) => {
       return (
         <Button
@@ -74,14 +74,14 @@ export const columns: ColumnDef<PlannedExpense>[] = [
       )
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount_per_installment"))
+      const amount = parseFloat(row.getValue("amount_per_installments"))
       const formatted = formatToBRL(amount)
 
       return <Badge variant={'outline'} className='rounded-2xl bg-destructive/10  text-destructive border-destructive text-sm'>{formatted}</Badge>
     },
   },
   {
-    accessorKey: "total_amount",
+    accessorKey: "total_value",
     header: ({ column }) => {
       return (
         <Button
@@ -94,7 +94,7 @@ export const columns: ColumnDef<PlannedExpense>[] = [
       )
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("total_amount"))
+      const amount = parseFloat(row.getValue("total_value"))
       const formatted = formatToBRL(amount)
 
       return <Badge variant={'outline'} className='rounded-2xl bg-destructive/10  text-destructive border-destructive text-sm'>{formatted}</Badge>
