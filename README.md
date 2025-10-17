@@ -8,7 +8,6 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
-        <li><a href="#demo">Demo</a></li>
       </ul>
     </li>
     <li>
@@ -19,6 +18,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#fonts">Fonts</a></li>
   </ol>
@@ -26,18 +26,9 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project <code>UNFINISHED</code>
+## About The Project
 
 An financial manager for expenses, incomes, plannings and many more
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### TO-DO
-
-#### FEATURES
-- [] Adicionar tela de despesas planejadas
-- [] Adicionar tela de despesas fixas
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -49,12 +40,6 @@ An financial manager for expenses, incomes, plannings and many more
 - ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- Live -->
-
-## Demo
-
-demo url
 
 <!-- GETTING STARTED -->
 
@@ -84,7 +69,31 @@ demo url
 
 ## Usage
 
-techs version used in the project
+- React v19
+- NextJS v15.2.0-canary.74
+- Shadcn UI
+- Lucide React: ^0.476.0
+- React Hook Form: ^7.55.0
+- Zod: ^3.24.2
+- TailwindCSS: ^4
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- SCREENSHOTS -->
+
+## Screenshots
+
+<img width="100%" height="965" alt="fintrack-login" src="https://github.com/user-attachments/assets/2af60bca-f439-479f-8226-a9420e6c7d57" /> <br />
+<img width="100%" height="965" alt="fintrack-01" src="https://github.com/user-attachments/assets/477942f4-5b1c-4698-bda2-1c179860a37e" /> <br />
+<img width="100%" height="965" alt="fintrack-light-theme" src="https://github.com/user-attachments/assets/2c7f616f-eedd-4348-9c60-2db40ee7b687" /> <br />
+<img width="100%" height="965" alt="fintrack-expenses-table" src="https://github.com/user-attachments/assets/34901641-d740-43a9-bc10-082baa0633e4" /> <br />
+<img width="100%" height="965" alt="fintrack-pay-all-expenses" src="https://github.com/user-attachments/assets/8248a968-4418-4069-86d7-97e5229ec259" /> <br />
+<img width="100%" height="965" alt="fintrack-importa-expenses" src="https://github.com/user-attachments/assets/7a34d5c6-9dc0-48b0-8f60-36d7e3d9e878" /> <br />
+<div>
+  <img width="304" height="600" alt="fintrack-mobile-light-theme" src="https://github.com/user-attachments/assets/785d9bf4-4e7d-4c37-9e1f-361780a208b1" />
+  <img width="304" height="600" alt="fintrack-mobile-dark-theme" src="https://github.com/user-attachments/assets/4f916e86-12f2-4b1a-ad74-ecd2c713a526" />
+</div>
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
