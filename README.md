@@ -28,7 +28,16 @@
 
 ## About The Project
 
-An financial manager for expenses, incomes, plannings and many more
+An financial manager for expenses, incomes, plannings and many more.
+Some of the application's main features:
+- List, create, edit, and delete monthly expenses, fixed expenses, planned expenses, and receipts
+- Assign expenses to other recipients
+- Dashboard showing total expenses and receipts for the current month, as well as a balance of how much can still be spent by the user
+- Expense charts, expenses by recipient, and receipts
+- Import expenses and receipts from templates provided by the application in .xlsx and csv formats
+- Pay all monthly expenses at once
+- Generate expense reports based on a start and end date
+- Dark and light themes
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
