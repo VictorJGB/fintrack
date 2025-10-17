@@ -90,8 +90,8 @@ An financial manager for expenses, incomes, plannings and many more
 <img width="100%" height="965" alt="fintrack-pay-all-expenses" src="https://github.com/user-attachments/assets/8248a968-4418-4069-86d7-97e5229ec259" /> <br />
 <img width="100%" height="965" alt="fintrack-importa-expenses" src="https://github.com/user-attachments/assets/7a34d5c6-9dc0-48b0-8f60-36d7e3d9e878" /> <br />
 <div>
-  <img width="304" height="600" alt="fintrack-mobile-light-theme" src="https://github.com/user-attachments/assets/785d9bf4-4e7d-4c37-9e1f-361780a208b1" />
-  <img width="304" height="600" alt="fintrack-mobile-dark-theme" src="https://github.com/user-attachments/assets/4f916e86-12f2-4b1a-ad74-ecd2c713a526" />
+  <img width="404" height="740" alt="fintrack-mobile-dark-theme" src="https://github.com/user-attachments/assets/41464ec8-fa49-49a4-9fd0-7dadf0a02b78" />
+  <img width="404" height="740" alt="fintrack-mobile-light-theme" src="https://github.com/user-attachments/assets/7dbf0808-44d9-4dc2-9a2b-0d493d4e9910" />
 </div>
 
 
