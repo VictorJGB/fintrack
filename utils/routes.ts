@@ -72,19 +72,3 @@ export const appLinks: Links[] = [
     icon: "FileText",
   },
 ]
-
-// TO-DO
-// const routes = appLinks.reduce((acc, route) => {
-//   const childrens = route.children?.map((child) => child.href)
-//   if (childrens && childrens.length > 0)
-//     return [...acc, route.href, ...childrens]
-
-//   return [...acc, route.href]
-// }, [] as string[])
-
-// const getRoute = (href: string, urlParams?: URLParams) => {
-//   // Getting all routes href
-
-
-
-// }
