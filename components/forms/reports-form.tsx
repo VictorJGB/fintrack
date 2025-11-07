@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  report: z.enum(['expenses', 'incomes']),
+  report: z.enum(['expenses', 'incomes', 'summary']),
   initial_date: z.date({ required_error: "Data é obrigatório" }),
   final_date: z.date({ required_error: "Data é obrigatório" }),
 })
@@ -89,6 +89,7 @@ export default function ReportsForm() {
                       <SelectGroup>
                         <SelectItem value="expenses">Total de despesas</SelectItem>
                         <SelectItem value="incomes">Total de recebimentos</SelectItem>
+                        <SelectItem value="summary">Total de resumido</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

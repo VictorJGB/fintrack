@@ -4,7 +4,7 @@ import { apiFetcher } from "@/utils/api";
 
 import { format } from "date-fns";
 
-type ReportsType = 'expenses' | 'incomes'
+type ReportsType = 'expenses' | 'incomes' | 'summary'
 
 export default async function getReports(type: ReportsType, initialDate: Date, finalDate: Date) {
   function getURLReport() {
@@ -13,6 +13,8 @@ export default async function getReports(type: ReportsType, initialDate: Date, f
         return 'expenses/export'
       case 'incomes':
         return 'incomes/export'
+      case 'summary':
+        return 'reports/summary'
       default:
         throw new Error('Tipo de relatório inválido')
     }
