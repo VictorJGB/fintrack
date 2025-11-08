@@ -16,6 +16,7 @@ import getReports from "@/actions/reports/get-reports";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -48,6 +49,12 @@ export default function ReportsForm() {
   })
 
   const { report, initial_date, final_date } = form.getValues()
+
+  // report observer
+  const $report = form.watch('report')
+
+
+  useEffect(() => { console.log($report) }, [$report])
 
   const { isLoading, refetch } = useQuery({
     queryKey: ['reports', report, initial_date, final_date],
@@ -100,13 +107,12 @@ export default function ReportsForm() {
             {/* initial date */}
             <FormField
               control={form.control}
-              disabled={report === 'summary'}
               name="initial_date"
               render={({ field }) => (
                 <FormItem className="grid gap-2">
                   <FormLabel>Data inicial</FormLabel>
                   <Popover>
-                    <PopoverTrigger asChild>
+                    <PopoverTrigger asChild disabled={$report === 'summary'}>
                       <FormControl>
                         <Button
                           variant={"outline"}
