@@ -7,29 +7,39 @@ import { format } from "date-fns";
 type ReportsType = 'expenses' | 'incomes' | 'summary'
 
 export default async function getReports(type: ReportsType, initialDate: Date, finalDate: Date) {
-  function getURLReport() {
+  function getReportConfigs() {
     switch (type) {
       case 'expenses':
-        return 'expenses/export'
+        return {
+          url: 'expenses/export',
+          params: new URLSearchParams({
+            initial_date: format(initialDate, "yyyy-MM-dd"),
+            final_date: format(finalDate, "yyyy-MM-dd"),
+          }).toString()
+        }
       case 'incomes':
-        return 'incomes/export'
+        return {
+          url: 'incomes/export',
+          params: new URLSearchParams({
+            initial_date: format(initialDate, "yyyy-MM-dd"),
+            final_date: format(finalDate, "yyyy-MM-dd"),
+          }).toString()
+        }
       case 'summary':
-        return 'reports/summary'
+        return {
+          url: 'reports/summary',
+          params: new URLSearchParams({
+            final_date: format(finalDate, "yyyy-MM-dd"),
+          }).toString()
+        }
       default:
         throw new Error('Tipo de relatório inválido')
     }
   }
 
-  const params = new URLSearchParams({
-    initial_date: format(initialDate, "yyyy-MM-dd"),
-    final_date: format(finalDate, "yyyy-MM-dd"),
-  }).toString()
+  const { url, params } = getReportConfigs()
 
-  const url = `${getURLReport()}?${params}`
-
-  console.log({ url })
-
-  const response = await apiFetcher(`${url}`, {
+  const response = await apiFetcher(`${url}?${params}`, {
     method: 'GET',
   })
 

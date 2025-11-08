@@ -21,7 +21,7 @@ import { z } from "zod";
 
 const formSchema = z.object({
   report: z.enum(['expenses', 'incomes', 'summary']),
-  initial_date: z.date({ required_error: "Data é obrigatório" }),
+  initial_date: z.date().optional(),
   final_date: z.date({ required_error: "Data é obrigatório" }),
 })
 
@@ -51,7 +51,7 @@ export default function ReportsForm() {
 
   const { isLoading, refetch } = useQuery({
     queryKey: ['reports', report, initial_date, final_date],
-    queryFn: () => getReports(report, initial_date, final_date),
+    queryFn: () => getReports(report, initial_date ?? new Date(), final_date),
     enabled: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -100,6 +100,7 @@ export default function ReportsForm() {
             {/* initial date */}
             <FormField
               control={form.control}
+              disabled={report === 'summary'}
               name="initial_date"
               render={({ field }) => (
                 <FormItem className="grid gap-2">
