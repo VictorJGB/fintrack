@@ -14,7 +14,6 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -61,18 +60,6 @@ Some of the application's main features:
   ```sh
   npm install npm@latest -g
   ```
-
-### Installation
-
-1. Clone the repo
-   ```sh
-   git clone https://github.com/VictorJGB/fintrack
-   ```
-2. Install Packages
-   ```sh
-   npm install || pnpm install
-   ```
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
