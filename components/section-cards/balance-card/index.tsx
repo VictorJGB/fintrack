@@ -52,7 +52,7 @@ export default function BalanceCard() {
 
     return (
       <SectionCard
-        title={formatedBalance}
+        title={formatedBalance ?? "R$ 0,00"}
         subtitle="Saldo total"
         iconButton={<BalanceHoverInfo totalExpense={totalExpenses} totalIncome={totalIncomes} totalBalance={balance} fixedIncome={user?.salary ?? 1518} />}
         description="Verifique o quanto ainda pode gastar"

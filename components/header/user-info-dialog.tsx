@@ -67,7 +67,7 @@ export default function UserInfoDialog({ user, triggerClassname, setIsParentOpen
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await mutate({ id: user._id, formData: values })
+    mutate({ id: user._id, formData: values })
   }
 
   return (

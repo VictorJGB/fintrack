@@ -2,6 +2,7 @@
 
 import type User from "@/interfaces/user";
 import { apiFetcher } from "@/utils/api";
+import getUser from "./get-user";
 
 type UserResponse = Omit<User, 'role'>
 
@@ -15,5 +16,12 @@ export default async function verifyUser(): Promise<UserResponse> {
   if (!response.ok) {
     throw new Error(data.message)
   }
-  return data
+
+  try {
+    const user = await getUser(data._id);
+    const { role, ...rest } = user;
+    return rest
+  } catch (e) {
+    throw e
+  }
 }
