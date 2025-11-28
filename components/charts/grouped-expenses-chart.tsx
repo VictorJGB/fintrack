@@ -39,7 +39,7 @@ const initialChartConfig = {
 
 export default function GroupedExpensesChart({ className }: Props) {
   const [chartConfig, setChartConfig] = useState<ChartConfig>(initialChartConfig)
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["expenses", "grouped"],
     queryFn: () => getGroupedExpenses(),
   })
