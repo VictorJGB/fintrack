@@ -10,24 +10,20 @@ import { SectionCard, SectionCardSkeleton } from "./card";
 
 export default function SalaryCard() {
   // user verification
-  const { data: user, isLoading, error } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ['verify-user'],
     queryFn: verifyUser
   })
 
   if (isLoading) return <SectionCardSkeleton />;
 
-  if (user) {
 
-    return (
-      <SectionCard
-        title={formatToBRL(user.salary)}
-        subtitle="Renda fixa mensal"
-        description="Verifique quanto recebe mensalmente"
-      />
-    );
-  }
+  return (
+    <SectionCard
+      title={formatToBRL(user?.salary ?? 0)}
+      subtitle="Renda fixa mensal"
+      description="Verifique quanto recebe mensalmente"
+    />
+  );
 
-  if (error)
-    return <p className="text-destructive">{JSON.stringify(error, null, 2)}</p>;
 }

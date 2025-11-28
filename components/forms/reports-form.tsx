@@ -16,8 +16,8 @@ import getReports from "@/actions/reports/get-reports";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -53,9 +53,6 @@ export default function ReportsForm() {
   // report observer
   const $report = form.watch('report')
 
-
-  useEffect(() => { console.log($report) }, [$report])
-
   const { isLoading, refetch } = useQuery({
     queryKey: ['reports', report, initial_date, final_date],
     queryFn: () => getReports(report, initial_date ?? new Date(), final_date),
@@ -67,10 +64,13 @@ export default function ReportsForm() {
 
   async function onSubmit() {
     try {
-      const { data } = await refetch()
-      downloadPDF(data?.blob, data?.filename)
+      const { data, error } = await refetch();
+      if (error) throw error;
+
+      downloadPDF(data?.blob, data?.filename);
     } catch (error) {
-      console.log(error)
+      const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro ao gerar o relatório.';
+      toast.error(errorMessage);
     }
   }
 

@@ -95,8 +95,6 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
 
   if (isLoading && state.length === 0) return <TableSkeleton rowsNumber={10} />
 
-  if (error || updateError) return <p className="text-destructive font-semibold">{error?.message || updateError?.message}</p>
-
   return (
     <div className='size-full flex flex-col gap-3'>
       <Table>
@@ -108,7 +106,12 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody className='overflow-y-auto'>
-          {state.map((row) => (
+          {state.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={collumns.length} className='text-center py-4'>Nenhuma despesa encontrada</TableCell>
+            </TableRow>
+          )}
+          {state.length > 0 && state.map((row) => (
             <TableRow key={row._id}>
               <TableCell>{formatDateToPTBR(row.date)}</TableCell>
               <TableCell>{row.company}</TableCell>
@@ -149,7 +152,7 @@ export default function PayExpensesTable({ handleDialogClose }: Props) {
             Fechar
           </Button>
         }
-        <Button onClick={handleUpdateExpenses} disabled={isUpdating || isLoading}>
+        <Button onClick={handleUpdateExpenses} disabled={isUpdating || isLoading || state.length === 0}>
           {isUpdating && <Loader2 className='mr-2 size-3 animate-spin' />}
           {isUpdating ? 'Pagando despesas...' : 'Pagar despesas'}
         </Button>

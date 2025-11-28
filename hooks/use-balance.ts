@@ -15,6 +15,7 @@ export default function useBalance(user: UserResponse | undefined) {
   const [accIncomes, setAccIncomes] = useState<number>(0);
   const [balance, setBalance] = useState<number>(0);
   const [isBalanceNegative, setIsBalanceNegative] = useState<boolean>(false);
+  const [queriesLoading, setQueriesLoading] = useState<boolean>(false);
 
   const searchRecipient: string = 'Eu'
   const incomesPage = ""
@@ -29,13 +30,12 @@ export default function useBalance(user: UserResponse | undefined) {
     ]
   })
 
-  const queriesLoading = grouped.isLoading && fixed.isLoading && incomes.isLoading
-
-
   useEffect(() => {
-    if (!queriesLoading) {
+    setQueriesLoading(grouped.isLoading && fixed.isLoading && incomes.isLoading)
+
+    if (!grouped.isLoading && !fixed.isLoading && !incomes.isLoading && grouped.data && fixed.data && incomes.data && user) {
       const totalFixedExpenses = fixed.data!.data.reduce((acc: number, expense: FixedExpense) => acc + expense.amount, 0) ?? 0;
-      const totalExpenses = (grouped.data![0].total_amount ?? 0) + totalFixedExpenses;
+      const totalExpenses = grouped.data![0].total_amount + totalFixedExpenses;
       const totalIncomes = incomes.data!.data.reduce((acc: number, income: Income) => acc + income.amount, 0) ?? 0;
       const newBalance = (totalIncomes + (user!.salary ?? 0)) - totalExpenses;
 
@@ -43,10 +43,15 @@ export default function useBalance(user: UserResponse | undefined) {
       setIsBalanceNegative(newBalance < 0);
       setAccExpenses(totalExpenses);
       setAccIncomes(totalIncomes);
-
-      console.log({ totalExpenses, totalIncomes, newBalance, totalFixedExpenses });
     }
-  }, [queriesLoading, grouped.data, fixed.data, incomes.data, user]);
+
+  }, [grouped.isLoading, fixed.isLoading, incomes.isLoading, grouped.data, fixed.data, incomes.data, user]);
+
+
+  if (fixed.error || grouped.error || incomes.error) {
+    return { balance, isBalanceNegative, queriesLoading, totalExpenses: accExpenses, totalIncomes: accIncomes };
+  }
+
 
   return { balance, isBalanceNegative, queriesLoading, totalExpenses: accExpenses, totalIncomes: accIncomes };
 }

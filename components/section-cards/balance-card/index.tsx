@@ -28,7 +28,7 @@ export default function BalanceCard() {
 
   if (queriesLoading) return <SectionCardSkeleton />
 
-  if (balance) {
+  if (!queriesLoading) {
     return <SectionCard
       title={formatToBRL(balance)}
       subtitle="Saldo total"

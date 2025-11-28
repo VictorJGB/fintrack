@@ -11,7 +11,7 @@ export default async function getReports(type: ReportsType, initialDate: Date, f
     switch (type) {
       case 'expenses':
         return {
-          url: 'expenses/export',
+          url: 'reports/expenses',
           params: new URLSearchParams({
             initial_date: format(initialDate, "yyyy-MM-dd"),
             final_date: format(finalDate, "yyyy-MM-dd"),
@@ -19,7 +19,7 @@ export default async function getReports(type: ReportsType, initialDate: Date, f
         }
       case 'incomes':
         return {
-          url: 'incomes/export',
+          url: 'reports/incomes',
           params: new URLSearchParams({
             initial_date: format(initialDate, "yyyy-MM-dd"),
             final_date: format(finalDate, "yyyy-MM-dd"),
