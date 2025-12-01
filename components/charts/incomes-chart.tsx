@@ -40,7 +40,7 @@ export default function IncomesChart() {
 
   const { data, isLoading, error } = useQuery({
     queryFn: () => getIncomes(page, period, itemsPerPage),
-    queryKey: ["incomes", "chart"],
+    queryKey: ["incomes", "dashboard"],
   });
 
   if (isLoading) return <Skeleton className="h-[300px] w-full rounded-2xl" />

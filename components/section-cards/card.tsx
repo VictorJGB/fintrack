@@ -47,10 +47,10 @@ export function SectionCard({ title, subtitle, description, path, variant = 'def
       <CardHeader className="relative">
         <div className="flex items-center justify-between w-full">
           <CardDescription className={variantClassname[variant].subtitle}>{subtitle}</CardDescription>
-          {IconButton}
+          {isSuspense && IconButton ? <Skeleton className="w-8 h-8 rounded-full" /> : IconButton}
         </div>
         <CardTitle className={cn("@[250px]/card:text-3xl text-2xl font-semibold tabular-nums", variantClassname[variant].title)}>
-          {isSuspense && <Skeleton className="w-24 h-8 inline-block mr-2" />}
+          {isSuspense && <Skeleton className="w-40 h-10 rounded-xl" />}
           {!isSuspense && title}
         </CardTitle>
       </CardHeader>

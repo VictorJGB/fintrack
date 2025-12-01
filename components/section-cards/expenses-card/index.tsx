@@ -14,7 +14,7 @@ import { toast } from "sonner"
 import ExpensesHoverInfo from "./expenses-hover-card"
 
 export default function ExpensesCard() {
-  const combineData = useQueries({
+  const { data, error, pending, totalExpenses, totalFixedExpenses, totalPlannedExpenses } = useQueries({
     queries: [
       { queryKey: ['expenses'], queryFn: () => getExpenses() },
       { queryKey: ['fixed', 'expenses'], queryFn: () => getFixedExpenses() },
@@ -37,27 +37,26 @@ export default function ExpensesCard() {
     }
   })
 
-
-
-  // Calculating the total expenses
   useEffect(() => {
-    if (combineData.error) toast.error('Card de despesas', {
-      description: combineData.error?.message || 'Erro ao carregar os dados do card de despesas'
+    if (error) toast.error('Card de despesas', {
+      description: error?.message || 'Erro ao carregar os dados do card de despesas'
     })
 
-  }, [combineData.error])
+  }, [error])
 
-  const total = formatToBRL(combineData.data)
+  const total = formatToBRL(data)
   const path = '/expenses?page=1&items_per_page=1'
 
   return (
     <SectionCard
-      isSuspense={combineData.pending}
+      isSuspense={pending}
       title={total}
       subtitle="Total de despesas"
       description="Verificar minhas despesas"
       path={path}
-      iconButton={ExpensesHoverInfo({ totalExpenses: c, totalFixedExpenses, totalPlannedExpenses })}
+      iconButton={ExpensesHoverInfo({
+        totalExpenses, totalFixedExpenses, totalPlannedExpenses
+      })}
       variant={'destructive'}
     />
   )
