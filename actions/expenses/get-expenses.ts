@@ -18,7 +18,7 @@ export default async function getExpenses(
     items_per_page: itemsPerPage ?? "",
   }).toString();
 
-  const response = await apiFetcher(`expenses?${params}`, {
+  const response = await apiFetcher(`expense?${params}`, {
     method: "GET",
   });
 

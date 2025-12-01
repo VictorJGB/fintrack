@@ -21,7 +21,8 @@ import getExpenses from "@/actions/expenses/get-expenses";
 import { cn } from "@/lib/utils";
 import { formatToBRL } from "@/utils/formatters";
 import { useQuery } from "@tanstack/react-query";
-import ErrorCard from "../cards/error-card";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
@@ -44,20 +45,24 @@ export default function ExpensesChart({ className }: Props) {
     queryKey: ["expenses", "chart"],
   });
 
-  if (isLoading) return <Skeleton className={cn("h-[300px] rounded-2xl", className)} />
+  useEffect(() => {
+    if (error) toast.error("Gráfico de Despesas", {
+      description: error?.message || "Ocorreu um erro ao carregar o gráfico de despesas."
+    });
+  }, [error])
 
-  if (error) return <ErrorCard title="Erro ao carregar despesas" error={error.message} />
-
-  if (data) return (
+  return (
     <Card className={cn("rounded-2xl", className)}>
       <CardHeader>
         <CardTitle>Total de despesas</CardTitle>
         <CardDescription>Despesas do mês</CardDescription>
       </CardHeader>
       <CardContent>
-        {data.data.length === 0 && <p className="size-full text-center text-medium text-muted-foreground">Nenhuma despesa encontrada</p>}
+        {isLoading && <Skeleton className="h-[300px] rounded-2xl" />}
 
-        {data.data.length > 0 &&
+        {!data && !isLoading && <p className="size-full text-center text-medium text-muted-foreground">Nenhuma despesa encontrada</p>}
+
+        {data &&
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[250px] w-full"

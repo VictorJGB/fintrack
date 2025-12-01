@@ -26,6 +26,7 @@ import { useQuery } from "@tanstack/react-query"
 // actions
 import getGroupedExpenses from "@/actions/expenses/get-grouped-expenses"
 import { Capitalize, formatToBRL } from "@/utils/formatters"
+import { toast } from "sonner"
 
 interface Props {
   className?: string
@@ -53,6 +54,8 @@ export default function GroupedExpensesChart({ className }: Props) {
   )), [data])
 
   useEffect(() => {
+    if (error) toast.error(error?.message || 'Erro ao carregar despesas agrupadas!')
+
     // Adding chart config
     if (data) {
       setChartConfig({
@@ -68,7 +71,7 @@ export default function GroupedExpensesChart({ className }: Props) {
         ), {}),
       })
     }
-  }, [data])
+  }, [data, error])
 
   if (isLoading) return <Skeleton className={cn("rounded-2xl h-[300px]", className)} />
 

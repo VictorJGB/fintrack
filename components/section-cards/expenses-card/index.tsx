@@ -3,57 +3,63 @@
 // actions
 import { useQueries } from "@tanstack/react-query"
 // components
-import { SectionCard, SectionCardSkeleton } from "../card"
+import { SectionCard } from "../card"
 // utils
 import getExpenses from "@/actions/expenses/get-expenses"
 import getFixedExpenses from "@/actions/fixed-expenses/get-fixed-expenses"
 import getPlannedExpenses from "@/actions/planneed-expenses/get-planned-expenses"
 import { formatToBRL } from "@/utils/formatters"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { toast } from "sonner"
 import ExpensesHoverInfo from "./expenses-hover-card"
 
 export default function ExpensesCard() {
-  const [expenses, fixedExpenses, plannedExpenses] = useQueries({
+  const combineData = useQueries({
     queries: [
       { queryKey: ['expenses'], queryFn: () => getExpenses() },
       { queryKey: ['fixed', 'expenses'], queryFn: () => getFixedExpenses() },
       { queryKey: ['planned', 'expenses'], queryFn: () => getPlannedExpenses() }
-    ]
+    ],
+    combine: ([expenses, fixedExpenses, plannedExpenses]) => {
+      const totalExpenses = expenses.data?.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0) ?? 0
+      const totalFixedExpenses = fixedExpenses.data?.data.reduce((acc, expense) => { return acc + expense.amount }, 0) ?? 0
+      const totalPlannedExpenses = plannedExpenses.data?.data.reduce((acc, expense) => { return acc + expense.amount_per_installments }, 0) ?? 0
+      const total = totalExpenses + totalFixedExpenses + totalPlannedExpenses
+
+      return {
+        data: total,
+        totalExpenses,
+        totalFixedExpenses,
+        totalPlannedExpenses,
+        pending: expenses.isPending || fixedExpenses.isPending || plannedExpenses.isPending,
+        error: expenses.error || fixedExpenses.error || plannedExpenses.error
+      }
+    }
   })
 
-  const [totalExpenses, setTotalExpenses] = useState(0)
-  const [totalFixedExpenses, setTotalFixedExpenses] = useState(0)
-  const [totalPlannedExpenses, setTotalPlannedExpenses] = useState(0)
 
 
   // Calculating the total expenses
   useEffect(() => {
-    if (expenses.data && fixedExpenses.data && plannedExpenses.data) {
-      setTotalExpenses(expenses.data.data.reduce((acc, expense) => { return acc + expense.amount_per_installment }, 0))
-      setTotalFixedExpenses(fixedExpenses.data.data.reduce((acc, expense) => { return acc + expense.amount }, 0))
-      setTotalPlannedExpenses(plannedExpenses.data.data.reduce((acc, expense) => { return acc + expense.amount_per_installments }, 0))
-    }
-  }, [expenses.data, fixedExpenses.data, plannedExpenses.data])
+    if (combineData.error) toast.error('Card de despesas', {
+      description: combineData.error?.message || 'Erro ao carregar os dados do card de despesas'
+    })
 
-  if (expenses.isLoading || fixedExpenses.isLoading || plannedExpenses.isLoading) return <SectionCardSkeleton />
+  }, [combineData.error])
 
+  const total = formatToBRL(combineData.data)
+  const path = '/expenses?page=1&items_per_page=1'
 
-  if (expenses.data && fixedExpenses.data) {
-    const total = formatToBRL(totalExpenses + totalFixedExpenses + totalPlannedExpenses)
-    const path = '/expenses?page=1&items_per_page=1'
+  return (
+    <SectionCard
+      isSuspense={combineData.pending}
+      title={total}
+      subtitle="Total de despesas"
+      description="Verificar minhas despesas"
+      path={path}
+      iconButton={ExpensesHoverInfo({ totalExpenses: c, totalFixedExpenses, totalPlannedExpenses })}
+      variant={'destructive'}
+    />
+  )
 
-    return (
-      <SectionCard
-        title={total}
-        subtitle="Total de despesas"
-        description="Verificar minhas despesas"
-        path={path}
-        iconButton={ExpensesHoverInfo({ totalExpenses, totalFixedExpenses, totalPlannedExpenses })}
-        variant={'destructive'}
-      />
-    )
-  }
-
-  if (expenses.error || fixedExpenses.error || plannedExpenses.error)
-    return <p className="text-destructive">{JSON.stringify(expenses.error ?? fixedExpenses.error ?? plannedExpenses, null, 2)}</p>
 }
