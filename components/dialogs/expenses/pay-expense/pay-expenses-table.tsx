@@ -42,12 +42,12 @@ interface Props {
 }
 
 export default function PayExpensesTable({ handleDialogClose }: Props) {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['expenses'],
     queryFn: () => getExpenses()
   })
 
-  const { mutate, isPending: isUpdating, error: updateError } = useMutation({
+  const { mutate, isPending: isUpdating } = useMutation({
     mutationFn: updateManyExpenses,
     mutationKey: ['update-many-expenses'],
     onSuccess: () => {
