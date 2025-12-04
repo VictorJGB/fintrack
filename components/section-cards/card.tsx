@@ -17,6 +17,7 @@ interface Props {
   path?: string
   variant?: 'default' | 'success' | 'destructive'
   iconButton?: ReactNode
+  isSuspense?: boolean
 }
 
 const variantClassname = {
@@ -40,16 +41,17 @@ const variantClassname = {
   },
 }
 
-export function SectionCard({ title, subtitle, description, path, variant = 'default', iconButton: IconButton }: Props) {
+export function SectionCard({ title, subtitle, description, path, variant = 'default', iconButton: IconButton, isSuspense }: Props) {
   return (
     <Card className={cn("@container/card rounded-2xl bg-gradient-to-t", variantClassname[variant].card)}>
       <CardHeader className="relative">
         <div className="flex items-center justify-between w-full">
           <CardDescription className={variantClassname[variant].subtitle}>{subtitle}</CardDescription>
-          {IconButton}
+          {isSuspense && IconButton ? <Skeleton className="w-8 h-8 rounded-full" /> : IconButton}
         </div>
         <CardTitle className={cn("@[250px]/card:text-3xl text-2xl font-semibold tabular-nums", variantClassname[variant].title)}>
-          {title}
+          {isSuspense && <Skeleton className="w-40 h-10 rounded-xl" />}
+          {!isSuspense && title}
         </CardTitle>
       </CardHeader>
       <CardFooter className="flex-col items-start gap-1 text-sm">

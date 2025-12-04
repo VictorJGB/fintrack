@@ -1,10 +1,12 @@
 "use client";
+import { useEffect } from "react";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
 import { useQuery } from "@tanstack/react-query";
 // components
-import { SectionCard, SectionCardSkeleton } from "./card";
+import { toast } from "sonner";
+import { SectionCard } from "./card";
 // utils
 import { formatToBRL } from "@/utils/formatters";
 // types
@@ -16,31 +18,34 @@ export default function IncomesCard() {
   const itemsPerPage = ""
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["incomes", "card"],
+    queryKey: ["incomes", "dashboard"],
     queryFn: () => getIncomes(page, itemsPerPage, period),
+    select: (data) => {
+      const total = data.data.reduce((acc, income) => {
+        return acc + income.amount;
+      }, 0);
+
+      return total
+    }
   });
 
-  if (isLoading) return <SectionCardSkeleton />;
+  useEffect(() => {
+    if (error) toast.error('Card de recebimentos', {
+      description: error?.message || 'Erro ao carregar os dados do card de recebimentos'
+    })
+  }, [error])
 
-  if (data) {
-    const total = formatToBRL(
-      data.data.reduce((acc, income) => {
-        return acc + income.amount;
-      }, 0)
-    );
-    const path = "/incomes?page=1&items_per_page=10";
+  const path = "/incomes?page=1&items_per_page=10";
 
-    return (
-      <SectionCard
-        title={total}
-        subtitle="Total de recebimentos"
-        description="Verificar meus recebimentos"
-        path={path}
-        variant={"success"}
-      />
-    );
-  }
+  return (
+    <SectionCard
+      title={formatToBRL(data ?? 0)}
+      subtitle="Total de recebimentos"
+      description="Verificar meus recebimentos"
+      path={path}
+      variant={"success"}
+      isSuspense={isLoading}
+    />
+  );
 
-  if (error)
-    return <p className="text-destructive">{JSON.stringify(error, null, 2)}</p>;
 }

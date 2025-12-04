@@ -15,8 +15,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import ErrorCard from "../cards/error-card";
-import { Skeleton } from "../ui/skeleton";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
@@ -25,6 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatToBRL } from "@/utils/formatters";
 // types
 import type { MonthFilter } from "@/interfaces/income";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   incomes: {
@@ -40,24 +39,19 @@ export default function IncomesChart() {
 
   const { data, isLoading, error } = useQuery({
     queryFn: () => getIncomes(page, period, itemsPerPage),
-    queryKey: ["incomes", "chart"],
+    queryKey: ["incomes", "dashboard"],
   });
 
-  if (isLoading) return <Skeleton className="h-[300px] w-full rounded-2xl" />
-
-  if (error) return <ErrorCard title="Erro ao carregar recebimentos" error={error.message} className="h-[250px] w-full" />
-
-  if (data) return (
+  return (
     <Card className="w-full rounded-2xl">
       <CardHeader>
         <CardTitle>Total de recebimentos</CardTitle>
         <CardDescription>Recebimentos do mês</CardDescription>
       </CardHeader>
       <CardContent>
-        {data.data.length === 0 && <p className="size-full text-center text-medium text-muted-foreground">Nenhum recebimento encontrado</p>}
-
-
-        {data.data.length > 0 &&
+        {isLoading && !data && <Skeleton className="h-[300px] w-full rounded-2xl" />}
+        {data?.data.length === 0 && <p className="size-full text-center text-medium text-muted-foreground">Nenhum recebimento encontrado</p>}
+        {data && data?.data.length > 0 &&
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[250px] w-full"
