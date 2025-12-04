@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
@@ -17,7 +17,6 @@ import TableSkeleton from "../table-skeleton";
 import AddIncomeDialog from "@/components/dialogs/incomes/add-income";
 import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import SearchInput from "@/components/search-input";
-import { toast } from "sonner";
 import { columns } from "./columns";
 
 export default function IncomesTable() {
@@ -37,21 +36,21 @@ export default function IncomesTable() {
 
   const [search, setSearch] = useState("")
 
-  const onPeriodSelect = useCallback((period: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("period", period);
-    const url = `${pathname}?${params.toString()}`
+  // const onPeriodSelect = useCallback((period: string) => {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   params.set("period", period);
+  //   const url = `${pathname}?${params.toString()}`
 
-    push(url)
-  }, [searchParams, push, pathname]);
+  //   push(url)
+  // }, [searchParams, push, pathname]);
 
-  useEffect(() => {
-    if (error) {
-      toast.error('Tabela de recebimentos', {
-        description: error.message
-      });
-    }
-  }, [data, error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error('Tabela de recebimentos', {
+  //       description: error.message
+  //     });
+  //   }
+  // }, [data, error]);
 
   return (
     <div className="container mx-auto py-10">

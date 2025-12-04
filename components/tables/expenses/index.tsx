@@ -1,6 +1,6 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
@@ -43,13 +43,13 @@ export default function ExpensesTable() {
     if (error) toast.error('Tabela de despesas', { description: error.message })
   }, [data, error])
 
-  const updateSearchParams = useCallback((key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(key, value);
-    const url = `${pathname}?${params.toString()}`
+  // const updateSearchParams = useCallback((key: string, value: string) => {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   params.set(key, value);
+  //   const url = `${pathname}?${params.toString()}`
 
-    push(url)
-  }, [searchParams, push]);
+  //   push(url)
+  // }, [searchParams, push, pathname]);
 
 
   return (
