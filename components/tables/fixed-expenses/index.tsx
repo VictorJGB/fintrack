@@ -36,13 +36,16 @@ export default function FixedExpensesTable() {
 
   return (
     <div className="container mx-auto py-10">
+      <div className='w-full flex justify-end mb-4'>
+        <AddFixedExpenseDialog />
+      </div>
+
       {isLoading && <TableSkeleton rowsNumber={10} />}
+
 
       {data && <DataTable
         columns={columns}
         data={data.data}
-        AddDialogComponent={AddFixedExpenseDialog}
-        // ImportDialogComponent={ImportExpensesDialog}
         page={data.page}
         pageCount={data.pageCount}
         firstPage={data.firstPage}

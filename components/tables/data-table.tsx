@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ElementType, type ReactNode } from "react"
+import { useState } from "react"
 
 // react table
 import {
@@ -24,15 +24,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Input } from "../ui/input"
 import TablePagination from "./table-pagination"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  AddDialogComponent?: ElementType,
-  ImportDialogComponent?: ElementType,
-  FilterComponent?: ReactNode,
   pageCount: number
   page: number
   firstPage: number
@@ -42,9 +38,6 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  AddDialogComponent,
-  ImportDialogComponent,
-  FilterComponent,
   pageCount,
   page,
   firstPage,
@@ -52,7 +45,6 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [globalFilter, setGlobalFilter] = useState<string>("");
 
   const table = useReactTable({
     data,
@@ -66,36 +58,11 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      globalFilter
     }
   })
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row items-center py-4 gap-4 sm:gap-0">
-        {/* filters */}
-        <div className="flex items-center justify-start gap-2 basis-full sm:basis-2/4">
-          <Input
-            className="w-full sm:max-w-sm"
-            placeholder="Digite o seu filtro..."
-            value={globalFilter ?? ""}
-            onChange={(e) => {
-              setGlobalFilter(e.target.value)
-              table.setGlobalFilter(String(e.target.value))
-            }
-            }
-          />
-
-          {FilterComponent && FilterComponent}
-        </div>
-
-        {/* actions */}
-        <div className="basis-full sm:basis-2/4 sm:ml-auto flex items-center justify-between sm:justify-end space-x-2">
-          {ImportDialogComponent && <ImportDialogComponent />}
-          {AddDialogComponent && <AddDialogComponent />}
-        </div>
-      </div>
-
       <div className="rounded-md border">
         <Table>
           <TableHeader>

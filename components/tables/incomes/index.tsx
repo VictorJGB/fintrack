@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
@@ -17,11 +17,14 @@ import TableSkeleton from "../table-skeleton";
 import AddIncomeDialog from "@/components/dialogs/incomes/add-income";
 import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import PeriodSelect from "@/components/period-select";
+import SearchInput from "@/components/search-input";
 import { toast } from "sonner";
 import { columns } from "./columns";
 
 export default function IncomesTable() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   const page = searchParams.get("page") ?? "1";
   const itemsPerPage = searchParams.get("items_per_page") ?? "10";
   const period = searchParams.get("period") ?? "current";
@@ -33,32 +36,44 @@ export default function IncomesTable() {
     queryFn: () => getIncomes(page, itemsPerPage, period),
   });
 
+  const [search, setSearch] = useState("")
+
   const onPeriodSelect = useCallback((period: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("period", period);
-    const url = `/incomes?${params.toString()}`
+    const url = `${pathname}?${params.toString()}`
 
     push(url)
-  }, [searchParams, push]);
+  }, [searchParams, push, pathname]);
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message);
-      console.log(error);
+      toast.error('Tabela de recebimentos', {
+        description: error.message
+      });
     }
   }, [data, error]);
 
   return (
     <div className="container mx-auto py-10">
+      <div className='w-full flex items-center justify-center mb-4'>
+        <div className='w-full flex items-center justify-center gap-2'>
+          <SearchInput search={search} onSearchChange={setSearch} />
+          <PeriodSelect period={period} onPeriodChange={onPeriodSelect} />
+        </div>
+        <div className='w-full flex items-center justify-end gap-2 ms-auto'>
+          <ImportIncomesDialog />
+          <AddIncomeDialog />
+        </div>
+      </div>
+
       {isLoading && <TableSkeleton rowsNumber={10} />}
+
 
       {data && (
         <DataTable
           columns={columns}
           data={data.data}
-          AddDialogComponent={AddIncomeDialog}
-          ImportDialogComponent={ImportIncomesDialog}
-          FilterComponent={<PeriodSelect period={period} onPeriodChange={onPeriodSelect} />}
           firstPage={data.firstPage}
           lastPage={data.lastPage}
           page={data.page}

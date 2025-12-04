@@ -36,6 +36,9 @@ export default function PlannedExpensesTable() {
 
   return (
     <div className="container mx-auto py-10">
+      <div className='w-full flex justify-end mb-4'>
+        <AddPlannedExpenseDialog />
+      </div>
 
       {isLoading && <TableSkeleton rowsNumber={10} />}
 
@@ -43,7 +46,6 @@ export default function PlannedExpensesTable() {
         <DataTable
           columns={columns}
           data={data.data}
-          AddDialogComponent={AddPlannedExpenseDialog}
           page={data.page}
           pageCount={data.pageCount}
           firstPage={data.firstPage}
