@@ -11,6 +11,7 @@ import {
   FileTextIcon,
   FileVideoIcon,
 } from "lucide-react";
+import Image from "next/image";
 import * as React from "react";
 
 const ROOT_NAME = "FileUpload";
@@ -1093,7 +1094,7 @@ function FileUploadItemPreview(props: FileUploadItemPreviewProps) {
         }
 
         return (
-          <img src={url} alt={file.name} className="size-full object-cover" />
+          <Image src={url} alt={file.name} className="size-full object-cover" />
         );
       }
 

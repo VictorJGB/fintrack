@@ -23,6 +23,8 @@ import { useQuery } from "@tanstack/react-query";
 import { formatToBRL } from "@/utils/formatters";
 // types
 import type { MonthFilter } from "@/interfaces/income";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
@@ -34,13 +36,19 @@ const chartConfig = {
 
 export default function IncomesChart() {
   const page = "";
-  const period: MonthFilter = 'current' //current month
+  const period: MonthFilter = 'current'
   const itemsPerPage = ""
 
   const { data, isLoading, error } = useQuery({
     queryFn: () => getIncomes(page, period, itemsPerPage),
     queryKey: ["incomes", "dashboard"],
   });
+
+  useEffect(() => {
+    if (error) toast.error('Gráfico de Recebimentos', {
+      description: error?.message || 'Ocorreu um erro ao carregar o gráfico de recebimentos.'
+    })
+  }, [error])
 
   return (
     <Card className="w-full rounded-2xl">
