@@ -36,7 +36,7 @@ export default function FixedExpensesTable() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className='w-full flex justify-end mb-4'>
+      <div className='w-full flex justify-center md:justify-end mb-4'>
         <AddFixedExpenseDialog />
       </div>
 

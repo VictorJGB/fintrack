@@ -16,7 +16,6 @@ import { columns } from './columns'
 
 // components
 import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
-import PeriodSelect from '@/components/period-select'
 import SearchInput from '@/components/search-input'
 import useDebounce from '@/hooks/use-debounce'
 import { toast } from 'sonner'
@@ -55,12 +54,12 @@ export default function ExpensesTable() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className='w-full flex items-center justify-center mb-4'>
+      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4'>
         <div className='w-full flex items-center justify-center gap-2'>
           <SearchInput search={search} onSearchChange={setSearch} />
-          <PeriodSelect period={period} onPeriodChange={(value) => updateSearchParams('period', value)} />
+          {/* <PeriodSelect period={period} onPeriodChange={(value) => updateSearchParams('period', value)} /> */}
         </div>
-        <div className='w-full flex items-center justify-end gap-2 ms-auto'>
+        <div className='w-full flex items-center justify-between md:justify-end gap-2 ms-auto'>
           <ImportExpensesDialog />
           <AddExpenseDialog />
         </div>
