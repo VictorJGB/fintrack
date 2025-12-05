@@ -53,8 +53,8 @@ export default function ExpensesTable() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4'>
-        <div className='w-full flex items-center justify-center gap-2'>
+      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4 gap-2 md:gap-0'>
+        <div className='w-full flex items-center justify-start gap-2'>
           <SearchInput search={search} onSearchChange={setSearch} />
           {/* <PeriodSelect period={period} onPeriodChange={(value) => updateSearchParams('period', value)} /> */}
         </div>

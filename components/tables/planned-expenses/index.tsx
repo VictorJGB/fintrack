@@ -45,7 +45,7 @@ export default function PlannedExpensesTable() {
       {data && (
         <DataTable
           columns={columns}
-          data={data.data}
+          data={data.data ?? []}
           page={data.page}
           pageCount={data.pageCount}
           firstPage={data.firstPage}
