@@ -1,5 +1,5 @@
 'use client'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 // actions
@@ -17,13 +17,12 @@ import { columns } from './columns'
 // components
 import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
 import SearchInput from '@/components/search-input'
-import useDebounce from '@/hooks/use-debounce'
 import { toast } from 'sonner'
 
-export default function ExpensesTable() {
-  const { push } = useRouter()
-  const pathname = usePathname()
+// hooks
+import useDebounce from '@/hooks/use-debounce'
 
+export default function ExpensesTable() {
   const searchParams = useSearchParams()
   const page = searchParams.get('page') ?? '1'
   const itemsPerPage = searchParams.get('items_per_page') ?? '10'

@@ -1,7 +1,7 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
@@ -17,17 +17,15 @@ import TableSkeleton from "../table-skeleton";
 import AddIncomeDialog from "@/components/dialogs/incomes/add-income";
 import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import SearchInput from "@/components/search-input";
+import { toast } from "sonner";
 import { columns } from "./columns";
 
 export default function IncomesTable() {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
 
   const page = searchParams.get("page") ?? "1";
   const itemsPerPage = searchParams.get("items_per_page") ?? "10";
   const period = searchParams.get("period") ?? "current";
-
-  const { push } = useRouter()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["incomes", page, itemsPerPage, period],
@@ -44,13 +42,14 @@ export default function IncomesTable() {
   //   push(url)
   // }, [searchParams, push, pathname]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error('Tabela de recebimentos', {
-  //       description: error.message
-  //     });
-  //   }
-  // }, [data, error]);
+  useEffect(() => {
+    if (error) {
+      toast.error('Tabela de recebimentos', {
+        description: error.message
+      });
+    }
+  }, [data, error]);
+
 
   return (
     <div className="container mx-auto py-10">
@@ -66,7 +65,6 @@ export default function IncomesTable() {
       </div>
 
       {isLoading && <TableSkeleton rowsNumber={10} />}
-
 
       {data && (
         <DataTable
