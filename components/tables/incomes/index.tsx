@@ -19,11 +19,11 @@ import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import SearchInput from "@/components/search-input";
 import { toast } from "sonner";
 import { columns } from "./columns";
-import { toast } from "sonner";
 import PeriodSelect from "@/components/period-select";
 
 export default function IncomesTable() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const page = searchParams.get("page") ?? "1";
   const itemsPerPage = searchParams.get("items_per_page") ?? "10";
