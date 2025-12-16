@@ -31,8 +31,8 @@ export default function BalanceCard() {
 
   const data = useQueries({
     queries: [
-      { queryKey: ["grouped", "expenses", searchRecipient], queryFn: () => getGroupedExpenses(searchRecipient) },
-      { queryKey: ['fixed', 'expenses'], queryFn: () => getFixedExpenses() },
+      { queryKey: ["expenses", "grouped", , searchRecipient], queryFn: () => getGroupedExpenses(searchRecipient) },
+      { queryKey: ['expenses', 'fixed'], queryFn: () => getFixedExpenses() },
       { queryKey: ["incomes", "dashboard"], queryFn: () => getIncomes(incomesPage, incomesPerPage, incomesPeriod), },
     ],
     combine: (results) => {
