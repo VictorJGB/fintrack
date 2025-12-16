@@ -1,6 +1,6 @@
 'use client'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 
 // actions
 import getExpenses from '@/actions/expenses/get-expenses'
@@ -18,9 +18,7 @@ import { columns } from './columns'
 import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
 import SearchInput from '@/components/search-input'
 import { toast } from 'sonner'
-
-// hooks
-import useDebounce from '@/hooks/use-debounce'
+import PeriodSelect from '@/components/period-select'
 
 export default function ExpensesTable() {
   const searchParams = useSearchParams()
@@ -42,21 +40,20 @@ export default function ExpensesTable() {
     if (error) toast.error('Tabela de despesas', { description: error.message })
   }, [data, error])
 
-  // const updateSearchParams = useCallback((key: string, value: string) => {
-  //   const params = new URLSearchParams(searchParams.toString());
-  //   params.set(key, value);
-  //   const url = `${pathname}?${params.toString()}`
+  const updateSearchParams = useCallback((key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(key, value);
+    const url = `${pathname}?${params.toString()}`
 
-  //   push(url)
-  // }, [searchParams, push, pathname]);
-
+    push(url)
+  }, [searchParams, push, pathname]);
 
   return (
     <div className="container mx-auto py-10">
-      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4 gap-2 md:gap-0'>
-        <div className='w-full flex items-center justify-start gap-2'>
+      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4'>
+        <div className='w-full flex items-center justify-center md:justify-start gap-2'>
           <SearchInput search={search} onSearchChange={setSearch} />
-          {/* <PeriodSelect period={period} onPeriodChange={(value) => updateSearchParams('period', value)} /> */}
+          <PeriodSelect period={period} onPeriodChange={(value) => updateSearchParams('period', value)} />
         </div>
         <div className='w-full flex items-center justify-between md:justify-end gap-2 ms-auto'>
           <ImportExpensesDialog />
@@ -74,7 +71,6 @@ export default function ExpensesTable() {
           pageCount={data.pageCount}
           firstPage={data.firstPage}
           lastPage={data.lastPage}
-
         />)}
     </div>
   )

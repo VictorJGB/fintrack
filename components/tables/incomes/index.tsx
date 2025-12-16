@@ -1,7 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 // actions
 import getIncomes from "@/actions/incomes/get-incomes";
@@ -19,13 +19,17 @@ import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
 import SearchInput from "@/components/search-input";
 import { toast } from "sonner";
 import { columns } from "./columns";
+import { toast } from "sonner";
+import PeriodSelect from "@/components/period-select";
 
 export default function IncomesTable() {
   const searchParams = useSearchParams();
 
   const page = searchParams.get("page") ?? "1";
   const itemsPerPage = searchParams.get("items_per_page") ?? "10";
-  const period = searchParams.get("period") ?? "current";
+  const period = searchParams.get("period") ?? "";
+
+  const { push } = useRouter()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["incomes", page, itemsPerPage, period],
@@ -34,13 +38,13 @@ export default function IncomesTable() {
 
   const [search, setSearch] = useState("")
 
-  // const onPeriodSelect = useCallback((period: string) => {
-  //   const params = new URLSearchParams(searchParams.toString());
-  //   params.set("period", period);
-  //   const url = `${pathname}?${params.toString()}`
+  const onPeriodSelect = useCallback((period: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("period", period);
+    const url = `${pathname}?${params.toString()}`
 
-  //   push(url)
-  // }, [searchParams, push, pathname]);
+    push(url)
+  }, [searchParams, push, pathname]);
 
   useEffect(() => {
     if (error) {
@@ -50,13 +54,12 @@ export default function IncomesTable() {
     }
   }, [data, error]);
 
-
   return (
     <div className="container mx-auto py-10">
-      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4 gap-2 md:gap-0'>
-        <div className='w-full flex items-center justify-center gap-2'>
+      <div className='w-full flex flex-col md:flex-row items-center justify-center mb-4'>
+        <div className='w-full flex items-center justify-center md:justify-start gap-2'>
           <SearchInput search={search} onSearchChange={setSearch} />
-          {/* <PeriodSelect period={period} onPeriodChange={onPeriodSelect} /> */}
+          <PeriodSelect period={period} onPeriodChange={onPeriodSelect} />
         </div>
         <div className='w-full flex items-center justify-between md:justify-end gap-2 ms-auto'>
           <ImportIncomesDialog />

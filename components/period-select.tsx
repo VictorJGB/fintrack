@@ -16,7 +16,7 @@ const periods = [
   { label: 'Todas', value: 'all' },
 ]
 
-export default function PeriodSelect({ period, onPeriodChange, className }: Props) {
+export default function PeriodSelect({ period = 'current', onPeriodChange, className }: Props) {
 
   return (
     <Select onValueChange={onPeriodChange} defaultValue={period}>

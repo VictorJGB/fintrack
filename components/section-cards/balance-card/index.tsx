@@ -40,7 +40,8 @@ export default function BalanceCard() {
       const totalFixedExpenses = fixed.data?.data.reduce((acc: number, expense: FixedExpense) => acc + expense.amount, 0) ?? 0;
       const totalExpenses = grouped.data ? grouped.data[0].total_amount + totalFixedExpenses : 0;
       const totalIncomes = incomes.data?.data.reduce((acc: number, income: Income) => acc + income.amount, 0) ?? 0;
-      const balance = (user?.salary ?? 0 + totalIncomes) - totalExpenses;
+      const balance = ((user?.salary ?? 0) + totalIncomes) - totalExpenses;
+      console.log(balance)
       const isBalanceNegative = balance < 0;
 
       return {
