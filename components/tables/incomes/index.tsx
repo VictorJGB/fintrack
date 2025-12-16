@@ -52,7 +52,7 @@ export default function IncomesTable() {
         description: error.message
       });
     }
-  }, [data, error]);
+  }, [error]);
 
   return (
     <div className="container mx-auto py-10">
