@@ -19,8 +19,12 @@ import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
 import SearchInput from '@/components/search-input'
 import { toast } from 'sonner'
 import PeriodSelect from '@/components/period-select'
+import useDebounce from '@/hooks/use-debounce'
 
 export default function ExpensesTable() {
+  const { push } = useRouter()
+  const pathname = usePathname()
+
   const searchParams = useSearchParams()
   const page = searchParams.get('page') ?? '1'
   const itemsPerPage = searchParams.get('items_per_page') ?? '10'
