@@ -1,76 +1,89 @@
-import { useState } from "react"
-
-// actions
-import deletePlannedExpense from "@/actions/planneed-expenses/delete-planned-expense"
-
-// libs
-import { queryClient } from "@/lib/react-query"
-import { useMutation } from "@tanstack/react-query"
-
-// components
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Separator } from "@/components/ui/separator"
-import { toast } from "sonner"
-
+import { useMutation } from "@tanstack/react-query";
 // icons
-import { Loader2, Trash } from "lucide-react"
+import { Loader2, Trash } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+// actions
+import deletePlannedExpense from "@/actions/planneed-expenses/delete-planned-expense";
+// components
+import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+// libs
+import { queryClient } from "@/lib/react-query";
 
 interface Props {
-  id: string
-  handleModalClose?: () => void
+	id: string;
+	handleModalClose?: () => void;
 }
 
-export default function DeletePlannedExpenseDialog({ id, handleModalClose }: Props) {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+export default function DeletePlannedExpenseDialog({
+	id,
+	handleModalClose,
+}: Props) {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: deletePlannedExpense,
-    mutationKey: ['delete-planned-expense'],
-    onSuccess: ({ message }) => {
-      toast.success(message)
-      queryClient.invalidateQueries({ queryKey: ['planned'] })
-      setIsOpen(false)
-    },
-    onError: ({ message }) => {
-      toast.error(message)
-    }
-  })
+	const { mutate, isPending } = useMutation({
+		mutationFn: deletePlannedExpense,
+		mutationKey: ["delete-planned-expense"],
+		onSuccess: ({ message }) => {
+			toast.success(message);
+			queryClient.invalidateQueries({ queryKey: ["planned"] });
+			setIsOpen(false);
+		},
+		onError: ({ message }) => {
+			toast.error(message);
+		},
+	});
 
-  const handleDelete = () => mutate(id)
+	const handleDelete = () => mutate(id);
 
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant={'destructive'} className="w-full">
-          Deletar despesa planejada
-          <Trash className="size-4 ml-auto" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]" onInteractOutside={handleModalClose}>
-        <DialogHeader>
-          <DialogTitle>Deletar despesa planejada</DialogTitle>
-          <Separator />
-        </DialogHeader>
+	return (
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+			<DialogTrigger asChild>
+				<Button variant={"destructive"} className="w-full">
+					Deletar despesa planejada
+					<Trash className="size-4 ml-auto" />
+				</Button>
+			</DialogTrigger>
+			<DialogContent
+				className="sm:max-w-[500px]"
+				onInteractOutside={handleModalClose}
+			>
+				<DialogHeader>
+					<DialogTitle>Deletar despesa planejada</DialogTitle>
+					<Separator />
+				</DialogHeader>
 
-        <p>
-          Esta ação é <strong className="text-destructive">IRREVERSÍVEL</strong>, uma vez deletados, os dados não poderão mais ser recuperados.
-          Deseja realmente deletar esta despesa?
-        </p>
+				<p>
+					Esta ação é <strong className="text-destructive">IRREVERSÍVEL</strong>
+					, uma vez deletados, os dados não poderão mais ser recuperados. Deseja
+					realmente deletar esta despesa?
+				</p>
 
-        <DialogFooter className="flex w-full mt-4 justify-end gap-2">
-          <DialogClose asChild>
-            <Button variant={'ghost'}>
-              Fechar
-            </Button>
-          </DialogClose>
+				<DialogFooter className="flex w-full mt-4 justify-end gap-2">
+					<DialogClose asChild>
+						<Button variant={"ghost"}>Fechar</Button>
+					</DialogClose>
 
-          <Button variant={'destructive'} onClick={handleDelete} disabled={isPending}>
-            {isPending && <Loader2 className="size-4 ml-auto animate-spin" />}
-            Deletar
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
+					<Button
+						variant={"destructive"}
+						onClick={handleDelete}
+						disabled={isPending}
+					>
+						{isPending && <Loader2 className="size-4 ml-auto animate-spin" />}
+						Deletar
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	);
 }

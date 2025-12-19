@@ -1,15 +1,15 @@
 export default function useLocalStorage(key: string) {
-  const item = localStorage.getItem(key) || ''
+	const item = localStorage.getItem(key) || "";
 
-  function setItem(value: string) {
-    const item = localStorage.setItem(key, value)
+	function setItem(value: string) {
+		const item = localStorage.setItem(key, value);
 
-    return item
-  }
+		return item;
+	}
 
-  function removeItem() {
-    localStorage.removeItem(key)
-  }
+	function removeItem() {
+		localStorage.removeItem(key);
+	}
 
-  return { item, setItem, removeItem }
+	return { item, setItem, removeItem };
 }

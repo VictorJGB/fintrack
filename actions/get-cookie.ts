@@ -1,11 +1,10 @@
-"use server"
+"use server";
 
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 
 export default async function getCookie(cookieName: string) {
+	const store = await cookies();
+	const cookie = store.get(cookieName);
 
-  const store = await cookies()
-  const cookie = store.get(cookieName)
-
-  return cookie
+	return cookie;
 }

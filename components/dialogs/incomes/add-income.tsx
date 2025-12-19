@@ -1,203 +1,204 @@
-import { useState } from 'react'
-
-// libs
-import { queryClient } from '@/lib/react-query'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { CurrencyInput } from 'react-currency-mask'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-// components
-import { Button } from "@/components/ui/button"
-import { Calendar } from '@/components/ui/calendar'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from "@/components/ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
-import { toast } from 'sonner'
-// utils
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-// actions
-import createIncome from '@/actions/incomes/create-income'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 // icons
-import { CalendarIcon, Loader2, PlusCircle } from "lucide-react"
+import { CalendarIcon, Loader2, PlusCircle } from "lucide-react";
+import { useState } from "react";
+import { CurrencyInput } from "react-currency-mask";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+// actions
+import createIncome from "@/actions/incomes/create-income";
+// components
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+// libs
+import { queryClient } from "@/lib/react-query";
+// utils
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  date: z.date({ required_error: "Data é obrigatório" }),
-  source: z.string().min(2, { message: 'Minimo 2 caracteres' }),
-  amount: z.number().min(1, { message: 'Mínimo R$1 reais' }),
-})
+	date: z.date({ required_error: "Data é obrigatório" }),
+	source: z.string().min(2, { message: "Minimo 2 caracteres" }),
+	amount: z.number().min(1, { message: "Mínimo R$1 reais" }),
+});
 
 export default function AddIncomeDialog() {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: createIncome,
-    mutationKey: ['incomes', 'add'],
-    onSuccess: ({ message }) => {
-      toast.success(message)
-      toggleModalOpen()
-      queryClient.invalidateQueries({ queryKey: ['incomes'] })
-    },
-    onError: (err) => {
-      console.error(err)
-      toast.error(err.message)
-    }
-  })
+	const { mutate, isPending } = useMutation({
+		mutationFn: createIncome,
+		mutationKey: ["incomes", "add"],
+		onSuccess: ({ message }) => {
+			toast.success(message);
+			toggleModalOpen();
+			queryClient.invalidateQueries({ queryKey: ["incomes"] });
+		},
+		onError: (err) => {
+			console.error(err);
+			toast.error(err.message);
+		},
+	});
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      date: new Date(),
-      source: "",
-      amount: 1,
-    }
-  })
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			date: new Date(),
+			source: "",
+			amount: 1,
+		},
+	});
 
-  function toggleModalOpen() {
-    setIsOpen(!isOpen)
-  }
+	function toggleModalOpen() {
+		setIsOpen(!isOpen);
+	}
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const resBody = {
-      ...values,
-      date: new Date()
-    }
+	function onSubmit(values: z.infer<typeof formSchema>) {
+		const resBody = {
+			...values,
+			date: new Date(),
+		};
 
-    mutate(resBody)
-  }
+		mutate(resBody);
+	}
 
-  return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={setIsOpen}
-    >
-      <DialogTrigger asChild>
-        <Button>
-          Adicionar
-          <PlusCircle className="size-4 ml-auto" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Adicionar recebimento</DialogTitle>
-          <Separator />
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='flex flex-col gap-4'>
-              {/* date */}
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="grid gap-2">
-                    <FormLabel>Data do recebimento</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP", { locale: ptBR })
-                            ) : (
-                              <span>Escolha uma data</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          locale={ptBR}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+	return (
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+			<DialogTrigger asChild>
+				<Button>
+					Adicionar
+					<PlusCircle className="size-4 ml-auto" />
+				</Button>
+			</DialogTrigger>
+			<DialogContent className="sm:max-w-[425px]">
+				<DialogHeader>
+					<DialogTitle>Adicionar recebimento</DialogTitle>
+					<Separator />
+				</DialogHeader>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
+						<div className="flex flex-col gap-4">
+							{/* date */}
+							<FormField
+								control={form.control}
+								name="date"
+								render={({ field }) => (
+									<FormItem className="grid gap-2">
+										<FormLabel>Data do recebimento</FormLabel>
+										<Popover>
+											<PopoverTrigger asChild>
+												<FormControl>
+													<Button
+														variant={"outline"}
+														className={cn(
+															"w-[240px] pl-3 text-left font-normal",
+															!field.value && "text-muted-foreground",
+														)}
+													>
+														{field.value ? (
+															format(field.value, "PPP", { locale: ptBR })
+														) : (
+															<span>Escolha uma data</span>
+														)}
+														<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent className="w-auto p-0" align="start">
+												<Calendar
+													mode="single"
+													selected={field.value}
+													onSelect={field.onChange}
+													locale={ptBR}
+													initialFocus
+												/>
+											</PopoverContent>
+										</Popover>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
-              {/* source */}
-              <FormField
-                control={form.control}
-                name='source'
-                render={({ field }) => (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel>Fonte</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='text'
-                        placeholder='Ex: Renda extra'
-                        required
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* amount */}
-              <FormField
-                control={form.control}
-                name='amount'
-                render={({ field }) => (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel>Valor</FormLabel>
-                    <FormControl>
-                      <CurrencyInput
-                        {...field}
-                        value={field.value}
-                        onChangeValue={(_, value) => {
-                          field.onChange(value)
-                        }}
-                        InputElement={<Input type='text' min={1} required />}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+							{/* source */}
+							<FormField
+								control={form.control}
+								name="source"
+								render={({ field }) => (
+									<FormItem className="grid gap-2">
+										<FormLabel>Fonte</FormLabel>
+										<FormControl>
+											<Input
+												type="text"
+												placeholder="Ex: Renda extra"
+												required
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							{/* amount */}
+							<FormField
+								control={form.control}
+								name="amount"
+								render={({ field }) => (
+									<FormItem className="grid gap-2">
+										<FormLabel>Valor</FormLabel>
+										<FormControl>
+											<CurrencyInput
+												{...field}
+												value={field.value}
+												onChangeValue={(_, value) => {
+													field.onChange(value);
+												}}
+												InputElement={<Input type="text" min={1} required />}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
 
-            {/* footer */}
-            <div className='w-full flex items-center justify-end gap-4 mt-5'>
-              <DialogClose asChild>
-                <Button variant='ghost'>
-                  Cancelar
-                </Button>
-              </DialogClose>
-              <Button type="submit" disabled={isPending}>
-                {isPending && <Loader2 className='size-4 mr-4 animate-spin' />}
-                Salvar
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  )
+						{/* footer */}
+						<div className="w-full flex items-center justify-end gap-4 mt-5">
+							<DialogClose asChild>
+								<Button variant="ghost">Cancelar</Button>
+							</DialogClose>
+							<Button type="submit" disabled={isPending}>
+								{isPending && <Loader2 className="size-4 mr-4 animate-spin" />}
+								Salvar
+							</Button>
+						</div>
+					</form>
+				</Form>
+			</DialogContent>
+		</Dialog>
+	);
 }

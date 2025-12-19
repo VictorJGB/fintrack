@@ -1,27 +1,29 @@
-'use server'
+"use server";
 
-// utils
-import { apiFetcher } from "@/utils/api"
 // interfaces
-import type FixedExpense from "@/interfaces/fixed-expense"
+import type FixedExpense from "@/interfaces/fixed-expense";
+// utils
+import { apiFetcher } from "@/utils/api";
 
-type formData = Omit<FixedExpense, '_id'>
+type formData = Omit<FixedExpense, "_id">;
 
 interface ResProps {
-  message: string
+	message: string;
 }
 
-export default async function createFixedExpense(formData: formData): Promise<ResProps> {
-  const response = await apiFetcher('expenses/fixed', {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  })
+export default async function createFixedExpense(
+	formData: formData,
+): Promise<ResProps> {
+	const response = await apiFetcher("expenses/fixed", {
+		method: "POST",
+		body: JSON.stringify(formData),
+	});
 
-  const data = await response.json()
+	const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.message)
-  }
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
 
-  return data
+	return data;
 }

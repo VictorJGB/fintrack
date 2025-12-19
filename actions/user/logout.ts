@@ -1,17 +1,17 @@
-'use server'
+"use server";
 
 import { apiFetcher } from "@/utils/api";
 
 export default async function Logout() {
-  const response = await apiFetcher('users/auth/logout', {
-    method: 'POST',
-  })
+	const response = await apiFetcher("users/auth/logout", {
+		method: "POST",
+	});
 
-  const { message } = await response.json()
+	const { message } = await response.json();
 
-  if (!response.ok) {
-    throw new Error(message)
-  }
+	if (!response.ok) {
+		throw new Error(message);
+	}
 
-  return message
+	return message;
 }

@@ -1,45 +1,43 @@
-import DeleteIncomeDialog from "@/components/dialogs/incomes/delete-income"
-import EditIncomeDialog from "@/components/dialogs/incomes/edit-income"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
-
-// types
-import type Income from "@/interfaces/income"
-
 // icons
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal } from "lucide-react";
+import DeleteIncomeDialog from "@/components/dialogs/incomes/delete-income";
+import EditIncomeDialog from "@/components/dialogs/incomes/edit-income";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+// types
+import type Income from "@/interfaces/income";
 
 type Props = {
-  data: Income
-}
+	data: Income;
+};
 
 export default function IncomesActionsDropdownMenu({ data }: Props) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Ações</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="w-full" asChild>
-          <EditIncomeDialog data={data} />
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="w-full" asChild>
-          <DeleteIncomeDialog incomeID={data._id} />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant="ghost" className="h-8 w-8 p-0">
+					<span className="sr-only">Open menu</span>
+					<MoreHorizontal className="h-4 w-4" />
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end">
+				<DropdownMenuLabel>Ações</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem className="w-full" asChild>
+					<EditIncomeDialog data={data} />
+				</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem className="w-full" asChild>
+					<DeleteIncomeDialog incomeID={data._id} />
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
 }

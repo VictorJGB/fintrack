@@ -1,48 +1,44 @@
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from "@/components/ui/breadcrumb"
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface ActiveRoute {
-  label: string,
-  href: string,
-  pathname: string
+	label: string;
+	href: string;
+	pathname: string;
 }
 
-
 export default function ActiveBreadcrumb({ label, pathname }: ActiveRoute) {
-  const isHomePage = pathname === '/'
+	const isHomePage = pathname === "/";
 
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {isHomePage && (
-          <>
-            <BreadcrumbItem className="hidden md:block">
-              Gerenciamento
-            </BreadcrumbItem>
-          </>
-        )}
+	return (
+		<Breadcrumb>
+			<BreadcrumbList>
+				{isHomePage && (
+					<>
+						<BreadcrumbItem className="hidden md:block">
+							Gerenciamento
+						</BreadcrumbItem>
+					</>
+				)}
 
-        {!isHomePage && (
-          <>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="/">
-                Gerenciamento
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{label}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </>
-        )
-        }
-      </BreadcrumbList>
-    </Breadcrumb>
-  )
+				{!isHomePage && (
+					<>
+						<BreadcrumbItem className="hidden md:block">
+							<BreadcrumbLink href="/">Gerenciamento</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator className="hidden md:block" />
+						<BreadcrumbItem>
+							<BreadcrumbPage>{label}</BreadcrumbPage>
+						</BreadcrumbItem>
+					</>
+				)}
+			</BreadcrumbList>
+		</Breadcrumb>
+	);
 }
