@@ -23,6 +23,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 // actions
 
+import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 // icons
 import Login from "@/actions/user/login";
@@ -40,7 +41,10 @@ export default function LoginForm({
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const [isPending, startTransition] = useTransition();
+	const { mutate, isPending } = useMutation({
+		mutationKey: ["login"],
+		mutationFn: Login,
+	});
 	const { replace } = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -51,24 +55,19 @@ export default function LoginForm({
 		},
 	});
 
-	const toggleVisibility = () => {
-		setIsPasswordVisible(!isPasswordVisible);
-	};
+	const toggleVisibility = () => setIsPasswordVisible(!isPasswordVisible);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		startTransition(async () => {
-			try {
-				await Login(values);
+		mutate(values, {
+			onSuccess: () => {
 				toast.success("Usuario autenticado com sucesso!");
 				replace("/");
-			} catch (e) {
-				console.error(e);
-
-				if (e instanceof Error)
-					toast.error("Erro", {
-						description: e.message,
-					});
-			}
+			},
+			onError: (err) => {
+				toast.error("Erro de Login", {
+					description: err.message,
+				});
+			},
 		});
 	}
 
