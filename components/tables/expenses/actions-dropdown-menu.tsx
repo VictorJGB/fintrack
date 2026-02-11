@@ -1,5 +1,7 @@
 // components
+import AddExpenseDialog from "@/components/dialogs/expenses/add-expense";
 import DeleteExpenseDialog from "@/components/dialogs/expenses/delete-expense";
+import DuplicateExpenseDialog from "@/components/dialogs/expenses/duplicate-expense";
 import EditExpenseDialog from "@/components/dialogs/expenses/edit-expense";
 import InfoExpenseDialog from "@/components/dialogs/expenses/info-expense";
 import { Button } from "@/components/ui/button";
@@ -45,6 +47,10 @@ export default function ActionsDropdownMenu({ data }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuItem className="w-full" asChild>
           <EditExpenseDialog data={data} handleModalClose={closeModal} />
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="w-full" asChild>
+          <DuplicateExpenseDialog defaultValues={data}/>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="w-full" asChild>

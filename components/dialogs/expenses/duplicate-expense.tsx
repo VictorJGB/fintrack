@@ -38,7 +38,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 // icons
-import { CalendarIcon, Loader2, PlusCircle } from "lucide-react"
+import { CalendarIcon, Files, Loader2, PlusCircle } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -52,7 +52,11 @@ const formSchema = z.object({
   total_amount: z.number()
 })
 
-export default function AddExpenseDialog() {
+type DuplicateExpenseDialogProps = {
+  defaultValues: z.infer<typeof formSchema>
+}
+
+export default function DuplicateExpenseDialog({defaultValues}: DuplicateExpenseDialogProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { mutate, isPending } = useMutation({
@@ -60,7 +64,9 @@ export default function AddExpenseDialog() {
     mutationKey: ['expenses', 'add'],
     onSuccess: ({ message }) => {
       toast.success(message)
+      toggleModalOpen()
       queryClient.invalidateQueries({ queryKey: ['expenses'] })
+      resetForm()
     },
     onError: (err) => {
       console.error(err)
@@ -71,14 +77,8 @@ export default function AddExpenseDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: new Date(),
-      company: '',
-      description: '',
-      recipient: 'Eu',
-      installments: 1,
-      installments_paid: 0,
-      amount_per_installment: 1,
-      total_amount: 1
+      ...defaultValues,
+      date: new Date(defaultValues.date)
     }
   })
 
@@ -90,15 +90,13 @@ export default function AddExpenseDialog() {
     setIsOpen(!isOpen)
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate(values)
+  const resetForm = () => {
     form.reset()
-    toggleModalOpen()
+    setIsOpen(false)
   }
 
-  function submitAndAdd() {
-    mutate(form.getValues())
-    form.reset()
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    mutate(values)
   }
 
   return (
@@ -107,12 +105,12 @@ export default function AddExpenseDialog() {
       onOpenChange={setIsOpen}
     >
       <DialogTrigger asChild>
-        <Button>
-          Adicionar
-          <PlusCircle className="size-4 ml-auto" />
+        <Button variant="ghost" className="w-full">
+          Duplicar
+          <Files className="size-4 ml-auto" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => form.reset()}>
+      <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => resetForm()}>
         <DialogHeader>
           <DialogTitle>Adicionar despesa</DialogTitle>
           <Separator />
@@ -308,17 +306,10 @@ export default function AddExpenseDialog() {
             {/* footer */}
             <div className='w-full flex items-center justify-end gap-4 mt-5'>
               <DialogClose asChild>
-                <Button variant='ghost' className='mr-auto'>
+                <Button variant='ghost'>
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type='button' disabled={isPending} variant={'outline'} onClick={submitAndAdd}>
-                Salvar e adicionar
-                {isPending ? 
-                  <Loader2 className='size-4 mr-4 animate-spin' /> 
-                  : <PlusCircle className="size-4 ml-auto" />
-                }
-              </Button>
               <Button type="submit" disabled={isPending}>
                 {isPending && <Loader2 className='size-4 mr-4 animate-spin' />}
                 Salvar
