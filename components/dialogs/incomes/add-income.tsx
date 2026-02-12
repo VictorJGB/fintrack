@@ -52,6 +52,7 @@ export default function AddIncomeDialog() {
       toast.success(message)
       toggleModalOpen()
       queryClient.invalidateQueries({ queryKey: ['incomes'] })
+      form.reset()
     },
     onError: (err) => {
       console.error(err)
@@ -73,12 +74,7 @@ export default function AddIncomeDialog() {
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const resBody = {
-      ...values,
-      date: new Date()
-    }
-
-    mutate(resBody)
+    mutate(values)
   }
 
   return (
