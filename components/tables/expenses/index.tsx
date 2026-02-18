@@ -10,13 +10,11 @@ import getExpenses from "@/actions/expenses/get-expenses";
 // data table
 import AddExpenseDialog from "@/components/dialogs/expenses/add-expense";
 // components
-import ImportExpensesDialog from "@/components/dialogs/expenses/import-expenses";
-import PeriodSelect from "@/components/period-select";
-import SearchInput from "@/components/search-input";
-import useDebounce from "@/hooks/use-debounce";
-import { DataTable } from "../data-table";
-import TableSkeleton from "../table-skeleton";
-import { columns } from "./columns";
+import ImportExpensesDialog from '@/components/dialogs/expenses/import-expenses'
+import SearchInput from '@/components/search-input'
+import { toast } from 'sonner'
+import PeriodSelect from '@/components/period-select'
+import useDebounce from '@/hooks/use-debounce'
 
 export default function ExpensesTable() {
 	const { push } = useRouter();

@@ -29,36 +29,19 @@ export default function BalanceCard() {
 		queryFn: verifyUser,
 	});
 
-	const data = useQueries({
-		queries: [
-			{
-				queryKey: ["expenses", "grouped", , searchRecipient],
-				queryFn: () => getGroupedExpenses(searchRecipient),
-			},
-			{ queryKey: ["expenses", "fixed"], queryFn: () => getFixedExpenses() },
-			{
-				queryKey: ["incomes", "dashboard"],
-				queryFn: () => getIncomes(incomesPage, incomesPerPage, incomesPeriod),
-			},
-		],
-		combine: (results) => {
-			const [grouped, fixed, incomes] = results;
-			const totalFixedExpenses =
-				fixed.data?.data.reduce(
-					(acc: number, expense: FixedExpense) => acc + expense.amount,
-					0,
-				) ?? 0;
-			const totalExpenses = grouped.data
-				? grouped.data[0].total_amount + totalFixedExpenses
-				: 0;
-			const totalIncomes =
-				incomes.data?.data.reduce(
-					(acc: number, income: Income) => acc + income.amount,
-					0,
-				) ?? 0;
-			const balance = (user?.salary ?? 0) + totalIncomes - totalExpenses;
-			console.log(balance);
-			const isBalanceNegative = balance < 0;
+  const data = useQueries({
+    queries: [
+      { queryKey: ["expenses", "grouped", , searchRecipient], queryFn: () => getGroupedExpenses(searchRecipient) },
+      { queryKey: ['expenses', 'fixed'], queryFn: () => getFixedExpenses() },
+      { queryKey: ["incomes", "dashboard"], queryFn: () => getIncomes(incomesPage, incomesPerPage, incomesPeriod), },
+    ],
+    combine: (results) => {
+      const [grouped, fixed, incomes] = results
+      const totalFixedExpenses = fixed.data?.data.reduce((acc: number, expense: FixedExpense) => acc + expense.amount, 0) ?? 0;
+      const totalExpenses = grouped.data ? grouped.data[0].total_amount + totalFixedExpenses : 0;
+      const totalIncomes = incomes.data?.data.reduce((acc: number, income: Income) => acc + income.amount, 0) ?? 0;
+      const balance = ((user?.salary ?? 0) + totalIncomes) - totalExpenses;
+      const isBalanceNegative = balance < 0;
 
 			return {
 				balance,

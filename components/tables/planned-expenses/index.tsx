@@ -40,16 +40,15 @@ export default function PlannedExpensesTable() {
 
 			{isLoading && <TableSkeleton rowsNumber={10} />}
 
-			{data && (
-				<DataTable
-					columns={columns}
-					data={data.data}
-					page={data.page}
-					pageCount={data.pageCount}
-					firstPage={data.firstPage}
-					lastPage={data.lastPage}
-				/>
-			)}
-		</div>
-	);
+      {data && (
+        <DataTable
+          columns={columns}
+          data={data.data ?? []}
+          page={data.page}
+          pageCount={data.pageCount}
+          firstPage={data.firstPage}
+          lastPage={data.lastPage}
+        />)}
+    </div>
+  )
 }

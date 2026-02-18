@@ -42,6 +42,7 @@ import { queryClient } from "@/lib/react-query";
 // utils
 import { cn } from "@/lib/utils";
 
+
 const formSchema = z.object({
 	date: z.date({ required_error: "Data é obrigatório" }),
 	company: z.string().min(2, { message: "Minimo 2 caracteres" }),
@@ -65,20 +66,18 @@ const formSchema = z.object({
 export default function AddExpenseDialog() {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-	const { mutate, isPending } = useMutation({
-		mutationFn: createExpense,
-		mutationKey: ["expenses", "add"],
-		onSuccess: ({ message }) => {
-			toast.success(message);
-			toggleModalOpen();
-			queryClient.invalidateQueries({ queryKey: ["expenses"] });
-			resetForm();
-		},
-		onError: (err) => {
-			console.error(err);
-			toast.error(err.message);
-		},
-	});
+  const { mutate, isPending } = useMutation({
+    mutationFn: createExpense,
+    mutationKey: ['expenses', 'add'],
+    onSuccess: ({ message }) => {
+      toast.success(message)
+      queryClient.invalidateQueries({ queryKey: ['expenses'] })
+    },
+    onError: (err) => {
+      console.error(err)
+      toast.error(err.message)
+    }
+  })
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -102,78 +101,76 @@ export default function AddExpenseDialog() {
 		setIsOpen(!isOpen);
 	}
 
-	const resetForm = () => {
-		form.reset();
-		setIsOpen(false);
-	};
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    mutate(values)
+    form.reset()
+    toggleModalOpen()
+  }
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		const resBody = {
-			...values,
-			date: new Date(),
-		};
-		mutate(resBody);
-	}
+  function submitAndAdd() {
+    mutate(form.getValues())
+    form.reset()
+  }
 
-	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
-			<DialogTrigger asChild>
-				<Button>
-					Adicionar
-					<PlusCircle className="size-4 ml-auto" />
-				</Button>
-			</DialogTrigger>
-			<DialogContent
-				className="sm:max-w-[425px]"
-				onInteractOutside={() => resetForm()}
-			>
-				<DialogHeader>
-					<DialogTitle>Adicionar despesa</DialogTitle>
-					<Separator />
-				</DialogHeader>
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className="flex flex-col gap-4">
-							{/* date */}
-							<FormField
-								control={form.control}
-								name="date"
-								render={({ field }) => (
-									<FormItem className="grid gap-2">
-										<FormLabel>Data da despesa</FormLabel>
-										<Popover>
-											<PopoverTrigger asChild>
-												<FormControl>
-													<Button
-														variant={"outline"}
-														className={cn(
-															"w-[240px] pl-3 text-left font-normal",
-															!field.value && "text-muted-foreground",
-														)}
-													>
-														{field.value ? (
-															format(field.value, "PPP", { locale: ptBR })
-														) : (
-															<span>Escolha uma data</span>
-														)}
-														<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-													</Button>
-												</FormControl>
-											</PopoverTrigger>
-											<PopoverContent className="w-auto p-0" align="start">
-												<Calendar
-													mode="single"
-													selected={field.value}
-													onSelect={field.onChange}
-													locale={ptBR}
-													initialFocus
-												/>
-											</PopoverContent>
-										</Popover>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
+      <DialogTrigger asChild>
+        <Button>
+          Adicionar
+          <PlusCircle className="size-4 ml-auto" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => form.reset()}>
+        <DialogHeader>
+          <DialogTitle>Adicionar despesa</DialogTitle>
+          <Separator />
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className='flex flex-col gap-4'>
+              {/* date */}
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Data da despesa</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP", { locale: ptBR })
+                            ) : (
+                              <span>Escolha uma data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          locale={ptBR}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
 							{/* company */}
 							<FormField
@@ -322,19 +319,28 @@ export default function AddExpenseDialog() {
 							/>
 						</div>
 
-						{/* footer */}
-						<div className="w-full flex items-center justify-end gap-4 mt-5">
-							<DialogClose asChild>
-								<Button variant="ghost">Cancelar</Button>
-							</DialogClose>
-							<Button type="submit" disabled={isPending}>
-								{isPending && <Loader2 className="size-4 mr-4 animate-spin" />}
-								Salvar
-							</Button>
-						</div>
-					</form>
-				</Form>
-			</DialogContent>
-		</Dialog>
-	);
+            {/* footer */}
+            <div className='w-full flex items-center justify-end gap-4 mt-5'>
+              <DialogClose asChild>
+                <Button variant='ghost' className='mr-auto'>
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <Button type='button' disabled={isPending} variant={'outline'} onClick={submitAndAdd}>
+                Salvar e adicionar
+                {isPending ? 
+                  <Loader2 className='size-4 mr-4 animate-spin' /> 
+                  : <PlusCircle className="size-4 ml-auto" />
+                }
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending && <Loader2 className='size-4 mr-4 animate-spin' />}
+                Salvar
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  )
 }

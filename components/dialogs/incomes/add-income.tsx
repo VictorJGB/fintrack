@@ -51,19 +51,20 @@ const formSchema = z.object({
 export default function AddIncomeDialog() {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-	const { mutate, isPending } = useMutation({
-		mutationFn: createIncome,
-		mutationKey: ["incomes", "add"],
-		onSuccess: ({ message }) => {
-			toast.success(message);
-			toggleModalOpen();
-			queryClient.invalidateQueries({ queryKey: ["incomes"] });
-		},
-		onError: (err) => {
-			console.error(err);
-			toast.error(err.message);
-		},
-	});
+  const { mutate, isPending } = useMutation({
+    mutationFn: createIncome,
+    mutationKey: ['incomes', 'add'],
+    onSuccess: ({ message }) => {
+      toast.success(message)
+      toggleModalOpen()
+      queryClient.invalidateQueries({ queryKey: ['incomes'] })
+      form.reset()
+    },
+    onError: (err) => {
+      console.error(err)
+      toast.error(err.message)
+    }
+  })
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -78,14 +79,9 @@ export default function AddIncomeDialog() {
 		setIsOpen(!isOpen);
 	}
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		const resBody = {
-			...values,
-			date: new Date(),
-		};
-
-		mutate(resBody);
-	}
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    mutate(values)
+  }
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>

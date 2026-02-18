@@ -2,8 +2,7 @@
 
 import { headers } from "next/headers";
 
-const ENVIRONMENT = process.env.ENVIRONMENT;
-const API_DEV_URL = "http://localhost:8080/api";
+const ENVIRONMENT = process.env.ENVIRONMENT
 
 const API_BASE_URL = ENVIRONMENT ? process.env.API_URL : API_DEV_URL;
 
