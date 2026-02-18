@@ -69,14 +69,6 @@ export default function AddExpenseDialog() {
   const { mutate, isPending } = useMutation({
     mutationFn: createExpense,
     mutationKey: ['expenses', 'add'],
-    onSuccess: ({ message }) => {
-      toast.success(message)
-      queryClient.invalidateQueries({ queryKey: ['expenses'] })
-    },
-    onError: (err) => {
-      console.error(err)
-      toast.error(err.message)
-    }
   })
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -102,14 +94,32 @@ export default function AddExpenseDialog() {
 	}
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate(values)
-    form.reset()
-    toggleModalOpen()
+    mutate(values, {
+			onSuccess: ({ message }) => {
+				toast.success(message)
+				queryClient.invalidateQueries({ queryKey: ['expenses'] })
+				form.reset()
+				toggleModalOpen()
+			},
+			onError: (err) => {
+				console.error(err)
+				toast.error(err.message)
+			}
+		})
   }
 
   function submitAndAdd() {
-    mutate(form.getValues())
-    form.reset()
+    mutate(form.getValues(), {
+			onSuccess: ({ message }) => {
+				toast.success(message)
+				queryClient.invalidateQueries({ queryKey: ['expenses'] })
+				form.reset()
+			},
+			onError: (err) => {
+				console.error(err)
+				toast.error(err.message)
+			}
+		})
   }
 
   return (
