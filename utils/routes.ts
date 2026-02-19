@@ -65,11 +65,11 @@ export const appLinks: Links[] = [
 			period: "current",
 		},
 	},
-	{
-		label: "Meus destinatários",
-		href: "/recipients",
-		icon: "Users",
-	},
+	// {
+	// 	label: "Meus destinatários",
+	// 	href: "/recipients",
+	// 	icon: "Users",
+	// },
 	{
 		label: "Relatórios",
 		href: "/reports",
