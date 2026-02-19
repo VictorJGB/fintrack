@@ -39,6 +39,7 @@ import { ptBR } from 'date-fns/locale'
 
 // icons
 import { CalendarIcon, Files, Loader2, PlusCircle } from "lucide-react"
+import RecipientSelect from '@/components/selects/recipient-select'
 
 
 const formSchema = z.object({
@@ -205,10 +206,9 @@ export default function DuplicateExpenseDialog({defaultValues}: DuplicateExpense
                   <FormItem className='grid gap-2'>
                     <FormLabel>Destinatário (Opcional)</FormLabel>
                     <FormControl>
-                      <Input
-                        type='text'
-                        placeholder='Digita aqui o destinatário...'
-                        {...field}
+                      <RecipientSelect 
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />

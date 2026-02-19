@@ -42,6 +42,7 @@ import type Expense from "@/interfaces/expense";
 // libs
 import { queryClient } from "@/lib/react-query";
 import { cn } from "@/lib/utils";
+import RecipientSelect from "@/components/selects/recipient-select";
 
 const formSchema = z.object({
 	date: z.date({ required_error: "Data é obrigatório" }),
@@ -222,10 +223,9 @@ export default function EditExpenseDialog({ data, handleModalClose }: Props) {
 									<FormItem className="grid gap-2">
 										<FormLabel>Destinatário</FormLabel>
 										<FormControl>
-											<Input
-												type="text"
-												placeholder="Digita aqui o destinatário..."
-												{...field}
+											<RecipientSelect 
+												value={field.value}
+												onChange={field.onChange}
 											/>
 										</FormControl>
 										<FormMessage />

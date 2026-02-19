@@ -66,14 +66,14 @@ export const columns: ColumnDef<Expense>[] = [
 		},
 	},
 	{
-		accessorKey: "installments_paid",
+		accessorKey: "recipient",
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 				>
-					Parcelas pagas
+					Destinatário
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);

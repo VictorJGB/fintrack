@@ -10,11 +10,11 @@ import getIncomes from "@/actions/incomes/get-incomes";
 // components
 import AddIncomeDialog from "@/components/dialogs/incomes/add-income";
 import ImportIncomesDialog from "@/components/dialogs/incomes/import-incomes";
-import PeriodSelect from "@/components/period-select";
 import SearchInput from "@/components/search-input";
-import { toast } from "sonner";
 import { columns } from "./columns";
 import PeriodSelect from "@/components/period-select";
+import TableSkeleton from "../table-skeleton";
+import { DataTable } from "../data-table";
 
 export default function IncomesTable() {
 	const searchParams = useSearchParams();
