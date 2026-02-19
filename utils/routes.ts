@@ -66,6 +66,11 @@ export const appLinks: Links[] = [
 		},
 	},
 	{
+		label: "Meus destinatários",
+		href: "/recipients",
+		icon: "Users",
+	},
+	{
 		label: "Relatórios",
 		href: "/reports",
 		icon: "FileText",
