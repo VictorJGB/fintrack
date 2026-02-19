@@ -2,9 +2,11 @@
 
 import { headers } from "next/headers";
 
-const ENVIRONMENT = process.env.ENVIRONMENT
+const ENVIRONMENT = process.env.ENVIRONMENT;
 
-const API_BASE_URL = ENVIRONMENT ? process.env.API_URL : API_DEV_URL;
+const API_BASE_URL = ENVIRONMENT
+	? process.env.API_URL
+	: process.env.API_DEV_URL;
 
 interface ApiFetcherOptions {
 	enableLog: boolean;

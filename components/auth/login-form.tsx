@@ -92,12 +92,7 @@ export default function LoginForm({
 										<FormItem className="grid gap-2">
 											<FormLabel>Email</FormLabel>
 											<FormControl>
-												<Input
-													type="email"
-													placeholder="m@example.com"
-													required
-													{...field}
-												/>
+												<Input type="email" required {...field} />
 											</FormControl>
 										</FormItem>
 									)}

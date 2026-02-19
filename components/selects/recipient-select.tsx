@@ -1,40 +1,69 @@
-'use client'
+"use client";
 
-import { Select, SelectTrigger, SelectItem, SelectValue, SelectContent, SelectGroup } from "../ui/select";
-import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import getRecipients from "@/actions/recipients/get-recipients";
+import {
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "@/components/ui/combobox";
+import type Recipient from "@/interfaces/recipients";
 
 type RecipientProps = {
-  onValueChange: (value: string) => void
-  defaultValue: string
-  className?: string
-}
+	onChange: (value: string) => void;
+	value?: string;
+	className?: string;
+};
 
-export default function RecipientSelect({ onValueChange, defaultValue, className }: RecipientProps) {
-  const {data, isLoading} = useQuery({
-    queryKey: ["recipients"],
-    queryFn: getRecipients
-  })
+export default function RecipientSelect({
+	onChange,
+	value,
+	className,
+}: RecipientProps) {
+	const [search, setSearch] = useState<string>("");
+	const { data, isLoading } = useQuery({
+		queryKey: ["recipients"],
+		queryFn: getRecipients,
+	});
 
-  return (
-    <Select onValueChange={onValueChange} defaultValue={defaultValue}>
-      <SelectTrigger className={cn("w-45", className)} disabled={isLoading}>
-        <SelectValue placeholder={
-          isLoading ? "Carregando..." : defaultValue ? defaultValue : "Selecione um destinatário"
-        } />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          {data && data.length > 0 && data.map(({id, name}) => (
-            <SelectItem key={id} value={name} className="capitalize">{name}</SelectItem>
-          ))}
+	useEffect(() => {
+		if (value) setSearch(value);
+	}, [value]);
 
-          {!data || data.length === 0 && (
-            <span className="p-4 text-sm text-muted-foreground">Nenhum destinatário encontrado!</span>
-          )}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  )
+	function handleSelect(name: string) {
+		onChange(name);
+		setSearch(name);
+	}
+
+	return (
+		<Combobox items={data} itemToStringValue={(item: Recipient) => item.name}>
+			<ComboboxInput
+				className={className}
+				placeholder="Selecione um destinatário"
+				value={search}
+				onChange={(e) => setSearch(e.target.value)}
+				onFocus={() => setSearch("")}
+			/>
+			<ComboboxContent className="z-100">
+				<ComboboxEmpty>
+					{isLoading ? "Carregando..." : "Nenhum destinatário encontrado."}
+				</ComboboxEmpty>
+				<ComboboxList className="z-100 pointer-events-auto">
+					{(recipient) => (
+						<ComboboxItem
+							key={recipient._id}
+							value={recipient.name}
+							onClick={() => handleSelect(recipient.name)}
+						>
+							{recipient.name}
+						</ComboboxItem>
+					)}
+				</ComboboxList>
+			</ComboboxContent>
+		</Combobox>
+	);
 }
