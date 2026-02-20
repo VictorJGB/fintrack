@@ -35,7 +35,7 @@ export default function RecipientSelect({
 		queryFn: getRecipients,
 	});
 	const { mutate, isPending } = useMutation({
-		mutationKey: ["create-reciepient"],
+		mutationKey: ["recipients", "add"],
 		mutationFn: createRecipient,
 	});
 
@@ -52,12 +52,12 @@ export default function RecipientSelect({
 		mutate(search, {
 			onSuccess: (data) => {
 				toast.success(data.message);
+				queryClient.invalidateQueries({ queryKey: ["recipients"] });
 			},
 			onError: (error) => {
 				toast.error(error.message);
 			},
 			onSettled: () => {
-				queryClient.invalidateQueries({ queryKey: ["recipients"] });
 				onChange(search);
 			},
 		});

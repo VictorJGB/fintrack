@@ -1,7 +1,7 @@
 // icons
 import { MoreHorizontal } from "lucide-react";
-import DeleteIncomeDialog from "@/components/dialogs/incomes/delete-income";
-import EditIncomeDialog from "@/components/dialogs/incomes/edit-income";
+import DeleteRecipientDialog from "@/components/dialogs/recipients/delete-recipient";
+import EditRecipientDialog from "@/components/dialogs/recipients/edit-recipient";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -31,11 +31,11 @@ export default function RecipientActionsDropdownMenu({ data }: Props) {
 				<DropdownMenuLabel>Ações</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem className="w-full" asChild>
-					<span>Editar destinatário</span>
+					<EditRecipientDialog data={data} />
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem className="w-full" asChild>
-					<span>Excluir destinatario</span>
+					<DeleteRecipientDialog recipientID={data._id} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

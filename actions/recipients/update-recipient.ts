@@ -5,22 +5,25 @@ import type Recipient from "@/interfaces/recipients";
 import { apiFetcher } from "@/utils/api";
 
 type Response = {
-  message: string;
-}
+	message: string;
+};
 
-export default async function updateRecipient(recipient: Recipient): Promise<Response> {
-  const response = await apiFetcher(`recipients/${recipient.id}`, {
-    method: "PATCH",
-    body: JSON.stringify({
-      name: recipient.name
-    })
-  });
+export default async function updateRecipient(
+	recipient: Recipient,
+): Promise<Response> {
+	console.log(recipient);
+	const response = await apiFetcher(`recipients/${recipient._id}`, {
+		method: "PATCH",
+		body: JSON.stringify({
+			name: recipient.name,
+		}),
+	});
 
-  const data = await response.json();
+	const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
 
-  return data;
+	return data;
 }
