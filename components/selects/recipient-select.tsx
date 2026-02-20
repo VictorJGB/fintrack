@@ -1,7 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Loader2, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import createRecipient from "@/actions/recipients/create-recipient";
 import getRecipients from "@/actions/recipients/get-recipients";
 import {
 	Combobox,
@@ -12,6 +15,8 @@ import {
 	ComboboxList,
 } from "@/components/ui/combobox";
 import type Recipient from "@/interfaces/recipients";
+import { queryClient } from "@/lib/react-query";
+import { Button } from "../ui/button";
 
 type RecipientProps = {
 	onChange: (value: string) => void;
@@ -29,6 +34,10 @@ export default function RecipientSelect({
 		queryKey: ["recipients"],
 		queryFn: getRecipients,
 	});
+	const { mutate, isPending } = useMutation({
+		mutationKey: ["create-reciepient"],
+		mutationFn: createRecipient,
+	});
 
 	useEffect(() => {
 		if (value) setSearch(value);
@@ -39,6 +48,21 @@ export default function RecipientSelect({
 		setSearch(name);
 	}
 
+	function handleNewRecipient() {
+		mutate(search, {
+			onSuccess: (data) => {
+				toast.success(data.message);
+			},
+			onError: (error) => {
+				toast.error(error.message);
+			},
+			onSettled: () => {
+				queryClient.invalidateQueries({ queryKey: ["recipients"] });
+				onChange(search);
+			},
+		});
+	}
+
 	return (
 		<Combobox items={data} itemToStringValue={(item: Recipient) => item.name}>
 			<ComboboxInput
@@ -46,13 +70,30 @@ export default function RecipientSelect({
 				placeholder="Selecione um destinatário"
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
-				onFocus={() => setSearch("")}
 			/>
-			<ComboboxContent className="z-100">
+			<ComboboxContent className="z-100 pointer-events-auto">
 				<ComboboxEmpty>
-					{isLoading ? "Carregando..." : "Nenhum destinatário encontrado."}
+					{isLoading ? (
+						"Carregando..."
+					) : (
+						<div className="grid grid-rows-auto place-items-center w-full gap-2">
+							Nenhum destinatário encontrado.
+							<Button
+								onClick={handleNewRecipient}
+								disabled={isPending}
+								className="w-[90%] border-primary bg-popover border text-primary hover:bg-primary/10"
+							>
+								Criar destinatário
+								<span className="max-w-[100px] overflow-hidden text-ellipsis">
+									"{search}"
+								</span>
+								{isPending && <Loader2 className="size-4 mr-4 animate-spin" />}
+								{!isPending && <PlusCircle className="size-4" />}
+							</Button>
+						</div>
+					)}
 				</ComboboxEmpty>
-				<ComboboxList className="z-100 pointer-events-auto">
+				<ComboboxList>
 					{(recipient) => (
 						<ComboboxItem
 							key={recipient._id}
