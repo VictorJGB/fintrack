@@ -1,20 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 // icons
-import { CalendarIcon, Loader2, PlusCircle } from "lucide-react";
+import { Loader2, PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { CurrencyInput } from "react-currency-mask";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 // actions
-import createIncome from "@/actions/incomes/create-income";
 import createRecipient from "@/actions/recipients/create-recipient";
 // components
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import {
 	Dialog,
 	DialogClose,
@@ -32,16 +27,11 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 // libs
 import { queryClient } from "@/lib/react-query";
+
 // utils
-import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
 	name: z.string().min(2, { message: "Minimo 2 caracteres" }),
@@ -75,7 +65,9 @@ export default function AddRecipientDialog() {
 				queryClient.invalidateQueries({ queryKey: ["recipients"] });
 			},
 			onError: (error) => {
-				toast.error(error.message);
+				toast.error("Erro ao adicionar destinatário", {
+					description: error.message,
+				});
 			},
 		});
 	}
