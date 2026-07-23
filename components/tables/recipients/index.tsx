@@ -17,7 +17,6 @@ export default function RecipientsTable() {
 		queryKey: ["recipients"],
 		queryFn: () => getRecipients(),
 	});
-	// const [search, setSearch] = useState("");
 
 	useEffect(() => {
 		if (error) {
@@ -49,6 +48,12 @@ export default function RecipientsTable() {
 					firstPage={1}
 					lastPage={1}
 				/>
+			)}
+
+			{!isLoading && !data && (
+				<div className="flex flex-col items-center justify-center">
+					<h2 className="text-xl">Nenhum destinatário encontrado</h2>
+				</div>
 			)}
 		</div>
 	);
