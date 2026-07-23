@@ -19,7 +19,6 @@ export async function apiFetcher(
 ): Promise<Response> {
 	const url = `${API_BASE_URL}/${input}`;
 	const nextHeaders = await headers();
-
 	const token = nextHeaders.get("cookie");
 
 	const optionsHeaders: HeadersInit = {

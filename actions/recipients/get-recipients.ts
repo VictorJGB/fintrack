@@ -1,3 +1,5 @@
+"use server"
+
 // types
 import type Recipient from "@/interfaces/recipients";
 // utils
@@ -11,12 +13,10 @@ export default async function getRecipients(search?: string): Promise<Recipient[
 		method: "GET",
 	});
 
-	console.log(response)
 	const data = await response.json();
-	console.log(data)
 
 	if (!response.ok) {
-		throw new Error(data.message);
+		throw new Error(data.message)
 	}
 
 	return data;

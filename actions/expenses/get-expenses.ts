@@ -12,8 +12,8 @@ export default async function getExpenses(
 	search?: string,
 ): Promise<APIResponse> {
 	const params = new URLSearchParams({
-		page: page ?? "1",
-		period: period ?? "",
+		page: period ? "1" : page ?? '1',
+		period: period ?? "all",
 		items_per_page: itemsPerPage ?? "",
 		search: search ?? "",
 	}).toString();

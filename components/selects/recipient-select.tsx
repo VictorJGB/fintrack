@@ -32,7 +32,7 @@ export default function RecipientSelect({
 	const [search, setSearch] = useState<string>("");
 	const { data, isLoading } = useQuery({
 		queryKey: ["recipients"],
-		queryFn: getRecipients,
+		queryFn: () => getRecipients(),
 	});
 	const { mutate, isPending } = useMutation({
 		mutationKey: ["recipients", "add"],

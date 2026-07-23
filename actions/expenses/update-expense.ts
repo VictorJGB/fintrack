@@ -23,6 +23,7 @@ export default async function updateExpense({
 		body: JSON.stringify(formData),
 	});
 
+
 	const data = await response.json();
 
 	if (!response.ok) {

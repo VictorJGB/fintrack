@@ -25,7 +25,7 @@ export default function ExpensesTable() {
 	const searchParams = useSearchParams();
 	const page = searchParams.get("page") ?? "1";
 	const itemsPerPage = searchParams.get("items_per_page") ?? "10";
-	const period = searchParams.get("period") ?? "";
+	const period = searchParams.get("period") ?? "all";
 
 	const [search, setSearch] = useState<string>("");
 

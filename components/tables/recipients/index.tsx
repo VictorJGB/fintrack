@@ -20,6 +20,7 @@ export default function RecipientsTable() {
 
 	useEffect(() => {
 		if (error) {
+			console.log(data)
 			toast.error("Tabela de recebimentos", {
 				description: error.message,
 			});

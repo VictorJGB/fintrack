@@ -11,7 +11,6 @@ type Response = {
 export default async function updateRecipient(
 	recipient: Recipient,
 ): Promise<Response> {
-	console.log(recipient);
 	const response = await apiFetcher(`recipients/${recipient._id}`, {
 		method: "PATCH",
 		body: JSON.stringify({

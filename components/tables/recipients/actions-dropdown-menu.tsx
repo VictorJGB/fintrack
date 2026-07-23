@@ -22,7 +22,7 @@ export default function RecipientActionsDropdownMenu({ data }: Props) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" className="h-8 w-8 p-0">
+				<Button variant="ghost" className="h-8 w-8 p-0" disabled={data.name === "Eu"}>
 					<span className="sr-only">Open menu</span>
 					<MoreHorizontal className="h-4 w-4" />
 				</Button>
@@ -35,7 +35,7 @@ export default function RecipientActionsDropdownMenu({ data }: Props) {
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem className="w-full" asChild>
-					<DeleteRecipientDialog recipientID={data._id} />
+					&& <DeleteRecipientDialog recipientID={data._id} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
