@@ -35,7 +35,7 @@ export default function RecipientActionsDropdownMenu({ data }: Props) {
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem className="w-full" asChild>
-					&& <DeleteRecipientDialog recipientID={data._id} />
+					<DeleteRecipientDialog recipientID={data._id} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
