@@ -2,7 +2,7 @@
 
 // libs
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 // actions
 import getRecipients from "@/actions/recipients/get-recipients";
@@ -11,17 +11,21 @@ import AddRecipientDialog from "@/components/dialogs/recipients/add-recipient";
 import { DataTable } from "../data-table";
 import TableSkeleton from "../table-skeleton";
 import { columns } from "./columns";
+import SearchInput from "@/components/search-input";
+import useDebounce from "@/hooks/use-debounce";
 
 export default function RecipientsTable() {
+	const debounce_delay = 500;
+	const [search, setSearch] = useState<string>("")
+	const debouncedValue = useDebounce(search, debounce_delay)
 	const { data, isLoading, error } = useQuery({
-		queryKey: ["recipients"],
-		queryFn: () => getRecipients(),
+		queryKey: ["recipients", debouncedValue],
+		queryFn: () => getRecipients(debouncedValue),
 	});
 
 	useEffect(() => {
 		if (error) {
-			console.log(data)
-			toast.error("Tabela de recebimentos", {
+			toast.error("Tabela de Destinatários", {
 				description: error.message,
 			});
 		}
@@ -30,9 +34,9 @@ export default function RecipientsTable() {
 	return (
 		<div className="container mx-auto py-10">
 			<div className="w-full flex flex-col md:flex-row items-center justify-center mb-4">
-				{/* <div className="w-full flex items-center justify-center md:justify-start gap-2">
+				<div className="w-full flex items-center justify-center md:justify-start gap-2">
 					<SearchInput search={search} onSearchChange={setSearch} />
-				</div> */}
+				</div>
 				<div className="w-full flex items-center justify-between md:justify-end gap-2 ms-auto">
 					<AddRecipientDialog />
 				</div>
