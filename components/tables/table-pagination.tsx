@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
+import { useEffect } from "react";
 
 interface Props {
 	firstPage: number;
@@ -53,7 +54,7 @@ export default function TablePagination({
 		params.set("page", nextPage.toString());
 
 		const href = `${pathname}?${params.toString()}`;
-
+		console.log(href)
 		return href;
 	}
 
@@ -63,7 +64,6 @@ export default function TablePagination({
 		const params = new URLSearchParams(searchParams.toString());
 		params.set("page", prevPage.toString());
 		const href = `${pathname}?${params.toString()}`;
-
 		return href;
 	}
 
